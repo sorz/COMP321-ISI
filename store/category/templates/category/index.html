@@ -1,0 +1,14 @@
+{% extends "store/base.html" %}
+{% block title %}Categories{% endblock %}
+
+{% block body %}
+
+  <h1>Categories</h1>
+  <ul>
+    {% for category in categories %}
+      <li><a href="{% url 'category:detail' category.id %}">
+        {{ category.name }}</a></li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}

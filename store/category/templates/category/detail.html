@@ -1,0 +1,15 @@
+{% extends "store/base.html" %}
+{% block title %}{{ category }} - Category{% endblock %}
+
+{% block body %}
+
+  <h1>{{ category }}</h1>
+  <p>{{ category.description }}</p>
+
+  <ul>
+    {% for product in products %}
+      <li>{{ product.name }} - ${{ product.price }}</li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}
