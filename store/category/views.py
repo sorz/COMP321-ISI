@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 
-from category.models import Category
+from .models import Category
 
 
 def index(request):

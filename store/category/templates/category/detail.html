@@ -3,12 +3,14 @@
 
 {% block body %}
 
+  <a href="{% url 'category:index' %}">All categories</a>
   <h1>{{ category }}</h1>
   <p>{{ category.description }}</p>
 
   <ul>
     {% for product in products %}
-      <li>{{ product.name }} - ${{ product.price }}</li>
+      <li><a href="{% url 'product:detail' product.id %}">{{ product.name }}</a>
+        - ${{ product.price }}</li>
     {% endfor %}
   </ul>
 

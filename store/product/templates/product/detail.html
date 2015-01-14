@@ -1,0 +1,35 @@
+{% extends "store/base.html" %}
+{% block title %}{{ product }} - Product{% endblock %}
+
+{% block body %}
+
+  <h1>{{ product.name }}</h1>
+
+  <p>Category:
+    <a href="{% url 'category:detail' product.category.id %}">
+        {{ product.category }}</a>
+  </p>
+
+  <p>Price: {{ product.price }}</p>
+
+
+  <h2>Photos</h2>
+  <ul>
+    {% for photo in product.photo_set.all %}
+      <li><img src="{{ photo.image.url }}" title="{{ photo.description }}" /></li>
+    {% endfor %}
+  </ul>
+
+
+  <h2>Properties</h2>
+  <ul>
+    {% for property in product.property_set.all %}
+      <li>{{ property.name.name }}: {{ property.value }}</li>
+    {% endfor %}
+  </ul>
+
+
+  <h2>Description</h2>
+  <p>{{ product.description }}</p>
+
+{% endblock %}
