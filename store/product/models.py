@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
 from category.models import Category, PropertyName
@@ -26,6 +27,11 @@ class Property(models.Model):
     product = models.ForeignKey(Product)
     name = models.ForeignKey(PropertyName)
     value = models.CharField(max_length=255)
+
+    def clean(self):
+        if self.name.category != self.product.category:
+            raise ValidationError("Property (%s) is belong to <%s> but not product's category (%s)."
+                                  % (self.name.name, self.name.category, self.product.category))
 
 
 class Rating(models.Model):

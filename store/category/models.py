@@ -15,4 +15,4 @@ class PropertyName(models.Model):
     description = models.TextField(null=True)
 
     def __str__(self):
-        return "%s's %s" % (self.category.name, self.name)
+        return "%s: %s" % (self.category.name, self.name)
