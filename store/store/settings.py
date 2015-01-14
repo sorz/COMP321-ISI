@@ -85,6 +85,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
+# Where to store uploaded files. Make sure it's writable.
+# e.g /var/media
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'
+
+
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',

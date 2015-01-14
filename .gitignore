@@ -90,3 +90,6 @@ crashlytics-build.properties
 
 # django database
 db.sqlite3
+
+# user-uploaded files
+media/

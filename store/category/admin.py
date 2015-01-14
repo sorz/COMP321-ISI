@@ -1,8 +1,12 @@
 from django.contrib import admin
 
-from category.models import Category
+from .models import Category, PropertyName
 
 
+class PropertyNameInline(admin.StackedInline):
+    model = PropertyName
+
+
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    pass
-admin.site.register(Category, CategoryAdmin)
+    inlines = [PropertyNameInline]
