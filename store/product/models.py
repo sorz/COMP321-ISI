@@ -12,6 +12,7 @@ class Product(models.Model):
                                 validators=[MinValueValidator(0)])
     category = models.ForeignKey(Category, null=True)
     in_stock = models.BooleanField(default=True)
+    off_shelf = models.BooleanField(default=False)
     description = models.TextField()
 
     @property
@@ -24,8 +25,6 @@ class Product(models.Model):
             count += 1
         # TODO: May need a cache?
         return total / count
-
-    # TODO: Hide product when vendor delete a product which has been associated with orders.
 
     def __str__(self):
         return self.name

@@ -21,6 +21,8 @@ class Cart(models.Model):
         # Save current prices (purchase prices) permanently.
         for item in self.cartitem_set.all():
             assert item.quantity >= 0
+            assert item.in_stock
+            assert not item.off_shelf
             item.purchase_price = item.product.price
             item.save()
 
@@ -78,6 +80,11 @@ class CartItem(models.Model):
     def in_stock(self):
         """Return product's in-stock status"""
         return self.product.in_stock
+
+    @property
+    def off_shelf(self):
+        """Return product's off_shelf status"""
+        return self.product.off_shelf
 
     @property
     def description(self):
