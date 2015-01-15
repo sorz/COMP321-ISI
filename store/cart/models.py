@@ -50,14 +50,24 @@ class CartItem(models.Model):
             return self.purchase_price
     price = property(_get_price)
 
+    def _get_total_price(self):
+        return self.price * self.quantity
+    total_price = property(_get_total_price)
+
     def _get_name(self):
         """Return product's name"""
         return self.product.name
     name = property(_get_name)
 
-    def _get_total_price(self):
-        return self.price * self.quantity
-    total_price = property(_get_total_price)
+    def _get_in_stock(self):
+        """Return product's in-stock status"""
+        return self.product.in_stock
+    in_stock = property(_get_in_stock)
+
+    def _get_description(self):
+        """Return product's description"""
+        return self.product.description
+    description = property(_get_description)
 
     def __str__(self):
-        return "%s x %s" % (self.product, self.quantity)
+        return "%s x%s" % (self.name, self.quantity)

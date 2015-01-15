@@ -11,6 +11,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=9, decimal_places=2,
                                 validators=[MinValueValidator(0)])
     category = models.ForeignKey(Category, null=True)
+    in_stock = models.BooleanField(default=True)
     description = models.TextField()
 
     def __str__(self):

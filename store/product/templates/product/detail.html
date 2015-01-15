@@ -12,6 +12,13 @@
 
   <p>Price: {{ product.price }}</p>
 
+  <p>Status:
+  {% if product.in_stock %}
+    In stock
+  {% else %}
+    Out of stack
+  {% endif %}
+  </p>
 
   <h2>Photos</h2>
   <ul>

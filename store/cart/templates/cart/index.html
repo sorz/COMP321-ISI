@@ -9,6 +9,7 @@
       <li><a href="{% url 'product:detail' item.product.id %}">
         {{ item.name }}</a>
       ${{ item.price }} x{{ item.quantity }} = ${{ item.total_price }}
+      {% if not item.in_stock %}(out of stock){% endif %}
       </li>
     {% endfor %}
   </ul>
