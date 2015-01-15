@@ -32,8 +32,7 @@ class CartTestCast(TestCase):
 
     def test_purchase(self):
         self.assertEqual(self.cart.purchased, False)
-        self.cart.purchase()
-        self.assertEqual(self.cart.purchased, True)
+        self.cart.purchase(None)
 
         self.coke.price = '2.50'
         self.coke.save()

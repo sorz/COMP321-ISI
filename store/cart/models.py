@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from product.models import Product
+from order.models import Order
 
 
 class Cart(models.Model):
@@ -11,12 +12,11 @@ class Cart(models.Model):
     The number of un-purchase cart (shopping cart) for each user must be 0 or 1 at any time.
     """
     owner = models.ForeignKey(User)
-    purchased = models.BooleanField(default=False)
+    order = models.OneToOneField(Order, null=True)
 
-    def purchase(self):
-        """Save prices of items and set purchased to true."""
+    def purchase(self, order):
+        """Save prices of items."""
         assert not self.purchased
-        self.purchased = True
 
         # Save current prices (purchase prices) permanently.
         for item in self.cartitem_set.all():
@@ -24,7 +24,12 @@ class Cart(models.Model):
             item.purchase_price = item.product.price
             item.save()
 
-        # TODO: create and return a order
+        self.order = order
+        self.save()
+
+    def _get_purchased(self):
+        return self.order is not None
+    purchased = property(_get_purchased)
 
     def _get_total_price(self):
         price = 0
