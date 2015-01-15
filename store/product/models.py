@@ -14,6 +14,17 @@ class Product(models.Model):
     in_stock = models.BooleanField(default=True)
     description = models.TextField()
 
+    @property
+    def average_rating(self):
+        """Return average rating of this product."""
+        total = 0
+        count = 0
+        for rating in self.rating_set.all():
+            total += rating.point
+            count += 1
+        # TODO: May need a cache?
+        return total / count
+
     # TODO: Hide product when vendor delete a product which has been associated with orders.
 
     def __str__(self):
@@ -56,5 +67,6 @@ class Rating(models.Model):
 
     Point is between (both include) 0 to 5.
     """
-    user = models.ForeignKey(User, unique=True)
+    user = models.ForeignKey(User)
+    product = models.ForeignKey(Product)
     point = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
