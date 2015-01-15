@@ -21,6 +21,13 @@ class Cart(models.Model):
 
         # TODO: create and return a order
 
+    def _get_total_price(self):
+        price = 0
+        for item in self.cartitem_set.all():
+            price += item.total_price
+        return price
+    total_price = property(_get_total_price)
+
     def add_item(self, product, quantity=1):
         """Add (or increase the quantity if existed) a product into shopping cart."""
         assert quantity > 0
@@ -42,6 +49,15 @@ class CartItem(models.Model):
         else:
             return self.purchase_price
     price = property(_get_price)
+
+    def _get_name(self):
+        """Return product's name"""
+        return self.product.name
+    name = property(_get_name)
+
+    def _get_total_price(self):
+        return self.price * self.quantity
+    total_price = property(_get_total_price)
 
     def __str__(self):
         return "%s x %s" % (self.product, self.quantity)
