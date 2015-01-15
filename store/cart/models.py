@@ -5,6 +5,11 @@ from product.models import Product
 
 
 class Cart(models.Model):
+    """A set of products. As a shopping cart when purchase is false (default).
+    Or just a collection of products for a order after purchased (order made).
+
+    The number of un-purchase cart (shopping cart) for each user must be 0 or 1 at any time.
+    """
     owner = models.ForeignKey(User)
     purchased = models.BooleanField(default=False)
 
@@ -37,6 +42,11 @@ class Cart(models.Model):
 
 
 class CartItem(models.Model):
+    """Stores quantity and price of a product for Cart.
+
+    Price is only stored when purchasing.
+    It's used to keep trading price is immutable from changing product price.
+    """
     cart = models.ForeignKey(Cart)
     product = models.ForeignKey(Product)
     purchase_price = models.DecimalField(max_digits=9, decimal_places=2, null=True)
