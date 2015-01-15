@@ -22,6 +22,8 @@ class ProductTestCast(TestCase):
         self.assertEqual(photo.description, 'Test image')
 
     def test_rating(self):
+        self.assertIsNone(self.book.average_rating)
+
         user = User.objects.create_user(username="RMS", email="god@koujiao.org",
                                         password=r"ppnn13%dkstFeb.1st")
         Rating.objects.create(user=user, product=self.book, point=3)

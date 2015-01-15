@@ -24,7 +24,8 @@ class Product(models.Model):
             total += rating.point
             count += 1
         # TODO: May need a cache?
-        return total / count
+        if count:
+            return total / count
 
     def __str__(self):
         return self.name
