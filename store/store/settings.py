@@ -86,6 +86,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"), )
+
 
 # Where to store uploaded files. Make sure it's writable.
 # e.g /var/media

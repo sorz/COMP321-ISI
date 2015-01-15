@@ -2,6 +2,11 @@
 {% block title %}{{ product }} - Product{% endblock %}
 
 {% block body %}
+  {% if user.is_authenticated %}
+    <a href="{% url 'cart:index' %}">Shopping cart</a>
+  {% else %}
+    <a href="#">Log in</a>
+  {% endif %}
 
   <h1>{{ product.name }}</h1>
 
@@ -19,6 +24,9 @@
     Out of stack
   {% endif %}
   </p>
+
+  <button class="buy"
+          data-link="{% url 'cart:item' product.id %}">Buy Buy Buy</button>
 
   <h2>Photos</h2>
   <ul>
@@ -39,4 +47,16 @@
   <h2>Description</h2>
   <p>{{ product.description }}</p>
 
+{% endblock %}
+
+{% block footer %}
+<script>
+  $(document).ready(function () {
+    $('.buy').click(function () {
+      $.post($(this).data('link'), function (data) {
+        alert('Added.');
+      });
+    });
+  });
+</script>
 {% endblock %}
