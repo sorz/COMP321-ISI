@@ -20,9 +20,9 @@ class Order(models.Model):
     recipient_address_2 = models.CharField(max_length=255, null=True)
     recipient_postcode = models.CharField(max_length=63, null=True)
 
-    def _get_owner(self):
+    @property
+    def owner(self):
         return self.cart.owner
-    owner = property(_get_owner)
 
     def ship(self):
         """Ship a pending/hold order. Used by vendor."""
@@ -70,6 +70,6 @@ class Message(models.Model):
     content = models.TextField()
     create_date = models.DateTimeField(auto_now_add=True)
 
-    def _get_wrote_by_vendor(self):
+    @property
+    def is_wrote_by_vendor(self):
         return self.writer.is_superuser
-    wrote_by_vendor = property(_get_wrote_by_vendor)
