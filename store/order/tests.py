@@ -3,7 +3,6 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 from .models import Order
-from cart.models import Cart
 from product.models import Product
 
 
@@ -15,18 +14,16 @@ class OrderTestCast(TestCase):
                                                     email="weiwu@ict.ac.cn",
                                                     password="123456")
 
-        self.cart = Cart.objects.create(owner=self.customer)
         self.product = Product.objects.create(name="Notebook", price="2000")
-        self.cart.add_item(self.product)
 
-        self.order = Order.objects.create(recipient_name="RMS",
+        self.order = Order.objects.create(owner=self.customer,
+                                          recipient_name="RMS",
                                           recipient_address="Koujiao Temple")
-        self.cart.purchase(self.order)
+        self.order.orderitem_set.create(product=self.product, quantity=2, price='2000')
 
     def test_values(self):
         self.assertEqual(self.order.state, 'P')
-        self.assertEqual(self.cart.total_price, Decimal('2000'))
-        self.assertTrue(self.cart.purchased)
+        self.assertEqual(self.order.total_price, Decimal('4000'))
         self.assertIsNone(self.order.shipment_date)
         self.assertIsNotNone(self.order.purchase_date)
 

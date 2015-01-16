@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.core.validators import MinValueValidator
+
+
+from product.models import Product
 
 
 class Order(models.Model):
@@ -12,6 +16,7 @@ class Order(models.Model):
         ('H', 'Hold'),
         ('C', 'Cancelled')
     )
+    owner = models.ForeignKey(User)
     state = models.CharField(max_length=1, choices=STATE_CHOICES, default='P')
     purchase_date = models.DateTimeField(auto_now_add=True)
     shipment_date = models.DateTimeField(null=True)
@@ -21,8 +26,11 @@ class Order(models.Model):
     recipient_postcode = models.CharField(max_length=63, null=True)
 
     @property
-    def owner(self):
-        return self.cart.owner
+    def total_price(self):
+        price = 0
+        for item in self.orderitem_set.all():
+            price += item.total_price
+        return price
 
     def ship(self):
         """Ship a pending/hold order. Used by vendor."""
@@ -61,6 +69,42 @@ class Order(models.Model):
 
     def __str__(self):
         return "%s: %s" % (self.owner, self.get_state_display())
+
+
+class OrderItem(models.Model):
+    """Stores quantity and purchase price of a product for a order."""
+    order = models.ForeignKey(Order)
+    product = models.ForeignKey(Product)
+    quantity = models.IntegerField(default=1)
+    price = models.DecimalField(max_digits=9, decimal_places=2,
+                                validators=[MinValueValidator(0)])
+
+    @property
+    def total_price(self):
+        return self.price * self.quantity
+
+    @property
+    def name(self):
+        """Return product's name"""
+        return self.product.name
+
+    @property
+    def in_stock(self):
+        """Return product's in-stock status"""
+        return self.product.in_stock
+
+    @property
+    def off_shelf(self):
+        """Return product's off_shelf status"""
+        return self.product.off_shelf
+
+    @property
+    def description(self):
+        """Return product's description"""
+        return self.product.description
+
+    def __str__(self):
+        return "%s x%s" % (self.name, self.quantity)
 
 
 class Message(models.Model):

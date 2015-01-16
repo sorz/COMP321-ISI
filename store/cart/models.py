@@ -2,36 +2,15 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from product.models import Product
-from order.models import Order
+from order.models import OrderItem
 
 
 class Cart(models.Model):
-    """A set of products. As a shopping cart when purchase is false (default).
-    Or just a collection of products for a order after purchased (order made).
+    """Shopping cart, which collect s set of products, with quantity.
 
-    The number of un-purchase cart (shopping cart) for each user must be 0 or 1 at any time.
+    For each user, only one cart.
     """
-    owner = models.ForeignKey(User)
-    order = models.OneToOneField(Order, null=True)
-
-    def purchase(self, order):
-        """Save prices of items."""
-        assert not self.purchased
-
-        # Save current prices (purchase prices) permanently.
-        for item in self.cartitem_set.all():
-            assert item.quantity >= 0
-            assert item.in_stock
-            assert not item.off_shelf
-            item.purchase_price = item.product.price
-            item.save()
-
-        self.order = order
-        self.save()
-
-    @property
-    def purchased(self):
-        return self.order is not None
+    owner = models.OneToOneField(User)
 
     @property
     def total_price(self):
@@ -47,25 +26,29 @@ class Cart(models.Model):
         item.quantity += quantity
         item.save()
 
+    def get_order_items(self):
+        """Create and return OrderItem instances corresponding CartItem on this cart."""
+        items = []
+        for item in self.cartitem_set.all():
+            assert item.quantity >= 0
+            items.append(OrderItem(
+                product=item.product,
+                quantity=item.quantity,
+                price=item.price
+            ))
+        return items
+
 
 class CartItem(models.Model):
-    """Stores quantity and price of a product for Cart.
-
-    Price is only stored when purchasing.
-    It's used to keep trading price is immutable from changing product price.
-    """
+    """Stores quantity of a product for Cart."""
     cart = models.ForeignKey(Cart)
     product = models.ForeignKey(Product)
-    purchase_price = models.DecimalField(max_digits=9, decimal_places=2, null=True)
     quantity = models.IntegerField(default=1)
 
     @property
     def price(self):
-        """Return purchase price after purchased or return current price."""
-        if self.purchase_price is None:
-            return self.product.price
-        else:
-            return self.purchase_price
+        """Return product's price"""
+        return self.product.price
 
     @property
     def total_price(self):

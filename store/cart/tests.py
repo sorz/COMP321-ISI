@@ -30,13 +30,17 @@ class CartTestCast(TestCase):
         self.assertEqual(coke.total_price, Decimal('35.00'))
         self.assertEqual(self.cart.total_price, Decimal('8035.00'))
 
-    def test_purchase(self):
-        self.assertEqual(self.cart.purchased, False)
-        self.coke.in_stock = True
-        self.coke.save()
-        self.cart.purchase(None)
+    def test_generate_order_items(self):
+        items = self.cart.get_order_items()
 
-        self.coke.price = '2.50'
+        self.assertEqual(len(items), 2)
+        self.assertIn(items[0].name, (self.coke.name, self.god_ship.name))
+        self.assertIn(items[0].price, (Decimal('3.50'), Decimal('8000')))
+
+        self.coke.price = 100
+        self.god_ship.price = 100
         self.coke.save()
-        coke = self.cart.cartitem_set.get(product=self.coke)
-        self.assertEqual(coke.price, Decimal('3.50'))
+        self.god_ship.save()
+
+        self.assertIn(items[0].price, (Decimal('3.50'), Decimal('8000')))
+        self.assertIn(items[1].price, (Decimal('3.50'), Decimal('8000')))
