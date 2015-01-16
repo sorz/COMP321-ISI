@@ -31,25 +31,14 @@
 
 <script>
   // TODO: considering move scripts to a standalone file.
-  function updateItemTotalPrice(itemChild) {
-    var $item = $(itemChild).parents('.cart-item');
-    var quantity = $item.find('.item-quantity').children('input').val();
-    var price = $item.data('price');
-    var total = quantity * price;
-    $item.find('.item-total-price').children('.value').text(total);
-    return total;
-  }
-
-  // Update total price when quantity is changing.
   $('#cart').find('.item-quantity').children('input').each(function () {
-    $(this).change(function() {
-      var totalPrice = updateItemTotalPrice(this);
+    $(this).change(function () {
+      var $item = $(this).parents('.cart-item');
+      var quantity = this.value;
+      var price = $item.data('price');
+      $item.find('.item-total-price').children('.value').text(quantity * price);
+
       // TODO: post new quantity in several seconds.
     });
-
-    // Re-calculate total price immediately to prevent inconsistent
-    // after refresh page by user.
-    updateItemTotalPrice(this);
   });
-
 </script>
