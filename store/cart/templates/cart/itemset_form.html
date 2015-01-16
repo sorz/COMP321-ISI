@@ -1,4 +1,4 @@
-<form method="post" action="">
+<form id="cart" name="cart" method="post" action="{% url 'cart:index' %}">
   {{ formset.management_form }}
   <table>
     <thead>
@@ -7,15 +7,38 @@
         <th>Unit Price</th>
         <th>Quantity</th>
         <th>Total Price</th>
+        <th>Delete</th>
       </tr>
     </thead>
     <tbody>
     {% for form in formset %}
-      <tr>
-        <td>{{ form.name }}</td>
+      <tr class="cart-item
+                {% if not form.instance.in_stock %}out-of-stock{% endif %}
+                {% if form.instance.off_shelf %}off-shelf{% endif %}"
+          data-id="{{ product.instance.pk }}"
+          data-price="{{ form.instance.price }}" >
+        <td><a href="{% url 'product:detail' form.instance.pk %}"
+            title="{{ form.instance.name }} - Product Detail">{{ form.instance.name }}</a></td>
+        <td><span class="value">${{ form.instance.price }}</span></td>
+        <td class="item-quantity">{{ form.quantity }}</td>
+        <td class="item-total-price">$<span class="value">{{ form.instance.total_price }}</span></td>
+        <td class="delete-action">{{ form.DELETE }}</td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
-
 </form>
+
+<script>
+  // TODO: considering move scripts to a standalone file.
+  $('#cart').find('.item-quantity').children('input').each(function () {
+    $(this).change(function () {
+      var $item = $(this).parents('.cart-item');
+      var quantity = this.value;
+      var price = $item.data('price');
+      $item.find('.item-total-price').children('.value').text(quantity * price);
+
+      // TODO: post new quantity in several seconds.
+    });
+  });
+</script>

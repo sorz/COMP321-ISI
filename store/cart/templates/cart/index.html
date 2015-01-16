@@ -4,19 +4,9 @@
 {% block body %}
 
   <h1>Shopping Cart</h1>
-  <ul>
-    {% for item in cart.cartitem_set.all %}
-      <li><a href="{% url 'product:detail' item.product.id %}">
-        {{ item.name }}</a>
-      ${{ item.price }} x{{ item.quantity }} = ${{ item.total_price }}
-      {% if not item.in_stock %}(out of stock){% endif %}
-      </li>
-    {% endfor %}
-  </ul>
 
-  <p>Total: ${{ cart.total_price }}</p>
-
-
-  <h2>Form Test</h2>
   {% include 'cart/itemset_form.html' with formset=item_formset %}
+  <p>Total: ${{ cart.total_price }}</p>
+  <button type="submit" form="cart">Check out</button>
+
 {% endblock %}

@@ -10,14 +10,7 @@ from .forms import CartItemFormSet
 @login_required
 def index(request):
     cart = get_or_create_cart(request)
-
-    formset_data = []
-    for item in cart.cartitem_set.all():
-        formset_data.append({
-            "item": item.pk,
-            "quantity": item.quantity,
-        })
-    item_formset = CartItemFormSet(initial=formset_data)
+    item_formset = CartItemFormSet(instance=cart)
 
     dictionary = {'cart': cart, 'item_formset': item_formset}
     return render(request, 'cart/index.html', dictionary)
