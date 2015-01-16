@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed
+from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
 from .utils import get_or_create_cart
 from .models import Product
@@ -10,9 +11,16 @@ from .forms import CartItemFormSet
 @login_required
 def index(request):
     cart = get_or_create_cart(request)
-    item_formset = CartItemFormSet(instance=cart)
 
-    dictionary = {'cart': cart, 'item_formset': item_formset}
+    if request.method == 'POST':
+        formset = CartItemFormSet(request.POST, instance=cart)
+        if formset.is_valid():
+            formset.save()
+            return HttpResponseRedirect(reverse('order:create'))
+    else:
+        formset = CartItemFormSet(instance=cart)
+
+    dictionary = {'cart': cart, 'item_formset': formset}
     return render(request, 'cart/index.html', dictionary)
 
 

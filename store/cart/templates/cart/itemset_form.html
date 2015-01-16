@@ -1,4 +1,5 @@
 <form id="cart" name="cart" method="post" action="{% url 'cart:index' %}">
+  {% csrf_token %}
   {{ formset.management_form }}
   <table>
     <thead>
@@ -12,6 +13,7 @@
     </thead>
     <tbody>
     {% for form in formset %}
+      {{ form.id }}
       <tr class="cart-item
                 {% if not form.instance.in_stock %}out-of-stock{% endif %}
                 {% if form.instance.off_shelf %}off-shelf{% endif %}"
@@ -41,4 +43,10 @@
       // TODO: post new quantity in several seconds.
     });
   });
+
+  // TODO: Fix total price inconsistent after page back by user.
+
+  // TODO: Update total price of cart.
+
+  // TODO: Delete (and restore?) action.
 </script>
