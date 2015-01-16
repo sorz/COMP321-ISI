@@ -2,15 +2,24 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed
 
-from cart.utils import get_or_create_cart
+from .utils import get_or_create_cart
 from .models import Product
+from .forms import CartItemFormSet
 
 
 @login_required
 def index(request):
     cart = get_or_create_cart(request)
 
-    dictionary = {'cart': cart}
+    formset_data = []
+    for item in cart.cartitem_set.all():
+        formset_data.append({
+            "item": item.pk,
+            "quantity": item.quantity,
+        })
+    item_formset = CartItemFormSet(initial=formset_data)
+
+    dictionary = {'cart': cart, 'item_formset': item_formset}
     return render(request, 'cart/index.html', dictionary)
 
 

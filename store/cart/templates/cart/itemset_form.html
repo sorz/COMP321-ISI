@@ -1,0 +1,21 @@
+<form method="post" action="">
+  {{ formset.management_form }}
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Unit Price</th>
+        <th>Quantity</th>
+        <th>Total Price</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for form in formset %}
+      <tr>
+        <td>{{ form.name }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+</form>

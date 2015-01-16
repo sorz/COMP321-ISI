@@ -16,4 +16,7 @@
 
   <p>Total: ${{ cart.total_price }}</p>
 
+
+  <h2>Form Test</h2>
+  {% include 'cart/itemset_form.html' with formset=item_formset %}
 {% endblock %}
