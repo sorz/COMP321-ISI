@@ -4,13 +4,14 @@ from django.contrib.auth.models import User
 
 from .models import Cart
 from product.models import Product
+from order.models import Order
 
 
 class CartTestCast(TestCase):
     def setUp(self):
-        user = User.objects.create_user(username="RMS", email="god@koujiao.org",
-                                        password=r"ppnn13%dkstFeb.1st")
-        self.cart = Cart.objects.create(owner=user)
+        self.user = User.objects.create_user(username="RMS", email="god@koujiao.org",
+                                             password=r"ppnn13%dkstFeb.1st")
+        self.cart = Cart.objects.create(owner=self.user)
         self.coke = Product.objects.create(name="Coke", price="3.50", in_stock=False)
         self.god_ship = Product.objects.create(name="Laptop Computer", price="8000")
 
@@ -30,17 +31,18 @@ class CartTestCast(TestCase):
         self.assertEqual(coke.total_price, Decimal('35.00'))
         self.assertEqual(self.cart.total_price, Decimal('8035.00'))
 
-    def test_generate_order_items(self):
-        items = self.cart.get_order_items()
+    def test_checkout(self):
+        self.coke.in_stock = True
+        self.coke.save()
 
-        self.assertEqual(len(items), 2)
-        self.assertIn(items[0].name, (self.coke.name, self.god_ship.name))
-        self.assertIn(items[0].price, (Decimal('3.50'), Decimal('8000')))
+        order = Order.objects.create(owner=self.user, recipient_name="Ge Pao",
+                                     recipient_address="ACFun")
+        self.cart.checkout(order)
+        self.assertEqual(len(order.orderitem_set.all()), 2)
+
+        coke = order.orderitem_set.get(product=self.coke)
+        self.assertEqual(coke.name, "Coke")
+        self.assertEqual(coke.price, Decimal('3.50'))
 
         self.coke.price = 100
-        self.god_ship.price = 100
-        self.coke.save()
-        self.god_ship.save()
-
-        self.assertIn(items[0].price, (Decimal('3.50'), Decimal('8000')))
-        self.assertIn(items[1].price, (Decimal('3.50'), Decimal('8000')))
+        self.assertEqual(coke.price, Decimal('3.50'))

@@ -21,9 +21,9 @@ class Order(models.Model):
     purchase_date = models.DateTimeField(auto_now_add=True)
     shipment_date = models.DateTimeField(null=True)
     recipient_name = models.CharField(max_length=255)
-    recipient_address = models.CharField(max_length=255)
-    recipient_address_2 = models.CharField(max_length=255, null=True)
-    recipient_postcode = models.CharField(max_length=63, null=True)
+    recipient_address = models.CharField("address", max_length=255)
+    recipient_address_2 = models.CharField("address (2th line)", max_length=255, blank=True)
+    recipient_postcode = models.CharField("zip", max_length=63, blank=True)
 
     @property
     def total_price(self):

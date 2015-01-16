@@ -26,17 +26,20 @@ class Cart(models.Model):
         item.quantity += quantity
         item.save()
 
-    def get_order_items(self):
-        """Create and return OrderItem instances corresponding CartItem on this cart."""
-        items = []
+    def checkout(self, order):
+        """Copy all items on cart into order.
+
+        Should be called in transaction to improve performance and keep integrity."""
         for item in self.cartitem_set.all():
             assert item.quantity >= 0
-            items.append(OrderItem(
+            assert item.in_stock
+            assert not item.off_shelf
+            OrderItem(
+                order=order,
                 product=item.product,
                 quantity=item.quantity,
                 price=item.price
-            ))
-        return items
+            ).save()
 
 
 class CartItem(models.Model):
