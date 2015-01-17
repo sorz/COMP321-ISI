@@ -4,12 +4,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.db import transaction
 
 from .forms import OrderForm
-from cart.utils import get_or_create_cart
+from cart.utils import Cart
 
 
 @login_required
 def create(request):
-    cart = get_or_create_cart(request)
+    cart = Cart(request.user)
 
     # TODO: Check out-of-stack & off-shelf status, non-item.
 
@@ -23,7 +23,7 @@ def create(request):
                 order.owner = request.user
                 order.save()
                 cart.checkout(order)
-                cart.cartitem_set.all().delete()
+                cart.item_set.all().delete()
 
             return HttpResponse("done.")  # TODO: redirection
     else:
