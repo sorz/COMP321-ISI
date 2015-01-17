@@ -17,10 +17,12 @@ def index(request):
         if formset.is_valid():
             formset.save()
 
-            # If cart is empty, just reload the page where "empty" should be shown.
+            # If cart is empty, just reload this page where "empty" should be shown.
             # Otherwise, redirect to order page.
             if cart.item_set.all():
                 return HttpResponseRedirect(reverse('order:create'))
+            else:
+                return HttpResponseRedirect('.')
     else:
         formset = CartItemFormSet(instance=cart.user)
 
