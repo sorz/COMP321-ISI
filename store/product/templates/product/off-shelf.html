@@ -1,0 +1,13 @@
+{% extends "store/base.html" %}
+{% block title %}Product Not Found{% endblock %}
+
+{% block body %}
+  {% if user.is_authenticated %}
+    <a href="{% url 'cart:index' %}">Shopping cart</a>
+  {% else %}
+    <a href="#">Log in</a>
+  {% endif %}
+  <h1>Product Not Found</h1>
+  <p>Sorry, this product is off-shelf.</p>
+
+{% endblock %}

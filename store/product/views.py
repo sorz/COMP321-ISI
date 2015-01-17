@@ -9,4 +9,7 @@ def detail(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
 
     dictionary = {'product': product, 'user': request.user}
-    return render(request, 'product/detail.html', dictionary)
+    if product.off_shelf:
+        return render(request, 'product/off-shelf.html', dictionary, status=404)
+    else:
+        return render(request, 'product/detail.html', dictionary)
