@@ -1,6 +1,9 @@
 <form id="cart" name="cart" method="post" action="{% url 'cart:index' %}">
   {% csrf_token %}
   {{ formset.management_form }}
+  {% for form in formset %}
+    {{ form.id }}
+  {% endfor %}
   <table>
     <thead>
       <tr>
@@ -13,7 +16,6 @@
     </thead>
     <tbody>
     {% for form in formset %}
-      {{ form.id }}
       <tr class="cart-item
                 {% if not form.instance.in_stock %}out-of-stock{% endif %}
                 {% if form.instance.off_shelf %}off-shelf{% endif %}"
@@ -26,6 +28,17 @@
         <td class="item-total-price">$<span class="value">{{ form.instance.total_price }}</span></td>
         <td class="delete-action">{{ form.DELETE }}</td>
       </tr>
+      {% if form.errors  %}
+      <tr><td class="errors" colspan="4">
+        <ul class="errorlist">
+          {% for name, errors in form.errors.items %}
+            {% for error in errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+        </ul>
+      </td></tr>
+      {% endif %}
     {% endfor %}
     </tbody>
   </table>
