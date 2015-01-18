@@ -71,6 +71,31 @@ class Order(models.Model):
         return "%s: %s" % (self.owner, self.get_state_display())
 
 
+class PendingOrder(Order):
+    class Meta:
+        proxy = True
+
+
+class HoldingOrder(Order):
+    class Meta:
+        proxy = True
+
+
+class OnDeliveryOrder(Order):
+    class Meta:
+        proxy = True
+
+
+class ConfirmedOrder(Order):
+    class Meta:
+        proxy = True
+
+
+class CancelledOrder(Order):
+    class Meta:
+        proxy = True
+
+
 class OrderItem(models.Model):
     """Stores quantity and purchase price of a product for a order."""
     order = models.ForeignKey(Order)
