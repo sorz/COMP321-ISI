@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import OrderItem, Order
+from .models import OrderItem, Order, Message
 
 
 class OrderItemInline(admin.TabularInline):
@@ -15,6 +15,11 @@ class OrderItemInline(admin.TabularInline):
 
     def has_add_permission(self, request):
         return False
+
+
+class MessageInline(admin.StackedInline):
+    model = Message
+    extra = 1
 
 
 @admin.register(Order)
@@ -38,7 +43,7 @@ class OrderAdmin(admin.ModelAdmin):
     search_fields = ('id', 'owner__username', 'recipient_name',
                      'recipient_address', 'recipient_address_2')
     date_hierarchy = 'purchase_date'
-    inlines = [OrderItemInline]
+    inlines = [OrderItemInline, MessageInline]
     actions = ['make_ship', 'make_hold', 'make_cancel']
 
     def has_add_permission(self, request):
