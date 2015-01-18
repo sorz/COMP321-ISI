@@ -3,6 +3,12 @@ import zlib
 from order.models import OrderItem
 
 
+class CannotCheckoutItemException(Exception):
+    """Cannot checkout item due to invalid quantity, out-of-stock or off-shelf."""
+    def __init__(self, item):
+        self.item = item
+
+
 class Cart():
     def __init__(self, owner):
         self.user = owner
@@ -24,9 +30,8 @@ class Cart():
 
         Should be called in transaction to improve performance and keep integrity."""
         for item in self.item_set.all():
-            assert item.quantity >= 0
-            assert item.in_stock
-            assert not item.off_shelf
+            if item.quantity <= 0 or not item.in_stock or item.off_shelf:
+                raise CannotCheckoutItemException(item)
             OrderItem(
                 order=order,
                 product=item.product,

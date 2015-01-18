@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.db import transaction
 
 from .forms import OrderForm
-from cart.utils import Cart
+from cart.utils import Cart, CannotCheckoutItemException
 
 
 @login_required
@@ -21,8 +21,6 @@ def create(request):
         request.session.delete('cart-hash')
         return HttpResponseRedirect(reverse('cart:index'))
 
-    # TODO: Check out-of-stack & off-shelf status, non-item.
-
     if request.method == 'POST':
         order_form = OrderForm(request.POST)
         if order_form.is_valid():
@@ -32,12 +30,21 @@ def create(request):
                 order = order_form.save(commit=False)
                 order.owner = request.user
                 order.save()
-                cart.checkout(order)
+
+                try:
+                    cart.checkout(order)
+                except CannotCheckoutItemException:
+
+                    # Some items are out-of-stock or off-shelf,
+                    # abort operation and redirect user back to cart view.
+                    # TODO: Show a message to tell user what happen.
+                    transaction.abort()
+                    return HttpResponseRedirect(reverse('cart:index'))
+
                 cart.item_set.all().delete()
 
             # Remove the hash since its mission is completed.
             request.session.delete('cart-hash')
-
             return HttpResponse("done.")  # TODO: redirection
     else:
         order_form = OrderForm()
