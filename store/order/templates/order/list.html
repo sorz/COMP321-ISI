@@ -8,7 +8,7 @@
   {% for order in orders %}
     <li>
       <p>Purchase date: {{ order.purchase_date }}</p>
-      <p>Status: {{ order.status }}</p>
+      <p>Status: {{ order.get_status_display }}</p>
       <p>Total price: ${{ order.total_price }}</p>
       <p><a href="#">Detail</a></p>
     </li>

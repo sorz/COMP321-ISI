@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.db import transaction
 
 from .forms import OrderForm
+from .models import Order
 from cart.utils import Cart, CannotCheckoutItemException
 
 
@@ -51,3 +52,20 @@ def create(request):
 
     dictionary = {'cart': cart, 'order_form': order_form}
     return render(request, 'order/create.html', dictionary)
+
+@login_required
+def current(request):
+    orders = Order.objects.filter(owner=request.user,
+                                  status__in=['P', 'S', 'H'])
+
+    dictionary = {'orders': orders, 'title': 'Current Orders'}
+    return render(request, 'order/list.html', dictionary)
+
+
+@login_required
+def past(request):
+    orders = Order.objects.filter(owner=request.user,
+                                  status__in=['R', 'C'])
+
+    dictionary = {'orders': orders, 'title': 'Past Orders'}
+    return render(request, 'order/list.html', dictionary)
