@@ -81,30 +81,47 @@ class OrderItem(models.Model):
 
     @property
     def total_price(self):
-        return self.price * self.quantity
+        if self.product is not None:
+            return self.price * self.quantity
 
     @property
     def name(self):
         """Return product's name"""
-        return self.product.name
+        if self.product is not None:
+            return self.product.name
 
     @property
     def in_stock(self):
         """Return product's in-stock status"""
-        return self.product.in_stock
+        if self.product is not None:
+            return self.product.in_stock
 
     @property
     def off_shelf(self):
         """Return product's off_shelf status"""
-        return self.product.off_shelf
+        if self.product is not None:
+            return self.product.off_shelf
+
+    @property
+    def state(self):
+        """Return a human friendly state description"""
+        if self.product is None:
+            return
+        if self.off_shelf:
+            return "Off Shelf"
+        elif self.in_stock:
+            return "In Stock"
+        else:
+            return "Out of Stock"
 
     @property
     def description(self):
         """Return product's description"""
-        return self.product.description
+        if self.product is not None:
+            return self.product.description
 
     def __str__(self):
-        return "%s x%s" % (self.name, self.quantity)
+        return self.name
 
 
 class Message(models.Model):
