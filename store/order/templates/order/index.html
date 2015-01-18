@@ -1,0 +1,13 @@
+{% extends "store/base.html" %}
+{% block title %}My Orders{% endblock %}
+
+{% block body %}
+  <h1>My Orders</h1>
+
+  <ul>
+    <li><a href="{% url 'order:current' %}">Current orders</a></li>
+    <li><a href="{% url 'order:past' %}">Past orders</a></li>
+  </ul>
+
+
+{% endblock %}

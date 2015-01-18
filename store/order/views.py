@@ -53,6 +53,13 @@ def create(request):
     dictionary = {'cart': cart, 'order_form': order_form}
     return render(request, 'order/create.html', dictionary)
 
+
+@login_required
+def index(request):
+    dictionary = {'user': request.user}
+    return render(request, 'order/index.html', dictionary)
+
+
 @login_required
 def current(request):
     orders = Order.objects.filter(owner=request.user,
