@@ -20,6 +20,7 @@ def index(request):
             # If cart is empty, just reload this page where "empty" should be shown.
             # Otherwise, redirect to order page.
             if cart.item_set.all():
+                request.session['cart-hash'] = hash(cart)
                 return HttpResponseRedirect(reverse('order:create'))
             else:
                 return HttpResponseRedirect('.')
