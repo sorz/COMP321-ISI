@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -65,7 +65,7 @@ def current(request):
     orders = Order.objects.filter(owner=request.user,
                                   status__in=['P', 'S', 'H'])
 
-    dictionary = {'orders': orders, 'title': 'Current Orders'}
+    dictionary = {'orders': orders, 'title': 'Current Purchase'}
     return render(request, 'order/list.html', dictionary)
 
 
@@ -74,5 +74,12 @@ def past(request):
     orders = Order.objects.filter(owner=request.user,
                                   status__in=['R', 'C'])
 
-    dictionary = {'orders': orders, 'title': 'Past Orders'}
+    dictionary = {'orders': orders, 'title': 'Past Purchase'}
     return render(request, 'order/list.html', dictionary)
+
+@login_required
+def detail(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+
+    dictionary = {'order': order}
+    return render(request, 'order/detail.html', dictionary)

@@ -1,12 +1,12 @@
 {% extends "store/base.html" %}
-{% block title %}My Orders{% endblock %}
+{% block title %}Purchase tracking{% endblock %}
 
 {% block body %}
-  <h1>My Orders</h1>
+  <h1>Purchase tracking</h1>
 
   <ul>
-    <li><a href="{% url 'order:current' %}">Current orders</a></li>
-    <li><a href="{% url 'order:past' %}">Past orders</a></li>
+    <li><a href="{% url 'order:current' %}">Current purchase</a></li>
+    <li><a href="{% url 'order:past' %}">Past purchase</a></li>
   </ul>
 
 

@@ -10,7 +10,7 @@
       <p>Purchase date: {{ order.purchase_date }}</p>
       <p>Status: {{ order.get_status_display }}</p>
       <p>Total price: ${{ order.total_price }}</p>
-      <p><a href="#">Detail</a></p>
+      <p><a href="{% url 'order:detail' order.pk %}">Detail</a></p>
     </li>
   {% endfor %}
   </ul>
