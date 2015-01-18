@@ -17,7 +17,7 @@ class Order(models.Model):
         ('C', 'Cancelled')
     )
     owner = models.ForeignKey(User)
-    state = models.CharField(max_length=1, choices=STATE_CHOICES, default='P')
+    status = models.CharField(max_length=1, choices=STATE_CHOICES, default='P')
     purchase_date = models.DateTimeField(auto_now_add=True)
     shipment_date = models.DateTimeField(null=True)
     recipient_name = models.CharField(max_length=255)
@@ -34,21 +34,21 @@ class Order(models.Model):
 
     def ship(self):
         """Ship a pending/hold order. Used by vendor."""
-        assert self.state == 'P' or self.state == 'H'
+        assert self.status == 'P' or self.status == 'H'
         assert self.shipment_date is None
-        self.state = 'S'
+        self.status = 'S'
         self.shipment_date = timezone.now()
         self.save()
 
     def hold(self):
         """Hold a pending order. Used by vendor."""
-        assert self.state == 'P'
-        self.state = 'H'
+        assert self.status == 'P'
+        self.status = 'H'
         self.save()
 
     def cancel(self, operator):
         """Cancel a pending/hold order. Used by vendor/customer."""
-        assert self.state == 'P' or self.state == 'H'
+        assert self.status == 'P' or self.status == 'H'
 
         if operator.is_superuser:  # is vendor
             message = 'Cancelled by vendor.'
@@ -57,14 +57,14 @@ class Order(models.Model):
             # Only vendor or owner can cancel the order.
             assert self.owner == operator
 
-        self.state = 'C'
+        self.status = 'C'
         self.message_set.create(writer=operator, content=message)
         self.save()
 
     def confirm(self):
         """Confirm a shipped order. Used by customer."""
-        assert self.state == 'S'
-        self.state = 'R'
+        assert self.status == 'S'
+        self.status = 'R'
         self.save()
 
     def __str__(self):
@@ -103,8 +103,8 @@ class OrderItem(models.Model):
             return self.product.off_shelf
 
     @property
-    def state(self):
-        """Return a human friendly state description"""
+    def status(self):
+        """Return a human friendly status description"""
         if self.product is None:
             return
         if self.off_shelf:

@@ -24,12 +24,12 @@ class MessageInline(admin.StackedInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    readonly_fields = ('owner', 'purchase_date', 'recipient_name', 'state',
+    readonly_fields = ('owner', 'purchase_date', 'recipient_name', 'status',
                        'shipment_date', 'recipient_address', 'recipient_address_2',
                        'recipient_postcode', 'total_price')
     fieldsets = (
         (None, {
-            'fields': ('owner', 'state', 'total_price',
+            'fields': ('owner', 'status', 'total_price',
                        'purchase_date', 'shipment_date')
         }),
         ('Recipient Information', {
@@ -38,8 +38,8 @@ class OrderAdmin(admin.ModelAdmin):
         })
     )
     list_display = ('id', 'owner', 'recipient_name', 'purchase_date',
-                    'state', 'total_price')
-    list_filter = ('state', )
+                    'status', 'total_price')
+    list_filter = ('status', )
     search_fields = ('id', 'owner__username', 'recipient_name',
                      'recipient_address', 'recipient_address_2')
     date_hierarchy = 'purchase_date'

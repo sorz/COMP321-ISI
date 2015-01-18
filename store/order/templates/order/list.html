@@ -1,0 +1,18 @@
+{% extends "store/base.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+  <h1>{{ title }}</h1>
+
+  <ul>
+  {% for order in orders %}
+    <li>
+      <p>Purchase date: {{ order.purchase_date }}</p>
+      <p>Status: {{ order.status }}</p>
+      <p>Total price: ${{ order.total_price }}</p>
+      <p><a href="#">Detail</a></p>
+    </li>
+  {% endfor %}
+  </ul>
+
+{% endblock %}

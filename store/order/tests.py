@@ -22,7 +22,7 @@ class OrderTestCast(TestCase):
         self.order.orderitem_set.create(product=self.product, quantity=2, price='2000')
 
     def test_values(self):
-        self.assertEqual(self.order.state, 'P')
+        self.assertEqual(self.order.status, 'P')
         self.assertEqual(self.order.total_price, Decimal('4000'))
         self.assertIsNone(self.order.shipment_date)
         self.assertIsNotNone(self.order.purchase_date)
@@ -30,22 +30,22 @@ class OrderTestCast(TestCase):
     def test_normal_ship(self):
         self.order.ship()
         self.assertIsNotNone(self.order.shipment_date)
-        self.assertEqual(self.order.state, 'S')
+        self.assertEqual(self.order.status, 'S')
 
         self.order.confirm()
-        self.assertEqual(self.order.state, 'R')
+        self.assertEqual(self.order.status, 'R')
 
     def test_hold_ship(self):
         self.order.hold()
-        self.assertEqual(self.order.state, 'H')
+        self.assertEqual(self.order.status, 'H')
 
         self.order.ship()
-        self.assertEqual(self.order.state, 'S')
+        self.assertEqual(self.order.status, 'S')
 
     def test_hold_cancel_by_vendor(self):
         self.order.hold()
         self.order.cancel(self.vendor)
-        self.assertEqual(self.order.state, 'C')
+        self.assertEqual(self.order.status, 'C')
 
         message = self.order.message_set.last()
         self.assertEqual(message.writer, self.vendor)
