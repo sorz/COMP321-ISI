@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
 
 from .forms import OrderForm
@@ -60,22 +61,38 @@ def index(request):
     return render(request, 'order/index.html', dictionary)
 
 
+def _orders(request, statuses, title):
+    """Return a list page including orders with specified statuses.
+
+    Used for current purchase page and past purchase page.
+    """
+    orders = Order.objects.filter(owner=request.user,
+                                  status__in=statuses)
+
+    paginator = Paginator(orders, 3)  # 3 orders per page for testing.
+    page = request.GET.get('page')
+    try:
+        orders = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        orders = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page.
+        orders = paginator.page(paginator.num_pages)
+
+    dictionary = {'orders': orders, 'title': title}
+    return render(request, 'order/list.html', dictionary)
+
+
 @login_required
 def current(request):
-    orders = Order.objects.filter(owner=request.user,
-                                  status__in=['P', 'S', 'H'])
-
-    dictionary = {'orders': orders, 'title': 'Current Purchase'}
-    return render(request, 'order/list.html', dictionary)
+    return _orders(request, ['P', 'S', 'H'], 'Current Purchase')
 
 
 @login_required
 def past(request):
-    orders = Order.objects.filter(owner=request.user,
-                                  status__in=['R', 'C'])
+    return _orders(request, ['R', 'C'], 'Past Purchase')
 
-    dictionary = {'orders': orders, 'title': 'Past Purchase'}
-    return render(request, 'order/list.html', dictionary)
 
 @login_required
 def detail(request, order_id):
