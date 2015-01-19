@@ -22,7 +22,7 @@ class ProductTestCast(TestCase):
         self.assertEqual(photo.description, 'Test image')
 
     def test_rating(self):
-        self.assertIsNone(self.book.average_rating)
+        self.assertEqual(self.book.average_rating, 0)
 
         user = User.objects.create_user(username="RMS", email="god@koujiao.org",
                                         password=r"ppnn13%dkstFeb.1st")
@@ -31,6 +31,7 @@ class ProductTestCast(TestCase):
         Rating.objects.create(user=user, product=self.book, point=5)
         Rating.objects.create(user=user, product=self.book, point=1)
 
+        self.book.update_rating()
         self.assertEqual(self.book.average_rating, (3+0+1+5) / 4)
 
     # Property is tested on category.

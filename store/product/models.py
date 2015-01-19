@@ -15,17 +15,18 @@ class Product(models.Model):
     off_shelf = models.BooleanField(default=False)
     description = models.TextField()
 
-    @property
-    def average_rating(self):
-        """Return average rating of this product."""
+    # Cache the average rating, re-calculate once any user change the rating.
+    average_rating = models.FloatField("Average rating", default=0, editable=False)
+
+    def update_rating(self):
+        """Re-calculate the average rating and update the rating field."""
         total = 0
         count = 0
         for rating in self.rating_set.all():
             total += rating.point
             count += 1
-        # TODO: May need a cache?
-        if count:
-            return total / count
+        self.average_rating = total / count
+        self.save()
 
     def __str__(self):
         return self.name
@@ -65,8 +66,8 @@ class Property(models.Model):
 class Rating(models.Model):
     """User's rating for a product.
 
-    Point is between (both include) 0 to 5.
+    Point is between (both include) 1 to 5.
     """
     user = models.ForeignKey(User)
     product = models.ForeignKey(Product)
-    point = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    point = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
