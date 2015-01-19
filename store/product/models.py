@@ -10,10 +10,10 @@ class Product(models.Model):
     name = models.CharField('Product Name', max_length=255)
     price = models.DecimalField(max_digits=9, decimal_places=2,
                                 validators=[MinValueValidator(0)])
-    category = models.ForeignKey(Category, null=True)
+    category = models.ForeignKey(Category)
     in_stock = models.BooleanField(default=True)
     off_shelf = models.BooleanField(default=False)
-    description = models.TextField()
+    description = models.TextField(blank=True)
 
     # Cache the average rating, re-calculate once any user change the rating.
     average_rating = models.FloatField("Average rating", default=0, editable=False)

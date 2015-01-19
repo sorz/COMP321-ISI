@@ -16,3 +16,5 @@ class PropertyInLine(admin.TabularInline):
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'price')
     inlines = [PhotoInline, PropertyInLine]
+    list_filter = ('category', )
+    search_fields = ('id', 'name')
