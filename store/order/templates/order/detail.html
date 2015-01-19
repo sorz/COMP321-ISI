@@ -2,6 +2,24 @@
 {% block title %}Purchase detail{% endblock %}
 
 {% block body %}
-<h1>Purchase detail</h1>
-  (...)
+  <h1>Purchase Detail</h1>
+
+  <p>Status: {{ order.get_status_display }}</p>
+  <p>Purchase Date: {{ order.purchase_date }}</p>
+  <p>Shipment Date: {{ order.shipment_date }}</p>
+
+  <h2>Delivery Information</h2>
+  <p>Name: {{ order.recipient_name }}</p>
+  <p>Address: {{ order.recipient_address }}</p>
+  <p>Address 2: {{ order.recipient_address_2 }}</p>
+  <p>Postcode: {{ order.recipient_postcode }}</p>
+
+  <h2>Products</h2>
+  (product list)
+
+  <h2>Messages</h2>
+  (message list and form)
+
+
+
 {% endblock %}
