@@ -134,3 +134,12 @@ class Message(models.Model):
     @property
     def is_wrote_by_vendor(self):
         return self.writer.is_superuser
+
+
+    @property
+    def writer_role(self):
+        """Return 'Vendor' or 'Customer'."""
+        if self.is_wrote_by_vendor:
+            return 'Vendor'
+        else:
+            return 'Customer'

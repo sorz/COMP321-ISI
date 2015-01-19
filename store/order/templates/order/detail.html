@@ -18,8 +18,21 @@
   (product list)
 
   <h2>Messages</h2>
-  (message list and form)
+  <form name="message" method="post" action=".">
+    {% csrf_token %}
+    {{ message_form }}
+    <button type="submit">Submit</button>
+  </form>
 
+  <ul>
+    {% for message in messages %}
+      <li>
+        <h3>{{ message.writer_role }}</h3>
+        <p>{{ message.create_date }}</p>
+        <p>{{ message.content }}</p>
+      </li>
+    {% endfor %}
+  </ul>
 
 
 {% endblock %}

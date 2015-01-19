@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
 
-from .forms import OrderForm
+from .forms import OrderForm, MessageForm
 from .models import Order
 from cart.utils import Cart, CannotCheckoutItemException
 
@@ -98,5 +98,25 @@ def past(request):
 def detail(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
 
-    dictionary = {'order': order}
+    # TODO: Reverse chronological order (D4)
+    messages = order.message_set.all()
+
+    if request.method == 'POST':
+        message_form = MessageForm(request.POST)
+
+        if message_form.is_valid():
+            message = message_form.save(commit=False)
+            message.order = order
+            message.writer = request.user
+            message.save()
+
+            # TODO: Show a "success" message to user.
+            # Refresh page to prevent duplicate submission
+            return HttpResponseRedirect('.')
+
+    else:
+        message_form = MessageForm()
+
+    dictionary = {'order': order, 'messages': messages,
+                  'message_form': message_form}
     return render(request, 'order/detail.html', dictionary)
