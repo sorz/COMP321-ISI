@@ -10,6 +10,9 @@ from cart.models import ProductItemInfo
 
 class Order(models.Model):
     """Stores recipient information and delivery state."""
+    class Meta:
+        ordering = ['-purchase_date']
+
     STATE_CHOICES = (
         ('P', 'Pending'),
         ('S', 'Shipping'),
@@ -81,6 +84,9 @@ class OrderItem(ProductItemInfo):
 
 class Message(models.Model):
     """Order message, wrote by customer and vendor."""
+    class Meta:
+        ordering = ['-create_date']
+
     order = models.ForeignKey(Order)
     writer = models.ForeignKey(User)
     content = models.TextField()
