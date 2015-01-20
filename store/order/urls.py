@@ -8,5 +8,7 @@ urlpatterns = patterns(
     url(r'^new/$', views.create, name='create'),
     url(r'^current/$', views.current, name='current'),
     url(r'^past/$', views.past, name='past'),
-    url(r'^(?P<order_id>\d+)/$', views.detail, name='detail')
+    url(r'^(?P<order_id>\d+)/$', views.detail, name='detail'),
+
+    url(r'^api/(?P<order_id>\d+)/', views.rest_order, name='order'),
 )

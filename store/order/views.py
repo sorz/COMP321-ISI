@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, \
+    HttpResponseForbidden
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
@@ -98,6 +99,9 @@ def past(request):
 def detail(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
 
+    if order.owner != request.user:
+        return HttpResponseForbidden('You cannot view this order.')
+
     # TODO: Reverse chronological order (D4)
     messages = order.message_set.all()
 
@@ -120,3 +124,21 @@ def detail(request, order_id):
     dictionary = {'order': order, 'messages': messages,
                   'message_form': message_form}
     return render(request, 'order/detail.html', dictionary)
+
+
+@login_required
+def rest_order(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+
+    if order.owner != request.user:
+        return HttpResponseForbidden('You cannot access this order.')
+
+    # Cancel the order by user.
+    if request.method == 'DELETE':
+
+        # Only allowed in pending or holding state.
+        if order.status not in ['P', 'H']:
+            return HttpResponseForbidden('Cannot cancel this order.')
+
+        order.cancel(operator=request.user)
+        return HttpResponse(status=204)

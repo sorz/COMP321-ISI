@@ -8,6 +8,11 @@
   <p>Purchase Date: {{ order.purchase_date }}</p>
   <p>Shipment Date: {{ order.shipment_date }}</p>
 
+  {% if order.status in 'HP' %}
+    <button data-order-id="{{ order.pk }}"
+            class="cancel-order">Cancel</button>
+  {% endif %}
+
   <h2>Delivery Information</h2>
   <p>Name: {{ order.recipient_name }}</p>
   <p>Address: {{ order.recipient_address }}</p>
@@ -35,5 +40,22 @@
     {% endfor %}
   </ul>
 
+  <script>
+  // TODO: put into separated js file.
+
+  $('button.cancel-order').click(function () {
+    if (!confirm('This order will be canceled permanently.')) {
+      return;
+    }
+    var orderId = $(this).data('order-id')
+    $.ajax({
+      url: '/order/api/' + orderId + '/',
+      type: 'DELETE',
+      success: function(result) {
+        location.reload();
+      }
+    });
+  });
+  </script>
 
 {% endblock %}
