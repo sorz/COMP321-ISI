@@ -15,7 +15,8 @@
   <p>Postcode: {{ order.recipient_postcode }}</p>
 
   <h2>Products</h2>
-  (product list)
+  {% include 'order/item-list.html' with items=order.orderitem_set.all %}
+  <p>Total: ${{ order.total_price }}</p>
 
   <h2>Messages</h2>
   <form name="message" method="post" action=".">
