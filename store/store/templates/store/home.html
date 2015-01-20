@@ -1,0 +1,16 @@
+{% extends "store/base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block body %}
+
+  <h1>Home Page</h1>
+
+  <ul>
+    <li><a href="{% url 'category:index' %}">Categories</a></li>
+    <li><a href="{% url 'cart:index' %}">Shopping Cart</a></li>
+    <li><a href="{% url 'order:index' %}">My Purchases</a></li>
+    <li><a href="{% url 'admin:index' %}">Vendor Admin</a></li>
+  </ul>
+
+
+{% endblock %}
