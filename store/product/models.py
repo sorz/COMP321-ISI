@@ -1,9 +1,8 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
-from category.models import Category, PropertyName
+from category.models import Category
 
 
 class Product(models.Model):
@@ -43,24 +42,6 @@ class Photo(models.Model):
     description = models.CharField(max_length=255, null=True)
     # TODO: Maintain the display order of photos (#E7)
     # TODO: Delete image file when photo is removed.
-
-
-class Property(models.Model):
-    """Stores properties of products.
-
-    Property name is stored in PropertyName, which is associated with Category,
-    so that available properties of a specific product is depending on product's category.
-    """
-    product = models.ForeignKey(Product)
-    name = models.ForeignKey(PropertyName)
-    value = models.CharField(max_length=255)
-
-    def clean(self):
-        """Ensure this property is belong to product's category."""
-        super().clean()
-        if self.name.category != self.product.category:
-            raise ValidationError("Property (%s) is belong to <%s> but not product's category (%s)."
-                                  % (self.name.name, self.name.category, self.product.category))
 
 
 class Rating(models.Model):

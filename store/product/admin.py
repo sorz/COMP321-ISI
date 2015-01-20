@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Product, Property, Photo
+from .models import Product, Photo
 
 
 class PhotoInline(admin.StackedInline):
@@ -8,13 +8,9 @@ class PhotoInline(admin.StackedInline):
     extra = 2
 
 
-class PropertyInLine(admin.TabularInline):
-    model = Property
-
-
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'price')
-    inlines = [PhotoInline, PropertyInLine]
+    inlines = [PhotoInline]
     list_filter = ('category', )
     search_fields = ('id', 'name')
