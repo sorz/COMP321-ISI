@@ -2,12 +2,14 @@ from decimal import Decimal
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from .models import Product, Rating
+from .models import Product, Rating, Category
 
 
 class ProductTestCast(TestCase):
     def setUp(self):
-        self.book = Product.objects.create(name="1984", price=22.51, description="Dystopian")
+        self.category = Category.objects.create(name='All')
+        self.book = Product.objects.create(name="1984", price=22.51,
+                                           category=self.category, description="Dystopian")
 
     def test_get_product(self):
         book = Product.objects.get(name="1984")

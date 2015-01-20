@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 from .models import Order
-from product.models import Product
+from product.models import Product, Category
 
 
 class OrderTestCast(TestCase):
@@ -13,8 +13,8 @@ class OrderTestCast(TestCase):
         self.vendor = User.objects.create_superuser(username="Loongson",
                                                     email="weiwu@ict.ac.cn",
                                                     password="123456")
-
-        self.product = Product.objects.create(name="Notebook", price="2000")
+        category = Category.objects.create(name='All')
+        self.product = Product.objects.create(name="Notebook", price="2000", category=category)
 
         self.order = Order.objects.create(owner=self.customer,
                                           recipient_name="RMS",

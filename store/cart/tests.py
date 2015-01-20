@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 from .utils import Cart
-from product.models import Product
+from product.models import Product, Category
 from order.models import Order
 
 
@@ -12,8 +12,12 @@ class CartTestCast(TestCase):
         self.user = User.objects.create_user(username="RMS", email="god@koujiao.org",
                                              password=r"ppnn13%dkstFeb.1st")
         self.cart = Cart(owner=self.user)
-        self.coke = Product.objects.create(name="Coke", price="3.50", in_stock=False)
-        self.god_ship = Product.objects.create(name="Laptop Computer", price="8000")
+        category = Category.objects.create(name="All")
+        category.save()
+        self.coke = Product.objects.create(name="Coke", price="3.50", in_stock=False,
+                                           category=category)
+        self.god_ship = Product.objects.create(name="Laptop Computer", price="8000",
+                                               category=category)
 
         self.cart.add_item(self.coke, 10)
         self.cart.add_item(self.god_ship)
