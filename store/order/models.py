@@ -5,6 +5,7 @@ from django.core.validators import MinValueValidator
 
 
 from product.models import Product
+from cart.models import ProductItemInfo
 
 
 class Order(models.Model):
@@ -71,57 +72,11 @@ class Order(models.Model):
         return "%s: %s" % (self.owner, self.get_state_display())
 
 
-class OrderItem(models.Model):
+class OrderItem(ProductItemInfo):
     """Stores quantity and purchase price of a product for a order."""
     order = models.ForeignKey(Order)
-    product = models.ForeignKey(Product)
-    quantity = models.IntegerField(default=1)
     price = models.DecimalField(max_digits=9, decimal_places=2,
                                 validators=[MinValueValidator(0)])
-
-    @property
-    def total_price(self):
-        if self.product is not None:
-            return self.price * self.quantity
-
-    @property
-    def name(self):
-        """Return product's name"""
-        if self.product is not None:
-            return self.product.name
-
-    @property
-    def in_stock(self):
-        """Return product's in-stock status"""
-        if self.product is not None:
-            return self.product.in_stock
-
-    @property
-    def off_shelf(self):
-        """Return product's off_shelf status"""
-        if self.product is not None:
-            return self.product.off_shelf
-
-    @property
-    def status(self):
-        """Return a human friendly status description"""
-        if self.product is None:
-            return
-        if self.off_shelf:
-            return "Off Shelf"
-        elif self.in_stock:
-            return "In Stock"
-        else:
-            return "Out of Stock"
-
-    @property
-    def description(self):
-        """Return product's description"""
-        if self.product is not None:
-            return self.product.description
-
-    def __str__(self):
-        return self.name
 
 
 class Message(models.Model):
