@@ -11,7 +11,7 @@ class OrderItemInline(admin.TabularInline):
     extra = 0
 
     def get_readonly_fields(self, request, obj=None):
-        return 'id', 'quantity', 'price', 'total_price', 'state'
+        return 'id', 'quantity', 'price', 'total_price', 'status'
 
     def has_add_permission(self, request):
         return False

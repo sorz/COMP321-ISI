@@ -9,11 +9,11 @@ from cart.models import ProductItemInfo
 
 
 class Order(models.Model):
-    """Stores recipient information and delivery state."""
+    """Stores recipient information and delivery status."""
     class Meta:
         ordering = ['-purchase_date']
 
-    STATE_CHOICES = (
+    STATUS_CHOICES = (
         ('P', 'Pending'),
         ('S', 'Shipping'),
         ('R', 'Received'),
@@ -21,7 +21,7 @@ class Order(models.Model):
         ('C', 'Cancelled')
     )
     owner = models.ForeignKey(User)
-    status = models.CharField(max_length=1, choices=STATE_CHOICES, default='P')
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='P')
     purchase_date = models.DateTimeField(auto_now_add=True)
     shipment_date = models.DateTimeField(null=True)
     recipient_name = models.CharField(max_length=255)
@@ -72,7 +72,7 @@ class Order(models.Model):
         self.save()
 
     def __str__(self):
-        return "%s: %s" % (self.owner, self.get_state_display())
+        return "%s: %s" % (self.owner, self.get_status_display())
 
 
 class OrderItem(ProductItemInfo):

@@ -14,7 +14,8 @@ class ProductItemInfo(models.Model):
 
     @property
     def total_price(self):
-        return self.price * self.quantity
+        if self.price is not None:
+            return self.price * self.quantity
 
     @property
     def name(self):
