@@ -8,7 +8,7 @@
       Page {{ list.number }} of {{ list.paginator.num_pages }}.
   </span>
 
-  {% if products.has_next %}
+  {% if list.has_next %}
       <a href="?page={{ list.next_page_number }}">next</a>
   {% endif %}
 </span>
