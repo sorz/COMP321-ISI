@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, \
-    HttpResponseForbidden
+    HttpResponseForbidden, HttpResponseBadRequest
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
@@ -133,12 +133,31 @@ def rest_order(request, order_id):
     if order.owner != request.user:
         return HttpResponseForbidden('You cannot access this order.')
 
-    # Cancel the order by user.
-    if request.method == 'DELETE':
+    # Update status of order.
+    # TODO: PUT may be better.
+    if request.method == 'POST':
+        status = request.POST.get('status')
+        if status is None:
+            return HttpResponseBadRequest('Lack argument "status".')
 
-        # Only allowed in pending or holding state.
-        if order.status not in ['P', 'H']:
-            return HttpResponseForbidden('Cannot cancel this order.')
+        # If it has already been this status, just return ok.
+        if order.status == status:
+            return HttpResponse(status=204)
 
-        order.cancel(operator=request.user)
+        # Cancel this order.
+        if status == 'C':
+            # Only allowed in pending or holding status.
+            if order.status not in 'PH':
+                return HttpResponseForbidden('Cannot cancel this order.')
+
+            order.cancel(operator=request.user)
+
+        # Confirm Received.
+        elif status == 'R':
+            # Only allowed in shipping status.
+            if order.status != 'S':
+                return HttpResponseForbidden('Cannot confirm this order.')
+
+            order.confirm()
+
         return HttpResponse(status=204)

@@ -11,6 +11,9 @@
   {% if order.status in 'HP' %}
     <button data-order-id="{{ order.pk }}"
             class="cancel-order">Cancel</button>
+  {% elif order.status == 'S' %}
+    <button data-order-id="{{ order.pk }}"
+            class="confirm-order">Received Confirm</button>
   {% endif %}
 
   <h2>Delivery Information</h2>
@@ -47,10 +50,23 @@
     if (!confirm('This order will be canceled permanently.')) {
       return;
     }
-    var orderId = $(this).data('order-id')
+    var orderId = $(this).data('order-id');
     $.ajax({
       url: '/order/api/' + orderId + '/',
-      type: 'DELETE',
+      type: 'POST',
+      data: {'status': 'C'},
+      success: function(result) {
+        location.reload();
+      }
+    });
+  });
+
+  $('button.confirm-order').click(function () {
+    var orderId = $(this).data('order-id');
+    $.ajax({
+      url: '/order/api/' + orderId + '/',
+      type: 'POST',
+      data: {'status': 'R'},
       success: function(result) {
         location.reload();
       }
