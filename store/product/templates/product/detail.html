@@ -1,12 +1,7 @@
-{% extends "store/base.html" %}
+{% extends "store/front-base.html" %}
 {% block title %}{{ product }} - Product{% endblock %}
 
-{% block body %}
-  {% if user.is_authenticated %}
-    <a href="{% url 'cart:index' %}">Shopping cart</a>
-  {% else %}
-    <a href="#">Log in</a>
-  {% endif %}
+{% block main %}
 
   <h1>{{ product.name }}</h1>
 

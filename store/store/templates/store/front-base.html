@@ -1,0 +1,14 @@
+{% extends "store/base.html" %}
+
+{% block body %}
+  <header>
+    <a href="/" title="Back to Home">Home</a> |
+    {% if user.is_authenticated %}
+        <a href="{% url 'cart:index' %}">Shopping Cart</a> |
+        <a href="{% url 'django.contrib.auth.views.logout' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'django.contrib.auth.views.login' %}?next={{ request.path }}">Login</a>
+    {% endif %}
+  </header>
+  {% block main %}{% endblock %}
+{% endblock %}

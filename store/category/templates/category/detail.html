@@ -1,7 +1,7 @@
-{% extends "store/base.html" %}
+{% extends "store/front-base.html" %}
 {% block title %}{{ category }} - Category{% endblock %}
 
-{% block body %}
+{% block main %}
 
   <a href="{% url 'category:index' %}">All categories</a>
   <h1>{{ category }}</h1>
