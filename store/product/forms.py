@@ -15,10 +15,9 @@ RATING_CHOICES = (
 class RatingForm(forms.ModelForm):
     class Meta:
         model = Rating
-        fields = ['point', 'product']
+        fields = ['point']
         widgets = {
             'point': forms.RadioSelect(choices=RATING_CHOICES),
-            'product': forms.HiddenInput()
         }
 
     def clean_point(self):
@@ -30,9 +29,8 @@ class RatingForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        product = cleaned_data.get('product')
 
-        if not product.has_bought_by_user(self.instance.user):
+        if not self.instance.product.has_bought_by_user(self.instance.user):
             raise forms.ValidationError('Cannot rating before buy it.',
                                         code='no-purchase-yet')
         return cleaned_data

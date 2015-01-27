@@ -26,7 +26,8 @@
   <h2>Rating</h2>
   <p>Average rating:
     {% if product.average_rating %}
-      {{ product.get_average_rating_display }} ({{ product.average_rating }})
+      {{ product.get_average_rating_display }}
+      ({{ product.average_rating }} points, by {{ product.rating_set.count }} customers)
     {% else %}
       (no rating)
     {% endif  %}

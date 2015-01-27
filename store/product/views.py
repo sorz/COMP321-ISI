@@ -11,10 +11,18 @@ def detail(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
 
     # Handle rating.
-    if request.method == 'POST':
-        rating_form = RatingForm(request.POST)
+    try:
+        rating = request.user.rating_set.get(product=product)
+    except Rating.DoesNotExist:
+        if product.has_bought_by_user(request.user):
+            rating = Rating(product=product, user=request.user)
+        else:
+            # Cannot rating since this user have not bought it.
+            rating = None
 
-        rating_form.instance.user = request.user
+    if request.method == 'POST':
+        rating_form = RatingForm(request.POST, instance=rating)
+
         if rating_form.is_valid():
             rating_form.save()
             product.update_rating()
@@ -24,11 +32,7 @@ def detail(request, product_id):
             return HttpResponseRedirect('.')
 
     else:
-        if product.has_bought_by_user(request.user):
-            try:
-                rating = request.user.rating_set.get(product=product)
-            except Rating.DoesNotExist:
-                rating = Rating(product=product)
+        if rating is not None:
             rating_form = RatingForm(instance=rating)
         else:
             rating_form = None
