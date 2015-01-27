@@ -97,8 +97,10 @@ def past(request):
 
 @login_required
 def detail(request, order_id):
+    """Order detail page. Also handle message posting."""
     order = get_object_or_404(Order, pk=order_id)
 
+    # Only owner of this order can view or add message.
     if order.owner != request.user:
         return HttpResponseForbidden('You cannot view this order.')
 
@@ -111,7 +113,7 @@ def detail(request, order_id):
         if message_form.is_valid():
             message = message_form.save(commit=False)
             message.order = order
-            message.writer = request.user
+            message.by_vendor = False
             message.save()
 
             # TODO: Show a "success" message to user.

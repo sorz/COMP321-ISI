@@ -58,11 +58,11 @@ class Order(models.Model):
             message = 'Cancelled by vendor.'
         else:
             message = 'Cancelled by customer.'
-            # Only vendor or owner can cancel the order.
+            # Only owner (and vendor) can cancel the order.
             assert self.owner == operator
 
         self.status = 'C'
-        self.message_set.create(writer=operator, content=message)
+        self.message_set.create(content=message, by_vendor=operator.is_superuser)
         self.save()
 
     def confirm(self):
@@ -88,19 +88,19 @@ class Message(models.Model):
         ordering = ['-create_date']
 
     order = models.ForeignKey(Order)
-    writer = models.ForeignKey(User)
+
+    # True if it was wrote by vendor.
+    # Otherwise, by customer (self.order.own).
+    by_vendor = models.BooleanField(default=False)
+
     content = models.TextField()
     create_date = models.DateTimeField(auto_now_add=True)
-
-    @property
-    def is_wrote_by_vendor(self):
-        return self.writer.is_superuser
 
 
     @property
     def writer_role(self):
         """Return 'Vendor' or 'Customer'."""
-        if self.is_wrote_by_vendor:
+        if self.by_vendor:
             return 'Vendor'
         else:
             return 'Customer'

@@ -48,14 +48,12 @@ class OrderTestCast(TestCase):
         self.assertEqual(self.order.status, 'C')
 
         message = self.order.message_set.last()
-        self.assertEqual(message.writer, self.vendor)
-        self.assertTrue(message.is_wrote_by_vendor)
+        self.assertTrue(message.by_vendor)
         self.assertTrue("by vendor" in message.content)
 
     def test_pending_cancel_by_customer(self):
         self.order.cancel(self.customer)
 
         message = self.order.message_set.last()
-        self.assertEqual(message.writer, self.customer)
-        self.assertFalse(message.is_wrote_by_vendor)
+        self.assertFalse(message.by_vendor)
         self.assertTrue("by customer" in message.content)
