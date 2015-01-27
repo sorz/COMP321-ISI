@@ -1,0 +1,18 @@
+{% extends "store/front-base.html" %}
+{% block title %}Purchase Done{% endblock %}
+
+{% block main %}
+  <h1>Thank You</h1>
+
+  <p>Your purchase has being done.</p>
+
+  <ul>
+  {% for item in order.orderitem_set.all %}
+    <li>
+      {{ item.name }}
+      <a href="{% url 'product:detail' item.product.pk %}#rating">View / Rating</a>
+    </li>
+  {% endfor %}
+  </ul>
+
+{% endblock %}

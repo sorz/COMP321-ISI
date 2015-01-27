@@ -129,6 +129,18 @@ def detail(request, order_id):
 
 
 @login_required
+def done(request, order_id):
+    """Shown after order is confirmed by customer."""
+    order = get_object_or_404(Order, pk=order_id)
+
+    if order.status != 'R':
+        return HttpResponseRedirect(reverse('order:detail', args=[order_id]))
+
+    dictionary = {'order': order}
+    return render(request, 'order/done.html', dictionary)
+
+
+@login_required
 def rest_order(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
 

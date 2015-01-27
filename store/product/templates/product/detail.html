@@ -34,7 +34,7 @@
   </p>
 
   {% if rating_form %}
-    <form id="rating-form" method="POST" action=".">{% csrf_token %}
+    <form id="rating" method="POST" action=".">{% csrf_token %}
       {{ rating_form }}
       <button type="submit">Update</button>
     </form>
