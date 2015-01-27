@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 from category.models import Category
 
 
+RATING_DISPLAY = ('Horrible', 'Bad', 'Fair', 'Good', 'Fantastic')
+
+
 class Product(models.Model):
     name = models.CharField('Product Name', max_length=255)
     price = models.DecimalField(max_digits=9, decimal_places=2,
@@ -26,6 +29,18 @@ class Product(models.Model):
             count += 1
         self.average_rating = total / count
         self.save()
+
+    def get_average_rating_display(self):
+        if 1 <= self.average_rating <= 5:
+            return RATING_DISPLAY[round(self.average_rating) - 1]
+
+    def has_bought_by_user(self, user):
+        """Return True if this user has purchased it and confirmed the order."""
+        orders = user.order_set.filter(status='R')
+        for order in orders:
+            if order.orderitem_set.filter(product=self).exists():
+                return True
+        return False
 
     def __str__(self):
         return self.name

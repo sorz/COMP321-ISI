@@ -23,6 +23,22 @@
   <button class="buy"
           data-link="{% url 'cart:item' product.id %}">Buy Buy Buy</button>
 
+  <h2>Rating</h2>
+  <p>Average rating:
+    {% if product.average_rating %}
+      {{ product.get_average_rating_display }} ({{ product.average_rating }})
+    {% else %}
+      (no rating)
+    {% endif  %}
+  </p>
+
+  {% if rating_form %}
+    <form id="rating-form" method="POST" action=".">{% csrf_token %}
+      {{ rating_form }}
+      <button type="submit">Update</button>
+    </form>
+  {% endif %}
+
   <h2>Photos</h2>
   <ul>
     {% for photo in product.photo_set.all %}
