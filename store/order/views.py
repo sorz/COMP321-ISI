@@ -50,7 +50,7 @@ def create(request):
             request.session.delete('cart-hash')
             return HttpResponse("done.")  # TODO: redirection
     else:
-        order_form = OrderForm()
+        order_form = OrderForm(initial={'recipient_name': request.user.get_full_name()})
 
     dictionary = {'cart': cart, 'order_form': order_form}
     return render(request, 'order/create.html', dictionary)

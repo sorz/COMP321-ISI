@@ -17,12 +17,18 @@ def index(request):
         if formset.is_valid():
             formset.save()
 
-            # If cart is empty, just reload this page where "empty" should be shown.
-            # Otherwise, redirect to order page.
+            # If cart isn't empty, redirect user to order page.
             if cart.item_set.all():
+
+                # Before redirecting, we save the hash of cart i.
+                # So when user confirm order in few minutes,
+                # we can check and ensure it's not been changed.
                 request.session['cart-hash'] = hash(cart)
+
                 return HttpResponseRedirect(reverse('order:create'))
+
             else:
+                # Cart is empty, just reload this page where "empty" should be shown.
                 return HttpResponseRedirect('.')
     else:
         formset = CartItemFormSet(instance=cart.user)
