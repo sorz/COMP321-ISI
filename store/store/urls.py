@@ -16,7 +16,7 @@ urlpatterns = patterns(
     url(r'^cart/', include('cart.urls', namespace='cart')),
     url(r'^order/', include('order.urls', namespace='order')),
 
-    url(r'^accounts/', include('django.contrib.auth.urls')),
+    url(r'^account/', include('account.urls', namespace='account')),
     url(r'^admin/', include(admin.site.urls)),
 
 )

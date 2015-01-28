@@ -57,6 +57,10 @@ ROOT_URLCONF = 'store.urls'
 
 WSGI_APPLICATION = 'store.wsgi.application'
 
+LOGIN_URL = '/account/login/'
+LOGOUT_URL = '/account/logout/'
+LOGIN_REDIRECT_URL = '/account/profile/'
+
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases

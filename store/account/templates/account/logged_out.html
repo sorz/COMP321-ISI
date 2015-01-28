@@ -1,0 +1,14 @@
+{% extends "store/front-base.html" %}
+{% block title %}Logged out{% endblock %}
+
+{% block main %}
+  <h1>Logged out</h1>
+
+  Thank you.
+
+  <p><a href="/">Back to Home</a></p>
+
+  <p><a href="{% url 'account:login' %}">Log in again</a></p>
+
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "store/front-base.html" %}
+{% block title %}Profile{% endblock %}
+
+{% block main %}
+  <h1>Profile</h1>
+
+  <p>Welcome, {{ user }}.</p>
+
+  <h2>Some information</h2>
+  <p>First name: {{ user.first_name }}</p>
+  <p>Last name: {{ user.last_name }}</p>
+  <p>Email: {{ user.email }}</p>
+  <p>Last Login: {{ user.last_login }}</p>
+  <p>Join Date: {{ user.date_joined }}</p>
+
+  <ul>
+    <li><a href="{% url 'account:password_change' %}">Change password</a></li>
+    <li><a href="#">Change profile</a></li>
+  </ul>
+
+  <h2>Some links</h2>
+  <ul>
+    <li><a href="{% url 'cart:index' %}">Shopping Cart</a></li>
+    <li><a href="{% url 'order:index' %}">My Purchases</a></li>
+
+    <li><a href="/">Home page</a></li>
+  </ul>
+
+{% endblock %}
