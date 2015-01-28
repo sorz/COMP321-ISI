@@ -7,6 +7,8 @@
   <form method="post" action=".">{% csrf_token %}
     {{ user_form.as_ul }}
 
+    {{ profile_form.as_ul }}
+
     <button type="submit">Submit</button>
   </form>
 

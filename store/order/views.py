@@ -8,6 +8,7 @@ from django.db import transaction
 
 from .forms import OrderForm, MessageForm
 from .models import Order
+from account.models import Profile
 from cart.utils import Cart, CannotCheckoutItemException
 
 
@@ -50,7 +51,15 @@ def create(request):
             request.session.delete('cart-hash')
             return HttpResponse("done.")  # TODO: redirection
     else:
-        order_form = OrderForm(initial={'recipient_name': request.user.get_full_name()})
+        initial = {'recipient_name': request.user.get_full_name()}
+        try:
+            initial['recipient_address'] = request.user.profile.address
+            initial['recipient_address_2'] = request.user.profile.address_2
+            initial['recipient_postcode'] = request.user.profile.postcode
+        except Profile.DoesNotExist:
+            pass
+
+        order_form = OrderForm(initial=initial)
 
     dictionary = {'cart': cart, 'order_form': order_form}
     return render(request, 'order/create.html', dictionary)

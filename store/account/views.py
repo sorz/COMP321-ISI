@@ -3,7 +3,8 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 
-from .forms import UserRegistrationForm, ProfileChangeForm
+from .forms import UserRegistrationForm, ProfileForm, UserChangeForm
+from .models import Profile
 
 @login_required
 def profile(request):
@@ -18,15 +19,21 @@ def register(request):
 
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
+        profile_form = ProfileForm(request.POST, prefix='profile')
 
-        if user_form.is_valid():
-            user_form.save()
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            user_profile = profile_form.save(commit=False)
+            user_profile.user = user
+            user_profile.save()
+
             return redirect('account:register_done')
 
     else:
         user_form = UserRegistrationForm()
+        profile_form = ProfileForm(prefix='profile')
 
-    dictionary = {'user_form': user_form}
+    dictionary = {'user_form': user_form, 'profile_form': profile_form}
     return render(request, 'account/register.html', dictionary)
 
 
@@ -39,15 +46,24 @@ def register_done(request):
 @login_required
 def profile_change(request):
 
+    try:
+        user_profile = request.user.profile
+    except Profile.DoesNotExist:
+        user_profile = Profile(user=request.user)
+
     if request.method == 'POST':
-        form = ProfileChangeForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
+        user_form = UserChangeForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST,
+                                   instance=user_profile, prefix='profile')
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
 
             # TODO: tell user it's done.
             return redirect('account:profile')
     else:
-        form = ProfileChangeForm(instance=request.user)
+        user_form = UserChangeForm(instance=request.user)
+        profile_form = ProfileForm(instance=user_profile, prefix='profile')
 
-    dictionary = {'form': form}
+    dictionary = {'user_form': user_form, 'profile_form': profile_form}
     return render(request, 'account/profile_change.html', dictionary)
