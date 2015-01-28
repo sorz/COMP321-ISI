@@ -16,7 +16,7 @@ urlpatterns = patterns(
         name='password_change_done',
         kwargs={'template_name': 'account/password_change_done.html'}),
 
-
     url(r'^profile/$', views.profile, name='profile'),
-
+    url(r'^register/$', views.register, name='register'),
+    url(r'^register/done/', views.register_done, name='register_done')
 )

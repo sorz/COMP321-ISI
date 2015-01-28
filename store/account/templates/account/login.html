@@ -14,6 +14,6 @@
     <input type="hidden" name="next" value="{{ next }}" />
   </form>
 
-  <p>Need a account? <a href="#">Register now</a>.</p>
+  <p>Need a account? <a href="{% url 'account:register' %}">Register now</a>.</p>
 
 {% endblock %}
