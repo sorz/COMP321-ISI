@@ -4,13 +4,8 @@
 {% block main %}
   <h1>Register</h1>
 
-  {% if user_form.has_errors %}
-    <p>some errors...</p>
-  {% endif %}
-
   <form method="post" action=".">{% csrf_token %}
     {{ user_form.as_ul }}
-    <input type="hidden" name="next" value="{{ next }}" />
 
     <button type="submit">Submit</button>
   </form>

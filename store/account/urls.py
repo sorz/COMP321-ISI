@@ -18,5 +18,6 @@ urlpatterns = patterns(
 
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^register/$', views.register, name='register'),
-    url(r'^register/done/', views.register_done, name='register_done')
+    url(r'^register/done/$', views.register_done, name='register_done'),
+    url(r'^profile/update/$', views.profile_change, name='profile_change'),
 )

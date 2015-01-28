@@ -1,0 +1,13 @@
+{% extends "store/front-base.html" %}
+{% block title %}Update Profile{% endblock %}
+
+{% block main %}
+  <h1>Update Profile</h1>
+
+  <form method="post" action=".">{% csrf_token %}
+    {{ form.as_ul }}
+
+    <button type="submit">Update</button>
+  </form>
+
+{% endblock %}
