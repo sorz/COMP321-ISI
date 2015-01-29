@@ -15,6 +15,10 @@ def detail(request, category_id):
     category = get_object_or_404(Category, pk=category_id)
     products = category.product_set.filter(off_shelf=False)
 
+    name_filter = request.GET.get('filter', '')
+    if name_filter:
+        products = products.filter(name__contains=name_filter)
+
     sort = request.GET.get('sort')
     if sort in ('price', '-price', 'rating', '-rating'):
         products = products.order_by(sort)
@@ -36,5 +40,6 @@ def detail(request, category_id):
         # If page is out of range (e.g. 9999), deliver last page of results.
         products = paginator.page(paginator.num_pages)
 
-    dictionary = {'category': category, 'products': products, 'sort': sort}
+    dictionary = {'category': category, 'products': products,
+                  'sort': sort, 'filter': name_filter}
     return render(request, 'category/detail.html', dictionary)

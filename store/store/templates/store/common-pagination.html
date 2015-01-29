@@ -1,7 +1,7 @@
 <div class="pagination">
 <span class="step-links">
   {% if list.has_previous %}
-      <a href="?sort={{ sort }}&filter={{ filter }}&page={{ list.previous_page_number }}">&lt; previous</a>
+      <a href="?filter={{ filter }}&sort={{ sort }}&page={{ list.previous_page_number }}">&lt; previous</a>
   {% endif %}
 
   <span class="current">
@@ -13,7 +13,7 @@
   </span>
 
   {% if list.has_next %}
-      <a href="?sort={{ sort }}&filter={{ filter }}&page={{ list.next_page_number }}">next &gt;</a>
+      <a href="?filter={{ filter }}&sort={{ sort }}&page={{ list.next_page_number }}">next &gt;</a>
   {% endif %}
 </span>
 </div>
@@ -28,7 +28,7 @@
       var min = $this.attr('min');
       if ($this.val() >= min && $this.val() <= max
           && $this.attr('value') != $this.val()) {
-        window.location = '?sort=' + sort + '&filter=' + filter + '&page=' + $this.val();
+        window.location = '?filter=' + filter + '&sort=' + sort + '&page=' + $this.val();
       }
     });
   });

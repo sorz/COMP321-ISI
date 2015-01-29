@@ -8,6 +8,27 @@
   <h1>{{ category }}</h1>
   <p>{{ category.description }}</p>
 
+  <form action="."  method="GET" name="filter">
+    <label>Filter:
+    <input name="filter" type="search" autocomplete="on"
+           placeholder="Product name" value="{{ filter }}"></label>
+    <input type="hidden" name="sort" value="{{ sort }}">
+    <input type="hidden" name="page" value="{{ products.number }}">
+    <button type="submit">Search</button>
+    {% if filter %}
+      <button id="filter-reset">Clear</button>
+    {% endif %}
+  </form>
+
+  <script>
+    $(document).ready(function () {
+      $('#filter-reset').click(function () {
+        $('input[name="filter"]').val('');
+        $('form[name="filter]').submit();
+      });
+    });
+  </script>
+
   <p>Sort:
     {% if not sort %}
       default,
@@ -18,19 +39,19 @@
     {% if sort == 'price' %}
       price,
     {% else %}
-      <a href="?sort=price&filter={{ filter }}&page={{ products.number }}">price</a>,
+      <a href="?filter={{ filter }}&sort=price&page={{ products.number }}">price</a>,
     {% endif %}
 
     {% if sort == '-price' %}
       price (reverse),
     {% else %}
-      <a href="?sort=-price&filter={{ filter }}&page={{ products.number }}">price (reverse)</a>,
+      <a href="?filter={{ filter }}&sort=-price&page={{ products.number }}">price (reverse)</a>,
     {% endif %}
 
     {% if sort == '-rating' %}
       rating,
     {% else %}
-      <a href="?sort=-rating&filter={{ filter }}&page={{ products.number }}">rating</a>.
+      <a href="?filter={{ filter }}&sort=-rating&page={{ products.number }}">rating</a>.
     {% endif %}
   </p>
 
@@ -47,6 +68,8 @@
           - {{ product.average_rating }}
         {% endif %}
       </li>
+    {% empty %}
+      (no related product)
     {% endfor %}
   </ul>
 
