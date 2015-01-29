@@ -1,15 +1,36 @@
 <div class="pagination">
 <span class="step-links">
   {% if list.has_previous %}
-      <a href="?page={{ list.previous_page_number }}">previous</a>
+      <a href="?sort={{ sort }}&filter={{ filter }}&page={{ list.previous_page_number }}">&lt; previous</a>
   {% endif %}
 
   <span class="current">
-      Page {{ list.number }} of {{ list.paginator.num_pages }}.
+    Page
+    <input type="number" id="page-number" value="{{ list.number }}"
+           max="{{ list.paginator.num_pages }}" min="1" step="1" size="3"
+           data-sort="{{ sort }}">
+     of {{ list.paginator.num_pages }}.
   </span>
 
   {% if list.has_next %}
-      <a href="?page={{ list.next_page_number }}">next</a>
+      <a href="?sort={{ sort }}&filter={{ filter }}&page={{ list.next_page_number }}">next &gt;</a>
   {% endif %}
 </span>
 </div>
+
+<script>
+  $(document).ready(function (){
+    $('#page-number').change(function (event) {
+      var $this = $(this);
+      var sort = $this.data('sort');
+      var filter = $this.data('filter');
+      var max = $this.attr('max');
+      var min = $this.attr('min');
+      if ($this.val() >= min && $this.val() <= max
+          && $this.attr('value') != $this.val()) {
+        window.location = '?sort=' + sort + '&filter=' + filter + '&page=' + $this.val();
+      }
+    });
+  });
+  
+</script>
