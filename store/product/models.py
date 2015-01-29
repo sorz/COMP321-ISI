@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
+from sorl.thumbnail import ImageField
 
 from category.models import Category
 
@@ -42,6 +43,13 @@ class Product(models.Model):
                 return True
         return False
 
+    def get_image(self):
+        try:
+            print(self.photo_set.all()[0].image)
+            return self.photo_set.all()[0].image
+        except Photo.DoesNotExist:
+            pass
+
     def __str__(self):
         return self.name
 
@@ -53,7 +61,7 @@ class Photo(models.Model):
     Each photo has a image file and optional description.
     """
     product = models.ForeignKey(Product, null=True)
-    image = models.ImageField(upload_to='photos/%Y/%m')
+    image = ImageField(upload_to='photos/%Y/%m')
     description = models.CharField(max_length=255, null=True)
     # TODO: Maintain the display order of photos (#E7)
     # TODO: Delete image file when photo is removed.

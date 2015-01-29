@@ -1,4 +1,5 @@
 {% extends "store/front-base.html" %}
+{% load thumbnail %}
 {% block title %}{{ category }} - Category{% endblock %}
 
 {% block main %}
@@ -9,8 +10,14 @@
 
   <ul>
     {% for product in products %}
-      <li><a href="{% url 'product:detail' product.id %}">{{ product.name }}</a>
-        - ${{ product.price }}</li>
+      <li>
+        {% thumbnail product.get_image "64x64" crop="center" as im %}
+          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+          <br>
+        {% endthumbnail %}
+        <a href="{% url 'product:detail' product.id %}">{{ product.name }}</a>
+        - ${{ product.price }}
+      </li>
     {% endfor %}
   </ul>
 

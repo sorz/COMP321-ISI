@@ -1,9 +1,10 @@
 from django.contrib import admin
+from sorl.thumbnail.admin import AdminImageMixin
 
 from .models import Product, Photo
 
 
-class PhotoInline(admin.StackedInline):
+class PhotoInline(AdminImageMixin, admin.StackedInline):
     model = Photo
     extra = 2
 
