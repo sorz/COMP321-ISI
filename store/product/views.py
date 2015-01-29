@@ -11,14 +11,13 @@ def detail(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
 
     # Handle rating.
-    try:
-        rating = request.user.rating_set.get(product=product)
-    except Rating.DoesNotExist:
-        if product.has_bought_by_user(request.user):
-            rating = Rating(product=product, user=request.user)
-        else:
-            # Cannot rating since this user have not bought it.
-            rating = None
+    rating = None
+    if request.user.is_authenticated():
+        try:
+            rating = request.user.rating_set.get(product=product)
+        except Rating.DoesNotExist:
+            if product.has_bought_by_user(request.user):
+                rating = Rating(product=product, user=request.user)
 
     if request.method == 'POST':
         rating_form = RatingForm(request.POST, instance=rating)
