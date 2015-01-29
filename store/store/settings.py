@@ -66,6 +66,11 @@ LOGIN_REDIRECT_URL = '/account/profile/'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
+# SQLite is only used for testing.
+# Since it doesn't support SELECT ... FOR UPDATE query,
+# concurrency control of order status change will be disabled.
+# Psycopg2 (PostgreSQL), Oracle, and MySQL database are known work well.
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',

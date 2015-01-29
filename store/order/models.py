@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.validators import MinValueValidator
@@ -6,6 +6,19 @@ from django.core.validators import MinValueValidator
 
 from product.models import Product
 from cart.models import ProductItemInfo
+
+
+class InvalidOrderStatusChangeException(Exception):
+    """Cannot change the status of order by this way."""
+
+    def __init__(self, order, status_from, status_to):
+        self.order = order
+        self.status_from = status_from
+        self.status_to = status_to
+
+    def __str__(self):
+        return "Cannot change order status from %s to %s." % \
+               (self.status_from, self.status_to)
 
 
 class Order(models.Model):
@@ -38,22 +51,18 @@ class Order(models.Model):
 
     def ship(self):
         """Ship a pending/hold order. Used by vendor."""
-        assert self.status == 'P' or self.status == 'H'
         assert self.shipment_date is None
-        self.status = 'S'
+        self._change_status_atomically('PH', 'S')
+
         self.shipment_date = timezone.now()
         self.save()
 
     def hold(self):
         """Hold a pending order. Used by vendor."""
-        assert self.status == 'P'
-        self.status = 'H'
-        self.save()
+        self._change_status_atomically('P', 'H')
 
     def cancel(self, operator):
         """Cancel a pending/hold order. Used by vendor/customer."""
-        assert self.status == 'P' or self.status == 'H'
-
         if operator.is_superuser:  # is vendor
             message = 'Cancelled by vendor.'
         else:
@@ -61,15 +70,43 @@ class Order(models.Model):
             # Only owner (and vendor) can cancel the order.
             assert self.owner == operator
 
-        self.status = 'C'
+        self._change_status_atomically('PH', 'C')
         self.message_set.create(content=message, by_vendor=operator.is_superuser)
-        self.save()
 
     def confirm(self):
         """Confirm a shipped order. Used by customer."""
-        assert self.status == 'S'
-        self.status = 'R'
-        self.save()
+        self._change_status_atomically('S', 'R')
+
+    def _change_status_atomically(self, from_status, to_status):
+        """Change status and commit it atomically.
+
+        Before making change, it check whether current status is "from_status",
+        if not, raise InvalidOrderStatusChangeException.
+        """
+        # select_for_update() must execute in non-autocommit mode.
+        with transaction.atomic():
+
+            # Using select_for_update() to lock this record.
+            # It prevent other transactions acquiring locks on it (they will wait for it).
+
+            # All status change must use _change_status_atomically() eventually,
+            # so they [require a lock] -> [check status] -> [make change] -> [commit & unlock].
+
+            # It prevent invalid status change, and satisfy requirement (H5).
+
+            # References
+            # https://docs.djangoproject.com/en/dev/ref/models/querysets/#select-for-update
+            # http://stackoverflow.com/questions/1645269/concurrency-control-in-django-model
+
+            order = Order.objects.filter(pk=self.pk).select_for_update()[0]
+
+            if order.status == to_status:
+                return  # Ignore redundant operation.
+            if order.status not in from_status:
+                raise InvalidOrderStatusChangeException(order, order.status, to_status)
+
+            order.status = to_status
+            order.save()
 
     def __str__(self):
         return "%s: %s" % (self.owner, self.get_status_display())

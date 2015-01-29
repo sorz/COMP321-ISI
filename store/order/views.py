@@ -1,13 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, \
-    HttpResponseForbidden, HttpResponseBadRequest
+    HttpResponseForbidden, HttpResponseBadRequest, HttpResponseServerError
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
 
 from .forms import OrderForm, MessageForm
-from .models import Order
+from .models import Order, InvalidOrderStatusChangeException
 from account.models import Profile
 from cart.utils import Cart, CannotCheckoutItemException
 
@@ -29,7 +29,8 @@ def create(request):
         order_form = OrderForm(request.POST)
         if order_form.is_valid():
 
-            # To improve database performance and keep integrity.
+            # We use transaction to improve database performance and keep integrity.
+            # Checkout action will rollback if any product cannot be checked out.
             with transaction.atomic():
                 order = order_form.save(commit=False)
                 order.owner = request.user
@@ -159,28 +160,26 @@ def rest_order(request, order_id):
     # Update status of order.
     # TODO: PUT may be better.
     if request.method == 'POST':
-        status = request.POST.get('status')
-        if status is None:
+        new_status = request.POST.get('status')
+        if new_status is None:
             return HttpResponseBadRequest('Lack argument "status".')
 
         # If it has already been this status, just return ok.
-        if order.status == status:
+        if order.status == new_status:
             return HttpResponse(status=204)
 
         # Cancel this order.
-        if status == 'C':
-            # Only allowed in pending or holding status.
-            if order.status not in 'PH':
+        if new_status == 'C':
+            try:
+                order.cancel(operator=request.user)
+            except InvalidOrderStatusChangeException:
                 return HttpResponseForbidden('Cannot cancel this order.')
 
-            order.cancel(operator=request.user)
-
         # Confirm Received.
-        elif status == 'R':
-            # Only allowed in shipping status.
-            if order.status != 'S':
+        elif new_status == 'R':
+            try:
+                order.confirm()
+            except InvalidOrderStatusChangeException:
                 return HttpResponseForbidden('Cannot confirm this order.')
-
-            order.confirm()
 
         return HttpResponse(status=204)
