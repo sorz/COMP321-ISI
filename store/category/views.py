@@ -15,6 +15,12 @@ def detail(request, category_id):
     category = get_object_or_404(Category, pk=category_id)
     products = category.product_set.filter(off_shelf=False)
 
+    sort = request.GET.get('sort')
+    if sort in ('price', '-price', 'rating', '-rating'):
+        products = products.order_by(sort)
+    else:
+        sort = ''
+
     # Code of pagination is from
     # https://docs.djangoproject.com/en/1.7/topics/pagination/#using-paginator-in-a-view
 
@@ -30,5 +36,5 @@ def detail(request, category_id):
         # If page is out of range (e.g. 9999), deliver last page of results.
         products = paginator.page(paginator.num_pages)
 
-    dictionary = {'category': category, 'products': products}
+    dictionary = {'category': category, 'products': products, 'sort': sort}
     return render(request, 'category/detail.html', dictionary)

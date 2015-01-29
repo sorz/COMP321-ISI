@@ -8,6 +8,32 @@
   <h1>{{ category }}</h1>
   <p>{{ category.description }}</p>
 
+  <p>Sort:
+    {% if not sort %}
+      default,
+    {% else %}
+      <a href="?filter={{ filter }}&page={{ products.number }}">default</a>,
+    {% endif %}
+
+    {% if sort == 'price' %}
+      price,
+    {% else %}
+      <a href="?sort=price&filter={{ filter }}&page={{ products.number }}">price</a>,
+    {% endif %}
+
+    {% if sort == '-price' %}
+      price (reverse),
+    {% else %}
+      <a href="?sort=-price&filter={{ filter }}&page={{ products.number }}">price (reverse)</a>,
+    {% endif %}
+
+    {% if sort == '-rating' %}
+      rating,
+    {% else %}
+      <a href="?sort=-rating&filter={{ filter }}&page={{ products.number }}">rating</a>.
+    {% endif %}
+  </p>
+
   <ul>
     {% for product in products %}
       <li>
@@ -17,6 +43,9 @@
         {% endthumbnail %}
         <a href="{% url 'product:detail' product.id %}">{{ product.name }}</a>
         - ${{ product.price }}
+        {% if product.average_rating %}
+          - {{ product.average_rating }}
+        {% endif %}
       </li>
     {% endfor %}
   </ul>
