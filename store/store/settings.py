@@ -120,6 +120,7 @@ BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, "bower")
 
 BOWER_INSTALLED_APPS = (
     'jquery#1.11',
+    'jquery.cookie',
 )
 
 
