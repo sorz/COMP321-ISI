@@ -7,11 +7,9 @@ https://docs.djangoproject.com/en/1.7/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
+import sys
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -67,10 +65,8 @@ LOGIN_REDIRECT_URL = '/account/profile/'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-# SQLite is only used for testing.
-# Since it doesn't support SELECT ... FOR UPDATE query,
+# SQLite is only used for testing, and
 # concurrency control of order status change will be disabled.
-# Psycopg2 (PostgreSQL), Oracle, and MySQL database are known work well.
 
 DATABASES = {
     'default': {
@@ -152,3 +148,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.request"
 )
+
+
+# Loading local settings.
+try:
+    from .config import *
+except ImportError:
+    print("Warning: local configuration not found.", file=sys.stderr)
+    print("Please see store/settings/config.sample.py for detail.", file=sys.stderr)

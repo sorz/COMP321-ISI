@@ -96,3 +96,6 @@ media/
 
 # bower components
 bower_components/
+
+# local settings
+config.py
