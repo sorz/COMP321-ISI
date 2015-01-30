@@ -4,12 +4,30 @@
 <head lang="en">
   <meta charset="UTF-8">
   <title>{% block title %}{% endblock %}</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap-theme.min.css' %}">
+
+  <link rel="stylesheet" href="{% static 'common.css' %}">
   <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
 </head>
 <body>
-  {% block body %}{% endblock %}
+  {% block body %}
+    {# Main body #}
+  {% endblock %}
+
+
+  <!-- Bootstrap -->
+  <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+
+  <!-- jQuery.cookies: getting CSRF token -->
   <script src="{% static 'jquery.cookie/jquery.cookie.js' %}"></script>
+
   <script src="{% static 'common.js' %}"></script>
-  {% block footer %}{% endblock %}
+
+  {% block footer %}
+    {# Some additional per-page scripts. #}
+  {% endblock %}
 </body>
 </html>
