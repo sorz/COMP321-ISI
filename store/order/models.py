@@ -35,8 +35,14 @@ class Order(models.Model):
     )
     owner = models.ForeignKey(User)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='P')
+
     purchase_date = models.DateTimeField(auto_now_add=True)
     shipment_date = models.DateTimeField(null=True)
+
+    # Stand for receipt date if status is received
+    # or cancel date is status is cancelled.
+    close_date = models.DateTimeField(null=True)
+
     recipient_name = models.CharField(max_length=255)
     recipient_address = models.CharField("address", max_length=255)
     recipient_address_2 = models.CharField("address (2th line)", max_length=255, blank=True)
@@ -71,11 +77,15 @@ class Order(models.Model):
             assert self.owner == operator
 
         self._change_status_atomically('PH', 'C')
+        self.close_date = timezone.now()
+        self.save()
         self.message_set.create(content=message, by_vendor=operator.is_superuser)
 
     def confirm(self):
         """Confirm a shipped order. Used by customer."""
         self._change_status_atomically('S', 'R')
+        self.close_date = timezone.now()
+        self.save()
 
     def _change_status_atomically(self, from_status, to_status):
         """Change status and commit it atomically.
