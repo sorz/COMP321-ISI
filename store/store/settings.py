@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sorl.thumbnail',
+    'djangobower',
     'product',
     'category',
     'cart',
@@ -97,7 +98,29 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"), )
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+
+    # Make PyCharm recognize bower's static files.
+    # In production, it should be commented out before "manage.py collectstatic".
+    os.path.join(BASE_DIR, "bower/bower_components"),
+)
+
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "djangobower.finders.BowerFinder"
+)
+
+
+# Django-bower
+# https://django-bower.readthedocs.org/en/latest/installation.html
+
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, "bower")
+
+BOWER_INSTALLED_APPS = (
+    'jquery#1.11',
+)
 
 
 # Where to store uploaded files. Make sure it's writable.

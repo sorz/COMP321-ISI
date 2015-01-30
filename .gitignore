@@ -93,3 +93,6 @@ db.sqlite3
 
 # user-uploaded files
 media/
+
+# bower components
+bower_components/

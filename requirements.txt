@@ -1,4 +1,6 @@
 Django==1.7.2
+django-bower==5.0.2
 Pillow==2.7.0
 pytz==2014.10
+six==1.9.0
 sorl-thumbnail==12.2
