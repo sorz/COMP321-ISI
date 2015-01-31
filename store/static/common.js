@@ -23,7 +23,9 @@ function initialize_navbar() {
   var PATH_REGEX_TO_NAME = {
     '^/account/register/': 'register',
     '^/account/login/': 'login',
-    '^/account/': 'profile',
+    '^/account/': 'user',
+    '^/category/': 'category',
+    '^/order/': 'purchase',
     '^/cart/': 'cart',
     '^/$': 'home'
   };
