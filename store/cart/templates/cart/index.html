@@ -1,4 +1,5 @@
 {% extends "store/front-base.html" %}
+{% load bootstrap3 %}
 {% block title %}Shopping Cart{% endblock %}
 
 {% block main %}
@@ -11,7 +12,10 @@
   {% else %}
     {% include 'cart/itemset_form.html' with formset=item_formset %}
     <p>Total: ${{ cart.total_price }}</p>
-    <button type="submit" form="cart">Check out</button>
+
+    {% buttons %}
+      <button type="submit" class="btn btn-primary">Checkout</button>
+    {% endbuttons %}
   {% endif %}
 
 

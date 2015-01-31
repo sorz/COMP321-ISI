@@ -68,7 +68,7 @@ def rest_item(request, product_id):
 
     # Set the quantity of items.
     if request.method == 'PUT':
-        quantity = request.POST.get('quantity', 1)
+        quantity = int(request.POST.get('quantity', 1))
         _, created = cart.item_set.get_or_create(product=product,
                                                  defaults={'quantity': quantity})
         if created:
@@ -78,7 +78,7 @@ def rest_item(request, product_id):
 
     # Add some items.
     elif request.method == 'POST':
-        quantity = request.POST.get('quantity', 1)
+        quantity = int(request.POST.get('quantity', 1))
         cart.add_item(product, quantity)
         return HttpResponse(status=204)
 

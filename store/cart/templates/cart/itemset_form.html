@@ -4,7 +4,7 @@
   {% for form in formset %}
     {{ form.id }}
   {% endfor %}
-  <table>
+  <table class="table">
     <thead>
       <tr>
         <th>Name</th>
@@ -20,8 +20,9 @@
                 {% if not form.instance.in_stock %}out-of-stock{% endif %}
                 {% if form.instance.off_shelf %}off-shelf{% endif %}"
           data-id="{{ product.instance.pk }}"
+          data-url="{% url 'cart:item' form.instance.product.pk %}"
           data-price="{{ form.instance.price }}" >
-        <td><a href="{% url 'product:detail' form.instance.pk %}"
+        <td><a href="{% url 'product:detail' form.instance.product.pk %}"
             title="{{ form.instance.name }} - Product Detail">{{ form.instance.name }}</a></td>
         <td><span class="value">${{ form.instance.price }}</span></td>
         <td class="item-quantity">{{ form.quantity }}</td>
@@ -46,14 +47,28 @@
 
 <script>
   // TODO: considering move scripts to a standalone file.
+  var submitTimeout;
   $('#cart').find('.item-quantity').children('input').each(function () {
     $(this).change(function () {
       var $item = $(this).parents('.cart-item');
       var quantity = this.value;
       var price = $item.data('price');
+      var url = $item.data('url');
       $item.find('.item-total-price').children('.value').text(quantity * price);
 
-      // TODO: post new quantity in several seconds.
+      // Submit new quantity in several seconds.
+      // Avoid submit too frequently when user click continuously.
+      if (submitTimeout != undefined) {
+        clearTimeout(submitTimeout);
+      }
+      submitTimeout = setTimeout(function () {
+        submitTimeout = undefined;
+        $.ajax({
+          url:  url,
+          type: 'PUT',
+          data: {'quantity': quantity}
+        });
+      }, 800);
     });
   });
 
