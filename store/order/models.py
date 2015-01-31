@@ -77,8 +77,14 @@ class Order(models.Model):
             assert self.owner == operator
 
         self._change_status_atomically('PH', 'C')
+
+        # Here, the status must be 'C' on database because of _change_status_atomically.
+        # But the status of self instance is still not changed, so we set it to 'C'.
+        self.status = 'C'
+
         self.close_date = timezone.now()
         self.save()
+
         self.message_set.create(content=message, by_vendor=operator.is_superuser)
 
     def confirm(self):
