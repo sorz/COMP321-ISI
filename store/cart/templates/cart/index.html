@@ -11,7 +11,6 @@
     <p>Go shopping</p>
   {% else %}
     {% include 'cart/itemset_form.html' with formset=item_formset %}
-    <p>Total: ${{ cart.total_price }}</p>
 
     {% buttons %}
       <button type="submit" form="cart" class="btn btn-primary">Checkout</button>

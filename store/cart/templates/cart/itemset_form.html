@@ -44,6 +44,7 @@
     </tbody>
   </table>
 </form>
+<p>Total: $<span class="total-price">{{ cart.total_price }}</span></p>
 
 <script>
   // TODO: considering move scripts to a standalone file.
@@ -54,7 +55,16 @@
       var quantity = this.value;
       var price = $item.data('price');
       var url = $item.data('url');
+
+      // Re-calculate sub-total price.
       $item.find('.item-total-price').children('.value').text(quantity * price);
+
+      // Re-calculate total price.
+      var totalPrice = 0;
+      $('.item-total-price').children('.value').each(function () {
+        totalPrice += parseFloat($(this).text());
+      });
+      $('span.total-price').text(totalPrice);
 
       // Submit new quantity in several seconds.
       // Avoid submit too frequently when user click continuously.
@@ -72,9 +82,7 @@
     });
   });
 
-  // TODO: Fix total price inconsistent after page back by user.
-
-  // TODO: Update total price of cart.
+  // TODO: Fix quantity inconsistent after page back by user.
 
   // TODO: Delete (and restore?) action.
 </script>
