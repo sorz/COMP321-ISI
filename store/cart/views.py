@@ -50,12 +50,8 @@ class ItemView(APIView):
         product = get_object_or_404(Product, pk=product_id)
 
         quantity = int(request.data.get('quantity', 1))
-        created = cart.set_item(product, quantity)
-
-        if created:
-            return HttpResponse(status=201)
-        else:
-            return HttpResponse(status=204)
+        cart.set_item(product, quantity)
+        return JsonResponse({'cartHash': hash(cart)})
 
     @method_decorator(login_required)
     def post(self, request, product_id):
@@ -65,7 +61,7 @@ class ItemView(APIView):
 
         quantity = int(request.data.get('quantity', 1))
         cart.add_item(product, quantity)
-        return HttpResponse(status=204)
+        return JsonResponse({'cartHash': hash(cart)})
 
     @method_decorator(login_required)
     def delete(self, request, product_id):
@@ -74,4 +70,4 @@ class ItemView(APIView):
         product = get_object_or_404(Product, pk=product_id)
 
         cart.remove(product)
-        return HttpResponse(status=204)
+        return JsonResponse({'cartHash': hash(cart)})

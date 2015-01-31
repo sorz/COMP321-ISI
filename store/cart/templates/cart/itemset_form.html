@@ -77,6 +77,8 @@
           url:  url,
           type: 'PUT',
           data: {'quantity': quantity}
+        }).done(function (data) {
+          $('#cart-hash').val(data.cartHash);
         });
       }, 800);
       $item.data('timeout', timeout);
@@ -96,6 +98,8 @@
     $.ajax({
       url: url,
       type: 'DELETE'
+    }).done(function (data) {
+      $('#cart-hash').val(data.cartHash);
     });
 
   });
@@ -115,6 +119,8 @@
       url: url,
       type: 'PUT',
       data: {'quantity': quantity}
+    }).done(function (data) {
+      $('#cart-hash').val(data.cartHash);
     });
   });
 

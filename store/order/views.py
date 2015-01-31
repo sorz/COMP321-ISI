@@ -26,6 +26,10 @@ def create(request):
         # TODO: Show a message to tell user what happen.
         return HttpResponseRedirect(reverse('cart:index'))
 
+    # Empty cart, return.
+    if not cart.item_set.all().exists():
+        return HttpResponseRedirect(reverse('cart:index'))
+
     if request.method == 'POST':
         order_form = OrderForm(request.POST)
         if order_form.is_valid():
