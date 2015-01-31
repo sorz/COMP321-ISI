@@ -12,6 +12,7 @@
     </thead>
     <tbody>
     {% for item in items %}
+      {# TODO: show out-of-stock and off-shelf information. #}
       <tr class="cart-item
                 {% if not item.in_stock %}out-of-stock{% endif %}
                 {% if item.off_shelf %}off-shelf{% endif %}"

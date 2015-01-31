@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponseRedirect
+from django.contrib import messages
 
 from .models import Product, Rating
 from .forms import RatingForm
@@ -26,7 +27,8 @@ def detail(request, product_id):
             rating_form.save()
             product.update_rating()
 
-            # TODO: Show a "success" message to user.
+            messages.add_message(request, messages.SUCCESS,
+                                 "Thanks for your rating.")
             # Refresh page to prevent duplicate submission
             return HttpResponseRedirect('.')
 

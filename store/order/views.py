@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect, \
     HttpResponseForbidden, HttpResponseBadRequest
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib import messages
 from django.db import transaction
 from rest_framework.views import APIView
 
@@ -23,7 +24,9 @@ def create(request):
     # If it's modified in other page, redirect user to cart view to checkout again.
     cart_hash = request.GET.get('hash')
     if cart_hash is None or cart_hash != str(hash(cart)):
-        # TODO: Show a message to tell user what happen.
+        messages.add_message(request, messages.WARNING,
+                             "Some items has been change, "
+                             "please inspect them and checkout again.")
         return redirect('cart:index')
 
     # Empty cart, return.
@@ -47,7 +50,9 @@ def create(request):
 
                     # Some items are out-of-stock or off-shelf,
                     # abort operation and redirect user back to cart view.
-                    # TODO: Show a message to tell user what happen.
+                    messages.add_message(request, messages.WARNING,
+                                         "Some products are out-of-stock or off-shelf, "
+                                         "please delete them and checkout again.")
                     transaction.abort()
                     return HttpResponseRedirect(reverse('cart:index'))
 
@@ -55,7 +60,8 @@ def create(request):
 
             # Remove the hash since its mission is completed.
             request.session.delete('cart-hash')
-            # TODO: Show success message to user.
+            messages.add_message(request, messages.SUCCESS,
+                                 "Congratulation. We will handle your order soon.")
             return redirect('order:detail', order.pk)
     else:
         initial = {'recipient_name': request.user.get_full_name()}
@@ -122,7 +128,7 @@ def detail(request, order_id):
         return HttpResponseForbidden('You cannot view this order.')
 
     # TODO: Reverse chronological order (D4)
-    messages = order.message_set.all()
+    order_messages = order.message_set.all()
 
     if request.method == 'POST':
         message_form = MessageForm(request.POST)
@@ -133,14 +139,16 @@ def detail(request, order_id):
             message.by_vendor = False
             message.save()
 
-            # TODO: Show a "success" message to user.
+            messages.add_message(request, messages.SUCCESS,
+                                 "Message has been added.")
+
             # Refresh page to prevent duplicate submission
             return HttpResponseRedirect('.')
 
     else:
         message_form = MessageForm()
 
-    dictionary = {'order': order, 'messages': messages,
+    dictionary = {'order': order, 'order_messages': order_messages,
                   'message_form': message_form}
     return render(request, 'order/detail.html', dictionary)
 

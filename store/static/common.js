@@ -43,4 +43,9 @@ function initialize_navbar() {
 $(document).ready(function () {
   initialize_navbar();
 
+  // Auto hide messages.
+  setTimeout(function () {
+    $('#alert-messages').slideUp();
+  }, 5000);
+
 });

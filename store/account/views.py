@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
 
 from .forms import UserRegistrationForm, ProfileForm, UserChangeForm
 from .models import Profile
@@ -60,7 +60,8 @@ def profile_change(request):
             user_form.save()
             profile_form.save()
 
-            # TODO: tell user it's done.
+            messages.add_message(request, messages.SUCCESS,
+                                 "Profile has been changed.")
             return redirect('account:profile')
     else:
         user_form = UserChangeForm(instance=request.user)

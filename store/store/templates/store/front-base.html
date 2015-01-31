@@ -1,4 +1,5 @@
 {% extends "store/base.html" %}
+{% load bootstrap3 %}
 
 {# The template of all pages which are presented to customers.  #}
 
@@ -59,6 +60,9 @@
     </div><!--/.container-fluid -->
   </nav>
 
+  <div id="alert-messages">
+    {% bootstrap_messages %}
+  </div>
   {% block main %}
     {# The main body #}
   {% endblock %}
