@@ -66,18 +66,16 @@ def rest_cart(request):
 class ItemView(APIView):
     @method_decorator(login_required)
     def put(self, request, product_id):
-        """Set the quantity of items."""
+        """Set the quantity of item."""
         cart = Cart(request.user)
         product = get_object_or_404(Product, pk=product_id)
 
         quantity = int(request.data.get('quantity', 1))
-        item, created = cart.item_set.get_or_create(product=product,
-                                                 defaults={'quantity': quantity})
+        created = cart.set_item(product, quantity)
+
         if created:
             return HttpResponse(status=201)
         else:
-            item.quantity = quantity
-            item.save()
             return HttpResponse(status=204)
 
     @method_decorator(login_required)
@@ -96,6 +94,5 @@ class ItemView(APIView):
         cart = Cart(request.user)
         product = get_object_or_404(Product, pk=product_id)
 
-        item = get_object_or_404(cart.item_set, product=product)
-        item.delete()
+        cart.remove(product)
         return HttpResponse(status=204)

@@ -1,4 +1,5 @@
 import zlib
+from django.shortcuts import get_object_or_404
 
 from order.models import OrderItem
 
@@ -16,6 +17,22 @@ class Cart():
 
     def get(self, *args, **kwargs):
         return self.item_set.get(*args, **kwargs)
+
+    def remove(self, product):
+        """Remove a item from shopping cart."""
+        item = get_object_or_404(self.item_set, product=product)
+        item.delete()
+
+    def set_item(self, product, quantity=1):
+        """Add or set the quantity of a product on shopping cart.
+
+        Return True if new item is created.
+        """
+        assert quantity > 0
+        item, created = self.item_set.get_or_create(product=product)
+        item.quantity = quantity
+        item.save()
+        return created
 
     def add_item(self, product, quantity=1):
         """Add (or increase the quantity if existed) a product into shopping cart."""
