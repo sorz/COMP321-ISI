@@ -18,13 +18,12 @@ from cart.utils import Cart, CannotCheckoutItemException
 def create(request):
     cart = Cart(request.user)
 
-    # Check hash to ensure the cart (order) has not been modified
-    # since user click checkout button on shopping cart view.
-    # If it has been modified, redirect user to cart view to checkout again.
-    cart_hash = request.session.get('cart-hash')
-    if cart_hash is None or cart_hash != hash(cart):
+    # Check hash to ensure the cart (order) is consistent between
+    # database and user's expected.
+    # If it's modified in other page, redirect user to cart view to checkout again.
+    cart_hash = request.GET.get('hash')
+    if cart_hash is None or cart_hash != str(hash(cart)):
         # TODO: Show a message to tell user what happen.
-        request.session.delete('cart-hash')
         return HttpResponseRedirect(reverse('cart:index'))
 
     if request.method == 'POST':

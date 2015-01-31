@@ -1,9 +1,5 @@
-<form id="cart" name="cart" method="post" action="{% url 'cart:index' %}">
-  {% csrf_token %}
-  {{ formset.management_form }}
-  {% for form in formset %}
-    {{ form.id }}
-  {% endfor %}
+<form id="cart" method="GET" action="{% url 'order:create' %}">
+  <input type="hidden" name="hash" id="cart-hash" value="{{ cart_hash }}">
   <table class="table">
     <thead>
       <tr>
@@ -15,18 +11,18 @@
       </tr>
     </thead>
     <tbody>
-    {% for form in formset %}
+    {% for item in items %}
       <tr class="cart-item
-                {% if not form.instance.in_stock %}out-of-stock{% endif %}
-                {% if form.instance.off_shelf %}off-shelf{% endif %}"
+                {% if not item.in_stock %}out-of-stock{% endif %}
+                {% if item.off_shelf %}off-shelf{% endif %}"
           data-id="{{ product.instance.pk }}"
-          data-url="{% url 'cart_api:item' form.instance.product.pk %}"
-          data-price="{{ form.instance.price }}" >
-        <td><a href="{% url 'product:detail' form.instance.product.pk %}"
-            title="{{ form.instance.name }} - Product Detail">{{ form.instance.name }}</a></td>
-        <td><span class="value">${{ form.instance.price }}</span></td>
-        <td class="item-quantity">{{ form.quantity }}</td>
-        <td class="item-total-price">$<span class="value">{{ form.instance.total_price }}</span></td>
+          data-url="{% url 'cart_api:item' item.product.pk %}"
+          data-price="{{ item.price }}" >
+        <td><a href="{% url 'product:detail' item.product.pk %}"
+            title="{{ item.name }} - Product Detail">{{ item.name }}</a></td>
+        <td><span class="value">${{ item.price }}</span></td>
+        <td class="item-quantity"><input type="number" value="{{ item.quantity }}" step="1" autocomplete="off"></td>
+        <td class="item-total-price">$<span class="value">{{ item.total_price }}</span></td>
         <td>
           <a class="action-delete" href="#"><span class="glyphicon glyphicon-trash"></span>
             Delete
@@ -36,17 +32,6 @@
           </a>
         </td>
       </tr>
-      {% if form.errors  %}
-      <tr><td class="errors" colspan="4">
-        <ul class="errorlist">
-          {% for name, errors in form.errors.items %}
-            {% for error in errors %}
-              <li>{{ error }}</li>
-            {% endfor %}
-          {% endfor %}
-        </ul>
-      </td></tr>
-      {% endif %}
     {% endfor %}
     </tbody>
   </table>
@@ -131,11 +116,6 @@
       type: 'PUT',
       data: {'quantity': quantity}
     });
-  });
-
-  // Remove removed item before submit.
-  $cart.submit(function () {
-    $cart.find('.cart-item.deleted').remove();
   });
 
   // TODO: Fix quantity inconsistent after page back by user.

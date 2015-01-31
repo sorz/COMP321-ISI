@@ -10,7 +10,7 @@
     <p>Empty</p>
     <p>Go shopping</p>
   {% else %}
-    {% include 'cart/itemset_form.html' with formset=item_formset %}
+    {% include 'cart/itemset_form.html' with items=items %}
 
     {% buttons %}
       <button type="submit" form="cart" class="btn btn-primary">Checkout</button>

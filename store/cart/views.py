@@ -1,41 +1,19 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed, HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed
 from rest_framework.views import APIView
 
 from .utils import Cart
 from .models import Product
-from .forms import CartItemFormSet
 
 
 @login_required
 def index(request):
     cart = Cart(request.user)
+    items = cart.item_set.all()
 
-    if request.method == 'POST':
-        formset = CartItemFormSet(request.POST, instance=cart.user)
-        if formset.is_valid():
-            formset.save()
-
-            # If cart isn't empty, redirect user to order page.
-            if cart.item_set.all():
-
-                # Before redirecting, we save the hash of cart i.
-                # So when user confirm order in few minutes,
-                # we can check and ensure it's not been changed.
-                request.session['cart-hash'] = hash(cart)
-
-                return HttpResponseRedirect(reverse('order:create'))
-
-            else:
-                # Cart is empty, just reload this page where "empty" should be shown.
-                return HttpResponseRedirect('.')
-    else:
-        formset = CartItemFormSet(instance=cart.user)
-
-    dictionary = {'cart': cart, 'item_formset': formset}
+    dictionary = {'cart': cart, 'items': items, 'cart_hash': hash(cart)}
     return render(request, 'cart/index.html', dictionary)
 
 
