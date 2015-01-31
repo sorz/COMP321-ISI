@@ -10,7 +10,12 @@
       {% csrf_token %}
       {% bootstrap_form form %}
 
-      <input type="hidden" name="next" value="{{ next }}" />
+      {# Avoid redirect to those page after login. #}
+      {% if next == '/account/logout/' or next == '/account/login/' or next == '/account/register/'  %}
+         <input type="hidden" name="next" value="/" />
+      {% else %}
+        <input type="hidden" name="next" value="{{ next }}" />
+      {% endif %}
 
       {% buttons %}
         <button type="submit" class="btn btn-primary">Log in</button>

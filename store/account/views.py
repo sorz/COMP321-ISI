@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .forms import UserRegistrationForm, ProfileForm, UserChangeForm
 from .models import Profile
 
+
 @login_required
 def profile(request):
 
