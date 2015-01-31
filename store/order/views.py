@@ -1,10 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.http import HttpResponse, HttpResponseRedirect, \
-    HttpResponseForbidden, HttpResponseBadRequest, HttpResponseServerError
+    HttpResponseForbidden, HttpResponseBadRequest
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
+from rest_framework.views import APIView
 
 from .forms import OrderForm, MessageForm
 from .models import Order, InvalidOrderStatusChangeException
@@ -150,17 +152,15 @@ def done(request, order_id):
     return render(request, 'order/done.html', dictionary)
 
 
-@login_required
-def rest_order(request, order_id):
-    order = get_object_or_404(Order, pk=order_id)
+class OrderView(APIView):
+    @method_decorator(login_required)
+    def put(self, request, order_id):
+        order = get_object_or_404(Order, pk=order_id)
 
-    if order.owner != request.user:
-        return HttpResponseForbidden('You cannot access this order.')
+        if order.owner != request.user:
+            return HttpResponseForbidden('You cannot access this order.')
 
-    # Update status of order.
-    # TODO: PUT may be better.
-    if request.method == 'POST':
-        new_status = request.POST.get('status')
+        new_status = request.data.get('status')
         if new_status is None:
             return HttpResponseBadRequest('Lack argument "status".')
 
@@ -171,6 +171,7 @@ def rest_order(request, order_id):
         # Cancel this order.
         if new_status == 'C':
             try:
+                print('cancel')
                 order.cancel(operator=request.user)
             except InvalidOrderStatusChangeException:
                 return HttpResponseForbidden('Cannot cancel this order.')

@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed, HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from rest_framework.views import APIView
 
 from .utils import Cart
 from .models import Product
@@ -61,32 +63,39 @@ def rest_cart(request):
         return HttpResponseNotAllowed(['GET', 'DELETE'])
 
 
-@login_required
-def rest_item(request, product_id):
-    cart = Cart(request.user)
-    product = get_object_or_404(Product, pk=product_id)
+class ItemView(APIView):
+    @method_decorator(login_required)
+    def put(self, request, product_id):
+        """Set the quantity of items."""
+        cart = Cart(request.user)
+        product = get_object_or_404(Product, pk=product_id)
 
-    # Set the quantity of items.
-    if request.method == 'PUT':
-        quantity = int(request.POST.get('quantity', 1))
-        _, created = cart.item_set.get_or_create(product=product,
+        quantity = int(request.data.get('quantity', 1))
+        item, created = cart.item_set.get_or_create(product=product,
                                                  defaults={'quantity': quantity})
         if created:
             return HttpResponse(status=201)
         else:
+            item.quantity = quantity
+            item.save()
             return HttpResponse(status=204)
 
-    # Add some items.
-    elif request.method == 'POST':
-        quantity = int(request.POST.get('quantity', 1))
+    @method_decorator(login_required)
+    def post(self, request, product_id):
+        """Add some items."""
+        cart = Cart(request.user)
+        product = get_object_or_404(Product, pk=product_id)
+
+        quantity = int(request.data.get('quantity', 1))
         cart.add_item(product, quantity)
         return HttpResponse(status=204)
 
-    # Delete a item.
-    elif request.method == 'DELETE':
+    @method_decorator(login_required)
+    def delete(self, request, product_id):
+        """Delete a item."""
+        cart = Cart(request.user)
+        product = get_object_or_404(Product, pk=product_id)
+
         item = get_object_or_404(cart.item_set, product=product)
         item.delete()
         return HttpResponse(status=204)
-
-    else:
-        return HttpResponseNotAllowed(['PUT', 'POST', 'DELETE'])

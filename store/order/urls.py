@@ -10,6 +10,4 @@ urlpatterns = patterns(
     url(r'^past/$', views.past, name='past'),
     url(r'^(?P<order_id>\d+)/$', views.detail, name='detail'),
     url(r'^(?P<order_id>\d+)/done/', views.done, name='done'),
-
-    url(r'^api/(?P<order_id>\d+)/', views.rest_order, name='order'),
 )

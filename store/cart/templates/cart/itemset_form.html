@@ -20,7 +20,7 @@
                 {% if not form.instance.in_stock %}out-of-stock{% endif %}
                 {% if form.instance.off_shelf %}off-shelf{% endif %}"
           data-id="{{ product.instance.pk }}"
-          data-url="{% url 'cart:item' form.instance.product.pk %}"
+          data-url="{% url 'cart_api:item' form.instance.product.pk %}"
           data-price="{{ form.instance.price }}" >
         <td><a href="{% url 'product:detail' form.instance.product.pk %}"
             title="{{ form.instance.name }} - Product Detail">{{ form.instance.name }}</a></td>

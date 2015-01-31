@@ -9,7 +9,7 @@
   <p>Shipment Date: {{ order.shipment_date }}</p>
 
   {% if order.status in 'HP' %}
-    <button data-order-id="{{ order.pk }}"
+    <button data-url="{% url 'order_api:order' order.pk %}"
             class="cancel-order">Cancel</button>
   {% elif order.status == 'S' %}
     <button data-order-id="{{ order.pk }}"
@@ -50,26 +50,24 @@
     if (!confirm('This order will be canceled permanently.')) {
       return;
     }
-    var orderId = $(this).data('order-id');
+    var url = $(this).data('url');
     $.ajax({
-      url: '/order/api/' + orderId + '/',
-      type: 'POST',
-      data: {'status': 'C'},
-      success: function(result) {
-        location.reload();
-      }
+      url: url,
+      type: 'PUT',
+      data: {'status': 'C'}
+    }).done(function () {
+      location.reload();
     });
   });
 
   $('button.confirm-order').click(function () {
-    var orderId = $(this).data('order-id');
+    var url = $(this).data('url');
     $.ajax({
-      url: '/order/api/' + orderId + '/',
-      type: 'POST',
-      data: {'status': 'R'},
-      success: function(result) {
-        window.location.href = 'done/';
-      }
+      url: url,
+      type: 'PUT',
+      data: {'status': 'R'}
+    }).done(function () {
+      window.location.href = 'done/';
     });
   });
   </script>

@@ -1,6 +1,7 @@
 Django==1.7.2
 django-bootstrap3==5.1.1
 django-bower==5.0.2
+djangorestframework==3.0.4
 Pillow==2.7.0
 pytz==2014.10
 six==1.9.0
