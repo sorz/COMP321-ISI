@@ -1,16 +1,21 @@
 {% extends "store/front-base.html" %}
+{% load bootstrap3 %}
 {% block title %}Register{% endblock %}
 
 {% block main %}
   <h1>Register</h1>
 
-  <form method="post" action=".">{% csrf_token %}
-    {{ user_form.as_ul }}
+  <div class="row">
+    <form method="post" action="." class="col-md-8 col-lg-5 col-sm-12">
+      {% csrf_token %}
+      {% bootstrap_form user_form %}
+      {% bootstrap_form profile_form %}
 
-    {{ profile_form.as_ul }}
-
-    <button type="submit">Submit</button>
-  </form>
+      {% buttons %}
+        <button type="submit" class="btn btn-primary">Register</button>
+      {% endbuttons  %}
+    </form>
+  </div>
 
   <p>Already has a account? <a href="{% url 'account:login' %}">Log in now</a>.</p>
 

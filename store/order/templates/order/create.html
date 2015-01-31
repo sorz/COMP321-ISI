@@ -1,25 +1,36 @@
 {% extends "store/front-base.html" %}
+{% load bootstrap3 %}
 {% block title %}New Order{% endblock %}
 
 {% block main %}
   <h1>Checkout</h1>
 
-  <h2>Order Detail</h2>
-  <p>(list of products)</p>
-  <p>Total price: ${{ cart.total_price }}</p>
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Order Detail</h2>
 
-  <p><a href="{% url 'cart:index' %}"
-     title="Shopping Cart">Back to shopping cart</a>
-  </p>
+      {% include 'order/item-list.html' with items=cart.item_set.all %}
 
-  <h2>Shipping Information</h2>
-  <p>(name, address, postcode form)</p>
+      <p>Total price: ${{ cart.total_price }}</p>
 
-  <form name="order" method="post" action="{% url 'order:create' %}">
-    {% csrf_token %}
-    {{ order_form }}
-    <button type="submit">Submit</button>
-  </form>
+      <p><a href="{% url 'cart:index' %}"
+       title="Shopping Cart">Back to shopping cart</a>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8 col-lg-5 col-sm-12">
+      <h2>Shipping Information</h2>
 
+      <form name="order" method="post" action="{% url 'order:create' %}">
+        {% csrf_token %}
+        {% bootstrap_form order_form %}
+
+        {% buttons %}
+          <button type="submit" class="btn btn-primary">Checkout</button>
+        {% endbuttons  %}
+      </form>
+      </div>
+  </div>
 
 {% endblock %}

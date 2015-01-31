@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'sorl.thumbnail',
     'djangobower',
+    'bootstrap3',
     'product',
     'category',
     'cart',

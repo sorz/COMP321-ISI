@@ -1,14 +1,20 @@
 {% extends "store/front-base.html" %}
+{% load bootstrap3 %}
 {% block title %}Update Profile{% endblock %}
 
 {% block main %}
   <h1>Update Profile</h1>
 
-  <form method="post" action=".">{% csrf_token %}
-    {{ user_form.as_ul }}
-    {{ profile_form.as_ul }}
+  <div class="row">
+    <form method="post" action="." class="col-md-8 col-lg-5 col-sm-12">
+      {% csrf_token %}
+      {% bootstrap_form user_form %}
+      {% bootstrap_form profile_form %}
 
-    <button type="submit">Update</button>
-  </form>
+      {% buttons %}
+        <button type="submit" class="btn btn-primary">Update</button>
+      {% endbuttons  %}
+    </form>
+  </div>
 
 {% endblock %}

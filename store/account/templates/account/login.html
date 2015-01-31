@@ -1,18 +1,22 @@
 {% extends "store/front-base.html" %}
+{% load bootstrap3 %}
 {% block title %}Login{% endblock %}
 
 {% block main %}
   <h1>Login</h1>
 
-  {% if form.has_errors %}
-    <p>Your username and password didn't match. Please try again.</p>
-  {% endif %}
+  <div class="row">
+    <form method="post" action="." class="col-md-8 col-lg-5 col-sm-12">
+      {% csrf_token %}
+      {% bootstrap_form form %}
 
-  <form method="post" action=".">{% csrf_token %}
-    {{ form.as_ul }}
-    <input type="submit" value="login" />
-    <input type="hidden" name="next" value="{{ next }}" />
-  </form>
+      <input type="hidden" name="next" value="{{ next }}" />
+
+      {% buttons %}
+        <button type="submit" class="btn btn-primary">Log in</button>
+      {% endbuttons  %}
+    </form>
+  </div>
 
   <p>Need a account? <a href="{% url 'account:register' %}">Register now</a>.</p>
 
