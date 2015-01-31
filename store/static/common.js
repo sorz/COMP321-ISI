@@ -14,3 +14,31 @@ $.ajaxSetup({
         }
     }
 });
+
+
+function initialize_navbar() {
+
+  // Active current (selected) item.
+
+  var PATH_REGEX_TO_NAME = {
+    '^/account/register/': 'register',
+    '^/account/login/': 'login',
+    '^/account/': 'profile',
+    '^/cart/': 'cart',
+    '^/$': 'home'
+  };
+
+  var path = window.location.pathname;
+  for (var pathRegex in PATH_REGEX_TO_NAME) {
+    if (path.match(pathRegex)) {
+      $('li.nav-' + PATH_REGEX_TO_NAME[pathRegex]).addClass('active');
+      break;
+    }
+  }
+}
+
+
+$(document).ready(function () {
+  initialize_navbar();
+
+});
