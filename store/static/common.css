@@ -2,3 +2,13 @@ body { margin-top: 2em; }
 
 footer { color: darkgray; text-align: center; margin-top: 3em; }
 footer hr { margin: 1em 2em; }
+
+
+/* Shopping cart */
+#cart .action-delete,
+  #cart .action-restore { display: inline-block;  width: 5.5em; }
+#cart .cart-item .action-restore { display: none; }
+
+#cart .cart-item.deleted { opacity: 0.2; }
+#cart .cart-item.deleted .action-delete { display: none; }
+#cart .cart-item.deleted .action-restore { display: inline-block; }

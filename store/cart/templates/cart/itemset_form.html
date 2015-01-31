@@ -11,7 +11,7 @@
         <th>Unit Price</th>
         <th>Quantity</th>
         <th>Total Price</th>
-        <th>Delete</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -27,7 +27,14 @@
         <td><span class="value">${{ form.instance.price }}</span></td>
         <td class="item-quantity">{{ form.quantity }}</td>
         <td class="item-total-price">$<span class="value">{{ form.instance.total_price }}</span></td>
-        <td class="delete-action">{{ form.DELETE }}</td>
+        <td>
+          <a class="action-delete" href="#"><span class="glyphicon glyphicon-trash"></span>
+            Delete
+          </a>
+          <a class="action-restore" href="#"><span class="glyphicon glyphicon-repeat"></span>
+            Restore
+          </a>
+        </td>
       </tr>
       {% if form.errors  %}
       <tr><td class="errors" colspan="4">
@@ -48,8 +55,20 @@
 
 <script>
   // TODO: considering move scripts to a standalone file.
-  var submitTimeout;
-  $('#cart').find('.item-quantity').children('input').each(function () {
+  var $cart = $('#cart');
+
+  // Re-calculate and update the display of total price.
+  function updateTotalPrice() {
+    var totalPrice = 0;
+    $('.cart-item').not('.deleted')
+        .find('.item-total-price').children('.value').each(function () {
+          totalPrice += parseFloat($(this).text());
+    });
+    $('span.total-price').text(totalPrice);
+  }
+
+  // Changing quantity.
+  $cart.find('.item-quantity').children('input').each(function () {
     $(this).change(function () {
       var $item = $(this).parents('.cart-item');
       var quantity = this.value;
@@ -59,27 +78,64 @@
       // Re-calculate sub-total price.
       $item.find('.item-total-price').children('.value').text(quantity * price);
 
-      // Re-calculate total price.
-      var totalPrice = 0;
-      $('.item-total-price').children('.value').each(function () {
-        totalPrice += parseFloat($(this).text());
-      });
-      $('span.total-price').text(totalPrice);
+      updateTotalPrice();
 
       // Submit new quantity in several seconds.
       // Avoid submit too frequently when user click continuously.
-      if (submitTimeout != undefined) {
-        clearTimeout(submitTimeout);
+      var timeout = $item.data('timeout');
+      if (timeout != undefined) {
+        clearTimeout(timeout);
       }
-      submitTimeout = setTimeout(function () {
-        submitTimeout = undefined;
+      timeout = setTimeout(function () {
+        $item.removeData('timeout');
         $.ajax({
           url:  url,
           type: 'PUT',
           data: {'quantity': quantity}
         });
       }, 800);
+      $item.data('timeout', timeout);
     });
+  });
+
+  // Deleting item.
+  $cart.find('a.action-delete').click(function (event) {
+    event.preventDefault();
+    var $item = $(this).parents('.cart-item');
+    var url = $item.data('url');
+
+    $item.addClass('deleted')
+         .find('input').attr('disabled', '');
+    updateTotalPrice();
+
+    $.ajax({
+      url: url,
+      type: 'DELETE'
+    });
+
+  });
+
+  // Restoring item.
+  $cart.find('a.action-restore').click(function (event) {
+    event.preventDefault();
+    var $item = $(this).parents('.cart-item');
+    var url = $item.data('url');
+    var quantity = $item.find('.item-quantity').find('input').val();
+
+    $item.removeClass('deleted')
+         .find('input').removeAttr('disabled');
+    updateTotalPrice();
+
+    $.ajax({
+      url: url,
+      type: 'PUT',
+      data: {'quantity': quantity}
+    });
+  });
+
+  // Remove removed item before submit.
+  $cart.submit(function () {
+    $cart.find('.cart-item.deleted').remove();
   });
 
   // TODO: Fix quantity inconsistent after page back by user.

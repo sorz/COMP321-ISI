@@ -39,6 +39,7 @@ def index(request):
     return render(request, 'cart/index.html', dictionary)
 
 
+# TODO: Refactor it by using REST framework, or delete it.
 @login_required
 def rest_cart(request):
     cart = Cart(request.user)
