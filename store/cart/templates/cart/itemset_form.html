@@ -21,7 +21,8 @@
         <td><a href="{% url 'product:detail' item.product.pk %}"
             title="{{ item.name }} - Product Detail">{{ item.name }}</a></td>
         <td><span class="value">${{ item.price }}</span></td>
-        <td class="item-quantity"><input type="number" value="{{ item.quantity }}" step="1" autocomplete="off"></td>
+        <td class="item-quantity"><input type="number" value="{{ item.quantity }}"
+                                         min="1" step="1" autocomplete="off"></td>
         <td class="item-total-price">$<span class="value">{{ item.total_price }}</span></td>
         <td>
           <a class="action-delete" href="#"><span class="glyphicon glyphicon-trash"></span>
@@ -125,6 +126,4 @@
   });
 
   // TODO: Fix quantity inconsistent after page back by user.
-
-  // TODO: Delete (and restore?) action.
 </script>

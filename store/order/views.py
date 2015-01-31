@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponse, HttpResponseRedirect, \
@@ -24,11 +24,11 @@ def create(request):
     cart_hash = request.GET.get('hash')
     if cart_hash is None or cart_hash != str(hash(cart)):
         # TODO: Show a message to tell user what happen.
-        return HttpResponseRedirect(reverse('cart:index'))
+        return redirect('cart:index')
 
     # Empty cart, return.
     if not cart.item_set.all().exists():
-        return HttpResponseRedirect(reverse('cart:index'))
+        return redirect('cart:index')
 
     if request.method == 'POST':
         order_form = OrderForm(request.POST)
@@ -55,7 +55,8 @@ def create(request):
 
             # Remove the hash since its mission is completed.
             request.session.delete('cart-hash')
-            return HttpResponse("done.")  # TODO: redirection
+            # TODO: Show success message to user.
+            return redirect('order:detail', order.pk)
     else:
         initial = {'recipient_name': request.user.get_full_name()}
         try:
@@ -67,7 +68,8 @@ def create(request):
 
         order_form = OrderForm(initial=initial)
 
-    dictionary = {'cart': cart, 'order_form': order_form}
+    dictionary = {'cart': cart, 'order_form': order_form,
+                  'cart_hash': cart_hash}
     return render(request, 'order/create.html', dictionary)
 
 

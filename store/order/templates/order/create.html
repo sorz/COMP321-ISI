@@ -22,7 +22,8 @@
     <div class="col-md-8 col-lg-5 col-sm-12">
       <h2>Shipping Information</h2>
 
-      <form name="order" method="post" action="{% url 'order:create' %}">
+      <form name="order" method="post"
+            action="{% url 'order:create' %}?hash={{ cart_hash }}">
         {% csrf_token %}
         {% bootstrap_form order_form %}
 
