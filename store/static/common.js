@@ -27,7 +27,8 @@ function initialize_navbar() {
     '^/category/': 'category',
     '^/order/': 'purchase',
     '^/cart/': 'cart',
-    '^/$': 'home'
+    '^/$': 'home',
+    '^/dashboard/': 'overview'
   };
 
   var path = window.location.pathname;
