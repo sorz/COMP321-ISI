@@ -26,11 +26,10 @@
 </head>
 <body>
 
-  <div class="container">
-    {% block container %}
-      {# Including main body with navigation bar and sidebar (if necessary). #}
-    {% endblock %}
-  </div>
+
+  {% block body %}
+    {# Including main body with navigation bar and sidebar (if necessary). #}
+  {% endblock %}
 
   <!-- Bootstrap -->
   <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>

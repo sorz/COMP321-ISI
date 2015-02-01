@@ -16,6 +16,7 @@ urlpatterns = patterns(
     url(r'^cart/', include('cart.urls', namespace='cart')),
     url(r'^order/', include('order.urls', namespace='order')),
     url(r'^account/', include('account.urls', namespace='account')),
+    url(r'^dashboard/', include('dashboard.urls', namespace='dashboard')),
 
     # RESTful APIs.
     url(r'^api/cart/', include('cart.urls_api', namespace='cart_api')),
