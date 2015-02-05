@@ -10,8 +10,8 @@ RATING_DISPLAY = ('Horrible', 'Bad', 'Fair', 'Good', 'Fantastic')
 
 
 class Product(models.Model):
-    name = models.CharField('Product Name', max_length=255)
-    price = models.DecimalField(max_digits=9, decimal_places=2,
+    name = models.CharField('Product name', max_length=255)
+    price = models.DecimalField('Price ($)', max_digits=9, decimal_places=2,
                                 validators=[MinValueValidator(0)])
     category = models.ForeignKey(Category)
     in_stock = models.BooleanField(default=True)
@@ -20,20 +20,20 @@ class Product(models.Model):
 
     # Router specified properties:
 
-    eth_chip = models.CharField('Ethernet Chip', max_length=127, blank=True)
+    eth_chip = models.CharField('Ethernet chip', max_length=127, blank=True)
     # e.g. Atheros AR9344. Blank value stands for unknown.
 
-    cpu_model = models.CharField(max_length=127, blank=True)
+    cpu_model = models.CharField('CPU model', max_length=127, blank=True)
     # e.g. AR9344. Blank value stands for unknown.
 
-    lan_speed = models.IntegerField("Max LAN Speed",
+    lan_speed = models.IntegerField("Max LAN speed",
                                     validators=[MinValueValidator(1)])
     lan_ports = models.IntegerField('No. of LAN ports',
                                     validators=[MinValueValidator(0)])
     wan_ports = models.IntegerField('No. of WAN ports',
                                     validators=[MinValueValidator(0)])
-    wireless_type = models.CharField(max_length=127, null=True)
-    # e.g. 802.11b/g/n/ac. Null value stands for not supported.
+    wireless_type = models.CharField(max_length=127, blank=True)
+    # e.g. 802.11b/g/n/ac. Blank value stands for not supported.
 
     power = models.CharField(max_length=127, blank=True)
     # e.g. 12 VDC, 2 A. Blank value stands for unknown.
