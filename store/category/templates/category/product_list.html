@@ -1,4 +1,3 @@
-{% load thumbnail %}
 <form action="."  method="GET" name="filter">
   <label>Filter:
   <input name="filter" type="search" autocomplete="on"
@@ -48,17 +47,7 @@
 
 <ul>
   {% for product in products %}
-    <li>
-      {% thumbnail product.get_image "64x64" crop="center" as im %}
-        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-        <br>
-      {% endthumbnail %}
-      <a href="{% url 'product:detail' product.id %}">{{ product.name }}</a>
-      - ${{ product.price }}
-      {% if product.average_rating %}
-        - {{ product.average_rating }}
-      {% endif %}
-    </li>
+    <li>{% include list_item %}</li>
   {% empty %}
     (no related product)
   {% endfor %}

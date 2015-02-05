@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.views.generic.base import TemplateView
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
@@ -7,6 +7,13 @@ from .models import Category
 
 class IndexView(TemplateView):
     template_name = 'category/index.html'
+
+    def render_to_response(self, context, **response_kwargs):
+        # Set current_app so that url() on template can render correctly.
+        # https://docs.djangoproject.com/en/1.7/topics/http/urls/#topics-http-reversing-url-namespaces
+        response_kwargs['current_app'] = self.request.resolver_match.namespace
+
+        return super().render_to_response(context, **response_kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -18,6 +25,10 @@ class IndexView(TemplateView):
 
 class DetailView(TemplateView):
     template_name = 'category/detail.html'
+
+    def render_to_response(self, context, **response_kwargs):
+        response_kwargs['current_app'] = self.request.resolver_match.namespace
+        return super().render_to_response(context, **response_kwargs)
 
     def get_context_data(self, category_id, **kwargs):
         context = super().get_context_data(**kwargs)

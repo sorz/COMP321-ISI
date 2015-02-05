@@ -7,5 +7,7 @@ urlpatterns = patterns(
     url(r'^$', views.overview, name='overview'),
 
     url(r'^category/', include('category_dash.urls', namespace='category')),
+    url(r'^product/', include('product_dash.urls', namespace='product')),
+
 
 )

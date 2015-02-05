@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'account',
     'dashboard',
     'category_dash',
+    'product_dash',
 )
 
 MIDDLEWARE_CLASSES = (

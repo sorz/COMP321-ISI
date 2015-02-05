@@ -1,0 +1,11 @@
+{% load thumbnail %}
+
+{% thumbnail product.get_image "64x64" crop="center" as im %}
+  <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+  <br>
+{% endthumbnail %}
+<a href="{% url 'dashboard:product:detail' product.id %}">{{ product.name }}</a>
+- ${{ product.price }}
+{% if product.average_rating %}
+  - {{ product.average_rating }}
+{% endif %}
