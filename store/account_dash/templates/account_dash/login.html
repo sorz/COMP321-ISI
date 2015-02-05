@@ -1,0 +1,24 @@
+{% extends "store/base.html" %}
+{% load bootstrap3 %}
+
+{% block body %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 col-sm-12">
+      <h1>Vendor Login</h1>
+      <form method="POST" action="." id="login-form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+
+        {% url 'dashboard:overview' as overview %}
+        <input type="hidden" name="next" value="{% firstof next overview %}" />
+
+        {% buttons %}
+          <button type="submit" class="btn btn-primary">Log in</button>
+        {% endbuttons  %}
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

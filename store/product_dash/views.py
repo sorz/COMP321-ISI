@@ -4,8 +4,10 @@ from django.contrib import messages
 
 from .forms import ProductForm, PhotoFormSet
 from product.models import Product
+from dashboard.decorators import vendor_required
 
 
+@vendor_required
 def detail(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
 
@@ -28,6 +30,7 @@ def detail(request, product_id):
     return render(request, 'product_dash/detail.html', dictionary)
 
 
+@vendor_required
 def create(request):
     # TODO: add new product.
     pass

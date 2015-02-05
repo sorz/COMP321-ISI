@@ -4,8 +4,8 @@ from . import views
 
 urlpatterns = patterns(
     '',
-    url(r'^$', views.IndexView.as_view(
+    url(r'^$', views.VendorIndexView.as_view(
         template_name='category_dash/index.html'), name='index'),
-    url(r'^(?P<category_id>\d+)/$', views.DetailView.as_view(
+    url(r'^(?P<category_id>\d+)/$', views.VendorDetailView.as_view(
         template_name='category_dash/detail.html'), name='detail')
 )

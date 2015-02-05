@@ -8,6 +8,6 @@ urlpatterns = patterns(
 
     url(r'^category/', include('category_dash.urls', namespace='category')),
     url(r'^product/', include('product_dash.urls', namespace='product')),
-
+    url(r'^account/', include('account_dash.urls', namespace='account')),
 
 )
