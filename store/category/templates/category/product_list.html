@@ -1,0 +1,67 @@
+{% load thumbnail %}
+<form action="."  method="GET" name="filter">
+  <label>Filter:
+  <input name="filter" type="search" autocomplete="on"
+         placeholder="Product name" value="{{ filter }}"></label>
+  <input type="hidden" name="sort" value="{{ sort }}">
+  <input type="hidden" name="page" value="{{ products.number }}">
+  <button type="submit">Search</button>
+  {% if filter %}
+    <button id="filter-reset">Clear</button>
+  {% endif %}
+</form>
+
+<script>
+  $(document).ready(function () {
+    $('#filter-reset').click(function () {
+      $('input[name="filter"]').val('');
+      $('form[name="filter]').submit();
+    });
+  });
+</script>
+
+<p>Sort:
+  {% if not sort %}
+    default,
+  {% else %}
+    <a href="?filter={{ filter }}&page={{ products.number }}">default</a>,
+  {% endif %}
+
+  {% if sort == 'price' %}
+    price,
+  {% else %}
+    <a href="?filter={{ filter }}&sort=price&page={{ products.number }}">price</a>,
+  {% endif %}
+
+  {% if sort == '-price' %}
+    price (reverse),
+  {% else %}
+    <a href="?filter={{ filter }}&sort=-price&page={{ products.number }}">price (reverse)</a>,
+  {% endif %}
+
+  {% if sort == '-rating' %}
+    rating,
+  {% else %}
+    <a href="?filter={{ filter }}&sort=-rating&page={{ products.number }}">rating</a>.
+  {% endif %}
+</p>
+
+<ul>
+  {% for product in products %}
+    <li>
+      {% thumbnail product.get_image "64x64" crop="center" as im %}
+        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+        <br>
+      {% endthumbnail %}
+      <a href="{% url 'product:detail' product.id %}">{{ product.name }}</a>
+      - ${{ product.price }}
+      {% if product.average_rating %}
+        - {{ product.average_rating }}
+      {% endif %}
+    </li>
+  {% empty %}
+    (no related product)
+  {% endfor %}
+</ul>
+
+{% include 'store/common-pagination.html' with list=products %}

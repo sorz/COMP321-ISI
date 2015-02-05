@@ -1,0 +1,11 @@
+{% extends "dashboard/board-base.html" %}
+{% block title %}{{ category }} - Dashboard{% endblock %}
+
+{% block main %}
+
+  <h1>{{ category }}</h1>
+  <p>{{ category.description }}</p>
+
+  {% include 'category/product_list.html' with dash=True %}
+
+{% endblock %}

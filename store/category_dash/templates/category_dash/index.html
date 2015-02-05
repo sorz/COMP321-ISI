@@ -1,0 +1,14 @@
+{% extends "dashboard/board-base.html" %}
+{% block title %}Categories - Dashboard{% endblock %}
+
+{% block main %}
+
+  <h1>Categories</h1>
+  <ul>
+    {% for category in categories %}
+      <li><a href="{% url 'dashboard:category:detail' category.id %}">
+        {{ category.name }}</a></li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}
