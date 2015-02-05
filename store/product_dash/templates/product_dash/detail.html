@@ -8,16 +8,27 @@
   <h1>{{ product }}</h1>
 
   <div class="row">
-    <div class="col-md-8 col-lg-5 col-sm-12">
-      <form name="product" method="post" action=".">
-        {% csrf_token %}
+    <form id="product-form" method="post" action="." enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="col-md-6 col-lg-5 col-sm-12">
+        <h2 class="sub-header">Information</h2>
         {% bootstrap_form product_form %}
-
-        {% buttons %}
-          <button type="submit" class="btn btn-primary">Save</button>
-        {% endbuttons  %}
-      </form>
       </div>
+
+      <div class="col-md-6 col-lg-offset-1 col-lg-5 col-sm-12">
+        <h2 class="sub-header">Photos</h2>
+        {% bootstrap_formset photo_formset %}
+      </div>
+    </form>
+  </div><!--/.row -->
+
+  <div class="row">
+    <div class="col-md-12">
+      {% buttons %}
+        <button type="submit" form="product-form"
+                class="btn btn-primary">Save</button>
+      {% endbuttons  %}
+    </div>
   </div>
 
 {% endblock %}
