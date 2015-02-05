@@ -18,6 +18,28 @@ class Product(models.Model):
     off_shelf = models.BooleanField(default=False)
     description = models.TextField(blank=True)
 
+    # Router specified properties:
+
+    eth_chip = models.CharField('Ethernet Chip', max_length=127, blank=True)
+    # e.g. Atheros AR9344. Blank value stands for unknown.
+
+    cpu_model = models.CharField(max_length=127, blank=True)
+    # e.g. AR9344. Blank value stands for unknown.
+
+    lan_speed = models.IntegerField("Max LAN Speed",
+                                    validators=[MinValueValidator(1)])
+    lan_ports = models.IntegerField('No. of LAN ports',
+                                    validators=[MinValueValidator(0)])
+    wan_ports = models.IntegerField('No. of WAN ports',
+                                    validators=[MinValueValidator(0)])
+    wireless_type = models.CharField(max_length=127, null=True)
+    # e.g. 802.11b/g/n/ac. Null value stands for not supported.
+
+    power = models.CharField(max_length=127, blank=True)
+    # e.g. 12 VDC, 2 A. Blank value stands for unknown.
+
+    has_usb = models.BooleanField('Has USB ports', default=False)
+
     # Cache the average rating, re-calculate once any user change the rating.
     average_rating = models.FloatField("Average rating", default=0, editable=False)
 
