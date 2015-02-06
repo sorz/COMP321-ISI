@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load bootstrap3 %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -24,7 +25,9 @@
   {% endblock %}
 </head>
 <body>
-
+  <div id="alert-messages">
+    {% bootstrap_messages %}
+  </div>
 
   {% block body %}
     {# Including main body with navigation bar and sidebar (if necessary). #}

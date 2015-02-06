@@ -46,7 +46,9 @@ $(document).ready(function () {
 
   // Auto hide messages.
   setTimeout(function () {
-    $('#alert-messages').slideUp();
+    $('#alert-messages').slideUp(function () {
+      $(this).empty();
+    });
   }, 5000);
 
 });
