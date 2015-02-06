@@ -3,12 +3,9 @@
 
 {% block main %}
 
-  <h1>Categories</h1>
-  <ul>
-    {% for category in categories %}
-      <li><a href="{% url 'category:detail' category.id %}">
-        {{ category.name }}</a></li>
-    {% endfor %}
-  </ul>
+  <h1 class="page-header">Categories</h1>
+  <div class="row" id="category-list">
+    {% include 'category/category_list.html' with buttons='category/category_list_buttons.html' %}
+  </div>
 
 {% endblock %}

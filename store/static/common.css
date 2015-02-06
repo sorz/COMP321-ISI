@@ -7,6 +7,8 @@ footer hr { margin: 1em 2em; }
 #alert-messages { position: absolute; top: 7em; z-index: 50; width: 100%; text-align: center;}
 #alert-messages > div { display: inline-block; }
 
+/* Categories */
+#category-list .thumbnail { width: 300px; margin: 1em auto; }
 
 /* Shopping cart */
 #cart .action-delete,
