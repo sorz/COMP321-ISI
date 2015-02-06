@@ -1,49 +1,48 @@
-<form action="."  method="GET" name="filter">
-  <label>Filter:
-  <input name="filter" type="search" autocomplete="on"
-         placeholder="Product name" value="{{ filter }}"></label>
-  <input type="hidden" name="sort" value="{{ sort }}">
-  <input type="hidden" name="page" value="{{ products.number }}">
-  <button type="submit">Search</button>
-  {% if filter %}
-    <button id="filter-reset">Clear</button>
-  {% endif %}
-</form>
+{% load thumbnail %}
 
-<script>
-  $(document).ready(function () {
-    $('#filter-reset').click(function () {
-      $('input[name="filter"]').val('');
-      $('form[name="filter]').submit();
-    });
-  });
-</script>
+<div class="row">
 
-<p>Sort:
-  {% if not sort %}
-    default,
-  {% else %}
-    <a href="?filter={{ filter }}&page={{ products.number }}">default</a>,
-  {% endif %}
+  <div class="col-md-12">
+    <form action="." method="GET" name="filter" class="form-inline">
+      <input name="filter" type="search" class="form-control" autocomplete="on"
+             placeholder="Product name" value="{{ filter }}">
+      <input type="hidden" name="sort" value="{{ sort }}">
+      <input type="hidden" name="page" value="{{ products.number }}">
+      <button type="submit" class="btn btn-default">Filter</button>
+      {% if filter %}
+        <button id="filter-reset" class="btn btn-default">Clear</button>
+      {% endif %}
+    </form>
 
-  {% if sort == 'price' %}
-    price,
-  {% else %}
-    <a href="?filter={{ filter }}&sort=price&page={{ products.number }}">price</a>,
-  {% endif %}
+    <script>
+      $(document).ready(function () {
+        $('#filter-reset').click(function () {
+          $('input[name="filter"]').val('');
+          $('form[name="filter]').submit();
+        });
+      });
+    </script>
+  </div>
+</div>
 
-  {% if sort == '-price' %}
-    price (reverse),
-  {% else %}
-    <a href="?filter={{ filter }}&sort=-price&page={{ products.number }}">price (reverse)</a>,
-  {% endif %}
-
-  {% if sort == '-rating' %}
-    rating,
-  {% else %}
-    <a href="?filter={{ filter }}&sort=-rating&page={{ products.number }}">rating</a>.
-  {% endif %}
-</p>
+<div class="row">
+  <div class="col-md-12">
+    <div class="btn-group" role="group" >
+      <a role="button" class="btn btn-default {% if not sort %}active{% endif %}"
+          href="?filter={{ filter }}&page={{ products.number }}"><span class="glyphicon
+          glyphicon-sort"></span> Default</a>
+      <a role="button" class="btn btn-default {% if sort == 'price' %}active{% endif %}"
+          href="?filter={{ filter }}&sort=price&page={{ products.number }}"><span class="glyphicon
+          glyphicon-sort-by-order"></span> Price</a>
+      <a role="button" class="btn btn-default {% if sort == '-price' %}active{% endif %}"
+          href="?filter={{ filter }}&sort=-price&page={{ products.number }}"><span class="glyphicon
+          glyphicon-sort-by-order-alt"></span> Price</a>
+      <a role="button" class="btn btn-default {% if sort == '-rating' %}active{% endif %}"
+          href="?filter={{ filter }}&sort=-rating&page={{ products.number }}"><span class="glyphicon
+          glyphicon-sort-by-attributes-alt"></span> Rating</a>
+    </div>
+  </div>
+</div>
 
 <ul>
   {% for product in products %}

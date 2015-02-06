@@ -3,8 +3,9 @@
 
 {% block main %}
 
-  <a href="{% url 'category:index' %}">All categories</a>
-  <h1>{{ category }}</h1>
+  <h1 class="page-header">{{ category }}
+    <small>All products</small>
+  </h1>
   <p>{{ category.description }}</p>
 
   {% include 'category/product_list.html' with list_item='category/product_list_item.html' %}
