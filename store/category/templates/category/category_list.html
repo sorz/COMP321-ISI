@@ -4,8 +4,11 @@
   <div class="col-sm-6 col-md-4">
     <div class="thumbnail">
       {% thumbnail category.get_cover_image "290x193" crop="center" as im %}
-      <img src="{{ im.url }}" alt="cover photo">
-      {# TODO: placeholder if no image #}
+        <img src="{{ im.url }}" alt="cover photo">
+      {% empty %}
+        <div class="placeholder">
+          <span>No Image</span>
+        </div>
       {% endthumbnail %}
       <div class="caption">
         <h3>{{ category.name }}</h3>

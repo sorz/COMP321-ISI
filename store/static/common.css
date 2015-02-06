@@ -9,6 +9,9 @@ footer hr { margin: 1em 2em; }
 
 /* Categories */
 #category-list .thumbnail { width: 300px; margin: 1em auto; }
+#category-list .placeholder { width: 290px; height: 193px; margin: 0; background: whitesmoke;
+    text-align: center; padding-top: 85px; font-size: 2em; color: lightgray; }
+
 
 /* Shopping cart */
 #cart .action-delete,
