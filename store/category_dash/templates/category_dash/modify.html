@@ -1,0 +1,22 @@
+{% extends "dashboard/board-base.html" %}
+{% load bootstrap3 %}
+{% block title %}Edit Category - Dashboard{% endblock %}
+
+{% block main %}
+
+  <h1 class="page-header">Edit Category</h1>
+  <div class="row">
+    <form method="post" action="." class="col-md-8 col-lg-5 col-sm-12">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+
+      {% buttons %}
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a role="button" class="btn btn-default"
+           href="{% url 'dashboard:category:index' %}">Cancel</a>
+      {% endbuttons  %}
+
+    </form>
+  </div>
+
+{% endblock %}
