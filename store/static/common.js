@@ -28,6 +28,10 @@ function initialize_navbar() {
     '^/order/': 'purchase',
     '^/cart/': 'cart',
     '^/$': 'home',
+    '^/dashboard/category/new/': 'category-new',
+    '^/dashboard/category/': 'management',
+    '^/dashboard/product/new/': 'product-new',
+    '^/dashboard/product/': 'management',
     '^/dashboard/': 'overview'
   };
 

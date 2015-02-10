@@ -7,5 +7,4 @@ urlpatterns = patterns(
     url(r'^(?P<product_id>\d+)/$', views.detail, name='detail'),
     url(r'^new/$', views.create, name='create'),
 
-
 )

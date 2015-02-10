@@ -1,11 +1,12 @@
+{# Used by both creation and modifation. #}
+{# If {{ product }} exists, it's a modifation, otherwise it's creation. #}
 {% extends "dashboard/board-base.html" %}
 {% load bootstrap3 %}
-{% block title %}{{ product }} - Dashboard{% endblock %}
-
+{% block title %}{% firstof product "Add product" %} - Dashboard{% endblock %}
 
 {% block main %}
 
-  <h1>{{ product }}</h1>
+  <h1>{% firstof product "Add product" %}</h1>
 
   <div class="row">
     <form id="product-form" method="post" action="." enctype="multipart/form-data">
@@ -25,8 +26,13 @@
   <div class="row">
     <div class="col-md-12">
       {% buttons %}
+        {% if product %}
         <button type="submit" form="product-form"
                 class="btn btn-primary">Save</button>
+        {% else %}
+        <button type="submit" form="product-form"
+                class="btn btn-primary">Save &amp; add another</button>
+        {% endif %}
       {% endbuttons  %}
     </div>
   </div>

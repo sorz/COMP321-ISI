@@ -38,16 +38,15 @@
 
     <div class="col-sm-3 col-md-2 sidebar">
       <ul class="nav nav-sidebar">
-        <li class="nav-overview"><a href="#">Overview</a></li>
+        <li class="nav-overview"><a href="{% url 'dashboard:overview' %}">Overview</a></li>
         <li><a href="#">Products</a></li>
         <li><a href="#">Orders</a></li>
         <li><a href="#">Report</a></li>
       </ul>
       <ul class="nav nav-sidebar">
-        <li><a href="">List categories</a></li>
-        <li><a href="">Add categories</a></li>
-        <li><a href="">List products</a></li>
-        <li><a href="">Add products</a></li>
+        <li class="nav-management"><a href="{% url 'dashboard:category:index' %}">Product management</a></li>
+        <li class="nav-category-new"><a href="{% url 'dashboard:category:create' %}">Add new category</a></li>
+        <li class="nav-product-new"><a href="{% url 'dashboard:product:create' %}">Add new product</a></li>
       </ul>
       <ul class="nav nav-sidebar">
         <li><a href="">Pending orders</a></li>

@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from django.db import transaction
 
 
 from .forms import ProductForm, PhotoFormSet
@@ -32,5 +33,32 @@ def detail(request, product_id):
 
 @vendor_required
 def create(request):
-    # TODO: add new product.
-    pass
+    if request.method == 'POST':
+        product_form = ProductForm(request.POST)
+
+        if product_form.is_valid():
+
+            # Product form have to be saved, then we can validate photo form.
+            # Disable autocommit, so we can rollback if photo form is invalid.
+            with transaction.atomic():
+                product = product_form.save()
+                photo_formset = PhotoFormSet(request.POST, request.FILES, instance=product)
+
+                if photo_formset.is_valid():
+                    photo_formset.save()
+                    messages.add_message(request, messages.SUCCESS,
+                                         "Product %s added." % product.name)
+                    return redirect('dashboard:product:create')
+
+                else:
+                    # Photo form validate failed, rollback product.
+                    transaction.rollback()
+        else:
+            photo_formset = PhotoFormSet(request.POST, request.FILES)
+
+    else:
+        product_form = ProductForm()
+        photo_formset = PhotoFormSet()
+
+    dictionary = {'product_form': product_form, 'photo_formset': photo_formset}
+    return render(request, 'product_dash/detail.html', dictionary)
