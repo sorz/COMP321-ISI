@@ -5,15 +5,28 @@ footer hr { margin: 1em 2em; }
 
 .row { margin-bottom: 20px; }
 
+.placeholder { margin: 0; background: whitesmoke; text-align: center; color: lightgray; }
+
 /* Alert messages */
 #alert-messages { position: absolute; top: 7em; z-index: 50; width: 100%; text-align: center;}
 #alert-messages > div { display: inline-block; }
 
 /* Categories */
 #category-list .thumbnail { width: 300px; margin: 1em auto; }
-#category-list .placeholder { width: 290px; height: 193px; margin: 0; background: whitesmoke;
-    text-align: center; padding-top: 85px; font-size: 2em; color: lightgray; }
+#category-list .placeholder { width: 290px; height: 193px; padding-top: 85px; font-size: 2em; }
 
+/* Product list */
+#product-list { list-style: none; padding-left: 0; margin-top: 2em; }
+#product-list hr { clear: left; }
+#product-list li:last-child hr { visibility: hidden; }
+
+#product-list .col-thumbnail { text-align: center; }
+#product-list .thumbnail { display: inline-block; }
+#product-list .placeholder { width: 96px; height: 96px; padding-top: 40px; }
+
+#product-list h3 { display: inline-block; margin: 0 0 5px; padding-left: 15px; }
+#product-list .price { font-size: 1.25em; color: #b11904; }
+#product-list .rating { font-size: 1.1em; cursor: help; color: #555; }
 
 /* Shopping cart */
 #cart .action-delete,

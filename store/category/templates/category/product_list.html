@@ -44,12 +44,19 @@
   </div>
 </div>
 
-<ul>
-  {% for product in products %}
-    <li>{% include list_item %}</li>
-  {% empty %}
-    (no related product)
-  {% endfor %}
-</ul>
+<div class="row">
+  <div class="col-md-12">
+    <ul id="product-list">
+      {% for product in products %}
+        <li class="row">
+          {% include list_item %}
+          <hr>
+        </li>
+      {% empty %}
+        (no related product)
+      {% endfor %}
+    </ul>
+  </div>
+</div>
 
 {% include 'store/common-pagination.html' with list=products %}

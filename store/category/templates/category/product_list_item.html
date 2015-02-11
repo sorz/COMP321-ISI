@@ -1,11 +1,36 @@
 {% load thumbnail %}
 
-{% thumbnail product.get_image "64x64" crop="center" as im %}
-  <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-  <br>
-{% endthumbnail %}
-<a href="{% url 'product:detail' product.id %}">{{ product.name }}</a>
-- ${{ product.price }}
-{% if product.average_rating %}
-  - {{ product.average_rating }}
-{% endif %}
+<div class="col-thumbnail col-md-2">
+  <div class="thumbnail">
+  {% thumbnail product.get_image "96x96" crop="center" as im %}
+    <img src="{{ im.url }}"
+       width="{{ im.width }}" height="{{ im.height }}">
+  {% empty %}
+    <div class="placeholder">
+      <span>No Image</span>
+    </div>
+  {% endthumbnail %}
+  </div>
+</div>
+
+
+<div class="col-md-10">
+  <a href="{% url 'product:detail' product.id %}"><h3>{{ product.name }}</h3></a>
+
+  <div class="product-detail row-fluid">
+    <div class="col-md-3">
+      <span class="price">${{ product.price }}</span><br>
+      {% if product.average_rating %}
+        <span title="Rated by {{ product.rating_set.count }} customers"
+            class="rating">{{ product.get_average_rating_display }}
+          <sup>{{ product.average_rating }}</sup></span>
+      {% endif %}
+    </div>
+    <div class="col-md-2 col-md-offset-7">
+      <button class="btn btn-default btn-block">Buy now</button>
+      <a class="btn btn-default btn-block" role="button"
+         href="{% url 'product:detail' product.id %}">View detail</a>
+    </div>
+  </div>
+
+</div>
