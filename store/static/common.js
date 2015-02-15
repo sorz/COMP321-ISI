@@ -54,5 +54,13 @@ $(document).ready(function () {
       $(this).empty();
     });
   }, 5000);
+  
+  // Add-to-shopping-cart button.
+  $('button.buy').click(function () {
+    $.post($(this).data('link'), function () {
+      alert('Added.');
+    });
+  });
 
 });
+

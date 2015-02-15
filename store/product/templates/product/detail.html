@@ -64,15 +64,3 @@
   <p>{{ product.description }}</p>
 
 {% endblock %}
-
-{% block footer %}
-<script>
-  $(document).ready(function () {
-    $('.buy').click(function () {
-      $.post($(this).data('link'), function (data) {
-        alert('Added.');
-      });
-    });
-  });
-</script>
-{% endblock %}

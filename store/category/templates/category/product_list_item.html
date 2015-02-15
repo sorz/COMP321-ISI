@@ -27,7 +27,8 @@
       {% endif %}
     </div>
     <div class="col-md-2 col-md-offset-7">
-      <button class="btn btn-default btn-block">Buy now</button>
+      <button class="btn btn-default btn-block buy"
+          data-link="{% url 'cart_api:item' product.id %}">Buy now</button>
       <a class="btn btn-default btn-block" role="button"
          href="{% url 'product:detail' product.id %}">View detail</a>
     </div>
