@@ -4,11 +4,11 @@
 
 {% block main %}
 
-  <h1>Shopping Cart</h1>
+  <h1 class="page-header">Shopping Cart</h1>
 
   {% if items|length == 0 %}
     <p>Empty</p>
-    <p>Go shopping</p>
+    <p><a href="{% url 'category:index' %}">Go shopping</a></p>
   {% else %}
     {% include 'cart/itemset_form.html' with items=items %}
 

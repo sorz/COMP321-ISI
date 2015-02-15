@@ -51,7 +51,7 @@
         .find('.item-total-price').children('.value').each(function () {
           totalPrice += parseFloat($(this).text());
     });
-    $('span.total-price').text(totalPrice);
+    $('span.total-price').text(totalPrice.toFixed(2));
   }
 
   // Changing quantity.
@@ -63,7 +63,8 @@
       var url = $item.data('url');
 
       // Re-calculate sub-total price.
-      $item.find('.item-total-price').children('.value').text(quantity * price);
+      var subTotalPrice = quantity * price;
+      $item.find('.item-total-price').children('.value').text(subTotalPrice.toFixed(2));
 
       updateTotalPrice();
 
