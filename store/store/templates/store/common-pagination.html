@@ -8,6 +8,7 @@
     Page
     <input type="number" id="page-number" value="{{ list.number }}"
            max="{{ list.paginator.num_pages }}" min="1" step="1" size="3"
+           data-filter="{{ filter }}"
            data-sort="{{ sort }}">
      of {{ list.paginator.num_pages }}.
   </span>
