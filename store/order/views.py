@@ -4,7 +4,6 @@ from django.utils.decorators import method_decorator
 from django.http import HttpResponse, HttpResponseRedirect, \
     HttpResponseForbidden, HttpResponseBadRequest
 from django.core.urlresolvers import reverse
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
 from django.db import transaction
 from rest_framework.views import APIView
@@ -13,6 +12,7 @@ from .forms import OrderForm, MessageForm
 from .models import Order, InvalidOrderStatusChangeException
 from account.models import Profile
 from cart.utils import Cart, CannotCheckoutItemException
+from store.utils import make_page
 
 
 @login_required
@@ -93,16 +93,8 @@ def _orders(request, statuses, title):
     orders = Order.objects.filter(owner=request.user,
                                   status__in=statuses)
 
-    paginator = Paginator(orders, 3)  # 3 orders per page for testing.
-    page = request.GET.get('page')
-    try:
-        orders = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        orders = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page.
-        orders = paginator.page(paginator.num_pages)
+    orders = make_page(orders, request.GET.get('page'),
+                       per_page=3)  # 3 orders per page for testing.
 
     dictionary = {'orders': orders, 'title': title}
     return render(request, 'order/list.html', dictionary)

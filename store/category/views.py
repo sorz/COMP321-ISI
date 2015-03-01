@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic.base import TemplateView
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from .models import Category
+from store.utils import make_page
 
 
 class IndexView(TemplateView):
@@ -49,20 +49,8 @@ class DetailView(TemplateView):
             sort = ''
         context['sort'] = sort
 
-        # Code of pagination is from
-        # https://docs.djangoproject.com/en/1.7/topics/pagination/#using-paginator-in-a-view
-
-        paginator = Paginator(products, 3)  # 3 products per page for testing
-
-        page = self.request.GET.get('page')
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            # If page is not an integer, deliver first page.
-            products = paginator.page(1)
-        except EmptyPage:
-            # If page is out of range (e.g. 9999), deliver last page of results.
-            products = paginator.page(paginator.num_pages)
+        products = make_page(products, self.request.GET.get('page'),
+                             per_page=3)  # 3 products per page for testing
         context['products'] = products
 
         return context

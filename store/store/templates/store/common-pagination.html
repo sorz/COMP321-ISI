@@ -1,37 +1,35 @@
-<div class="pagination">
-<span class="step-links">
+<nav>
+  <ul class="pagination">
   {% if list.has_previous %}
-      <a href="?filter={{ filter }}&sort={{ sort }}&page={{ list.previous_page_number }}">&lt; previous</a>
+    <li class="previous">
+      <a aria-label="Previous" href="?filter={{ filter }}&sort={{ sort }}&page={{ list.previous_page_number }}">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+  {% else %}
+    <li class="previous disabled"><a aria-label="Previous" href="#">
+      <span aria-hidden="true">&laquo;</span>
+    </a></li>
   {% endif %}
 
-  <span class="current">
-    Page
-    <input type="number" id="page-number" value="{{ list.number }}"
-           max="{{ list.paginator.num_pages }}" min="1" step="1" size="3"
-           data-filter="{{ filter }}"
-           data-sort="{{ sort }}">
-     of {{ list.paginator.num_pages }}.
-  </span>
+  {% for page, current in list.neighbor_pages %}
+    {% if not current %}
+      <li><a href="?filter={{ filter }}&sort={{ sort }}&page={{ page }}">{{ page }}</a></li>
+    {% else %}
+      <li class="active"><a href="#"><span class="sr-only">(current)</span>{{ page }}</a></li>
+    {% endif %}
+  {% endfor %}
 
   {% if list.has_next %}
-      <a href="?filter={{ filter }}&sort={{ sort }}&page={{ list.next_page_number }}">next &gt;</a>
+    <li class="next">
+      <a aria-label="Next" href="?filter={{ filter }}&sort={{ sort }}&page={{ list.next_page_number }}">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  {% else %}
+    <li class="next disabled"><a aria-label="Previous" href="#">
+      <span aria-hidden="true">&raquo;</span>
+    </a></li>
   {% endif %}
-</span>
-</div>
-
-<script>
-  $(document).ready(function (){
-    $('#page-number').change(function (event) {
-      var $this = $(this);
-      var sort = $this.data('sort');
-      var filter = $this.data('filter');
-      var max = $this.attr('max');
-      var min = $this.attr('min');
-      if ($this.val() >= min && $this.val() <= max
-          && $this.attr('value') != $this.val()) {
-        window.location = '?filter=' + filter + '&sort=' + sort + '&page=' + $this.val();
-      }
-    });
-  });
-  
-</script>
+  </ul>
+</nav>
