@@ -12,7 +12,7 @@
     <button data-url="{% url 'order_api:order' order.pk %}"
             class="cancel-order">Cancel</button>
   {% elif order.status == 'S' %}
-    <button data-order-id="{{ order.pk }}"
+    <button data-url="{% url 'order_api:order' order.pk %}"
             class="confirm-order">Received Confirm</button>
   {% endif %}
 
