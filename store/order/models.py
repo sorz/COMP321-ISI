@@ -78,10 +78,6 @@ class Order(models.Model):
 
         self._change_status_atomically('PH', 'C')
 
-        # Here, the status must be 'C' on database because of _change_status_atomically.
-        # But the status of self instance is still not changed, so we set it to 'C'.
-        self.status = 'C'
-
         self.close_date = timezone.now()
         self.save()
 
@@ -116,13 +112,19 @@ class Order(models.Model):
 
             order = Order.objects.filter(pk=self.pk).select_for_update()[0]
 
-            if order.status == to_status:
-                return  # Ignore redundant operation.
+            if order.status != to_status:
+                # Ignore redundant operation.
+                # Ensure status of self is updated.
+                self.status = to_status
+                return
             if order.status not in from_status:
                 raise InvalidOrderStatusChangeException(order, order.status, to_status)
 
             order.status = to_status
             order.save()
+
+        # Update status of self.
+        self.status = to_status
 
     def __str__(self):
         return "%s: %s" % (self.owner, self.get_status_display())
