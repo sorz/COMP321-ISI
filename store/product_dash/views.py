@@ -31,6 +31,10 @@ def detail(request, product_id):
     return render(request, 'product_dash/detail.html', dictionary)
 
 
+class PhotoFormNotValidException(Exception):
+    pass
+
+
 @vendor_required
 def create(request):
     if request.method == 'POST':
@@ -40,19 +44,24 @@ def create(request):
 
             # Product form have to be saved, then we can validate photo form.
             # Disable autocommit, so we can rollback if photo form is invalid.
-            with transaction.atomic():
-                product = product_form.save()
-                photo_formset = PhotoFormSet(request.POST, request.FILES, instance=product)
+            try:
+                with transaction.atomic():
+                    product = product_form.save()
+                    photo_formset = PhotoFormSet(request.POST, request.FILES, instance=product)
 
-                if photo_formset.is_valid():
-                    photo_formset.save()
-                    messages.add_message(request, messages.SUCCESS,
-                                         "Product %s added." % product.name)
-                    return redirect('dashboard:product:create')
+                    if photo_formset.is_valid():
+                        photo_formset.save()
+                        messages.add_message(request, messages.SUCCESS,
+                                             "Product %s added." % product.name)
+                        return redirect('dashboard:product:create')
 
-                else:
-                    # Photo form validate failed, rollback product.
-                    transaction.rollback()
+                    else:
+                        # Photo form validate failed,
+                        # raise a exception which cause product rollback.
+                        raise PhotoFormNotValidException
+
+            except PhotoFormNotValidException:
+                pass
         else:
             photo_formset = PhotoFormSet(request.POST, request.FILES)
 
