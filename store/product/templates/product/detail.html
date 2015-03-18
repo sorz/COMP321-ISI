@@ -96,15 +96,61 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-md-5 col-lg-4">
+      <h3>Properties</h3>
+      <table class="table table-striped">
+        <tbody>
+          {% if product.eth_chip %}
+          <tr>
+            <td>Ethernet chip</td>
+            <td>{{ product.eth_chip }}</td>
+          </tr>
+          {% endif %}
+          {% if product.cpu_model %}
+          <tr>
+            <td>CPU model</td>
+            <td>{{ product.cpu_model }}</td>
+          </tr>
+          {% endif %}
+          <tr>
+            <td>Max LAN speed</td>
+            <td>{{ product.lan_speed }} Mbps</td>
+          </tr>
+          <tr>
+            <td>No. of LAN ports</td>
+            <td>{{ product.lan_ports }} ports</td>
+          </tr>
+          <tr>
+            <td>No. of WAN ports</td>
+            <td>{{ product.wan_ports }} ports</td>
+          </tr>
+          {% if product.wireless_type %}
+          <tr>
+            <td>Wireless type</td>
+            <td>{{ product.wireless_type }}</td>
+          </tr>
+          {% endif %}
+          {% if product.power %}
+          <tr>
+            <td>Power</td>
+            <td>{{ product.power }}</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
 
-  <h2>Properties</h2>
-  <ul>
-    (...)
-  </ul>
+    <div class="col-md-7 col-lg-8">
+      <h3>Description</h3>
+      {% if product.description %}
+        <p>{{ product.description }}</p>
+      {% else %}
+        <p>No description for this product.</p>
+      {% endif %}
+    </div>
 
-
-  <h2>Description</h2>
-  <p>{{ product.description }}</p>
+  </div>
 
   {% if rating_form %}
   <div class="modal fade" id="modal-rating" tabindex="-1" role="dialog">
