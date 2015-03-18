@@ -17,7 +17,7 @@
   <div class="row">
 
     {% if product.photo_set.exists %}
-    <div class="col-lg-4">
+    <div class="col-md-5 col-lg-4">
       <div id="carousel-thumbnail" class="carousel slide" data-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
@@ -55,42 +55,46 @@
           <span class="sr-only">Next</span>
         </a>
       </div>
-
     </div>
     {% endif %}
+
+    <div class="col-md-7 col-lg-8">
+      <div class="showcase">
+        <p><span class="item-name">Price:</span>
+          <span class="price">${{ product.price|floatformat:2 }}</span></p>
+
+        <p><span class="item-name">Status:</span>
+        {% if product.in_stock %}
+          <span class="in-stock">In stock</span>
+        {% else %}
+          <span class="out-of-stock">Out of stock</span>
+        {% endif %}
+        </p>
+
+        <p><span class="item-name">Rating:</span>
+          {% if product.average_rating %}
+            <span class="rating point-{{ product.average_rating|floatformat:0 }}">{{ product.get_average_rating_display }}</span>
+            <small>({{ product.average_rating|floatformat }} out of 5 points,
+              by {{ product.rating_set.count }} customers)</small>
+          {% else %}
+            <small>(no data)</small>
+          {% endif  %}
+        </p>
+
+        <p class="pull-right">
+          {% if rating_form %}
+            <button class="btn btn-default btn-lg" data-toggle="modal" data-target="#modal-rating">
+              <span class="glyphicon glyphicon-star"></span>
+              Rating
+            </button>
+          {% endif %}
+          <button class="btn btn-primary btn-lg buy"
+            data-link="{% url 'cart_api:item' product.id %}"><span class="glyphicon glyphicon-shopping-cart"></span>
+          Add to Cart</button></p>
+      </div>
+
+    </div>
   </div>
-
-
-  <p>Price: {{ product.price }}</p>
-
-  <p>Status:
-  {% if product.in_stock %}
-    In stock
-  {% else %}
-    Out of stack
-  {% endif %}
-  </p>
-
-  <button class="buy"
-          data-link="{% url 'cart_api:item' product.id %}">Buy Buy Buy</button>
-
-  <h2>Rating</h2>
-  <p>Average rating:
-    {% if product.average_rating %}
-      {{ product.get_average_rating_display }}
-      ({{ product.average_rating }} points, by {{ product.rating_set.count }} customers)
-    {% else %}
-      (no rating)
-    {% endif  %}
-  </p>
-
-  {% if rating_form %}
-    <form id="rating" method="POST" action=".">{% csrf_token %}
-      {{ rating_form }}
-      <button type="submit">Update</button>
-    </form>
-  {% endif %}
-
 
 
   <h2>Properties</h2>
@@ -101,5 +105,42 @@
 
   <h2>Description</h2>
   <p>{{ product.description }}</p>
+
+  {% if rating_form %}
+  <div class="modal fade" id="modal-rating" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="ratingModalLabel">Rating</h4>
+        </div>
+        <div class="modal-body">
+          <p>Please select your feel to this product.</p>
+
+          <form id="rating" method="POST" action=".">{% csrf_token %}
+            {{ rating_form.point }}
+          </form>
+            Your rating may be shown to other customers anonymously and you can change it future.</p>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" form="rating">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+  // Hacking to add stars in rating form.
+  var $star = $('<span>').addClass('glyphicon').addClass('glyphicon-star');
+  $('#id_point').find('label').each(function (index) {
+    var $stars = $('<div>').addClass('stars');
+    for (var i=0; i<index+1; ++i) {
+      $star.clone().appendTo($stars);
+    }
+    $(this).append($stars);
+  });
+  </script>
+  {% endif %}
 
 {% endblock %}
