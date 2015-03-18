@@ -28,6 +28,13 @@ footer hr { margin: 1em 2em; }
 #product-list .price { font-size: 1.25em; color: #b11904; }
 #product-list .rating { font-size: 1.1em; cursor: help; color: #555; }
 
+/* Product detail */
+.category-link { font-size: 0.5em; color: lightgray; vertical-align: middle; }
+#carousel-thumbnail .item > img { width: 100%; }
+#carousel-thumbnail .carousel-caption { font-size: 1.5em;  }
+/* TODO: can't see caption clearly */
+
+
 /* Shopping cart */
 #cart input[type="number"] { width: 4em;   }
 
