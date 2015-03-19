@@ -25,8 +25,9 @@ footer hr { margin: 1em 2em; }
 
 /* Product list */
 #product-list h3 { display: inline-block; margin: 0 0 5px; padding-left: 15px; }
-#product-list .price { font-size: 1.25em; color: #b11904; }
+#product-list .price { font-size: 1.25em; color: #b11904; vertical-align: middle; }
 #product-list .rating { font-size: 1.1em; cursor: help; color: #555; }
+#product-list span.label { margin-left: 1em; }
 
 /* Purchase order list */
 #order-list .item-name { display: inline-block; width: 8em; color: gray; }

@@ -18,11 +18,15 @@
 
   <div class="product-detail row-fluid">
     <div class="col-md-3">
-      <span class="price">${{ product.price }}</span><br>
+      <p><span class="price">${{ product.price }}</span>
+        {% if not product.in_stock %}
+          <span class="label label-warning">Out of stock</span>
+        {% endif %}
+      </p>
       {% if product.average_rating %}
-        <span title="Rated by {{ product.rating_set.count }} customers"
+        <p><span title="Rated by {{ product.rating_set.count }} customers"
             class="rating">{{ product.get_average_rating_display }}
-          <sup>{{ product.average_rating }}</sup></span>
+          <sup>{{ product.average_rating }}</sup></span></p>
       {% endif %}
     </div>
     <div class="col-md-2 col-md-offset-7">
