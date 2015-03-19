@@ -37,26 +37,26 @@ def create(request):
         order_form = OrderForm(request.POST)
         if order_form.is_valid():
 
-            # We use transaction to improve database performance and keep integrity.
-            # Checkout action will rollback if any product cannot be checked out.
-            with transaction.atomic():
-                order = order_form.save(commit=False)
-                order.owner = request.user
-                order.save()
+            order = order_form.save(commit=False)
+            order.owner = request.user
+            try:
 
-                try:
+                # We use transaction to improve database performance and keep integrity.
+                # Checkout action will rollback if any product cannot be checked out.
+                with transaction.atomic():
+                    order.save()
                     cart.checkout(order)
-                except CannotCheckoutItemException:
+                    cart.item_set.all().delete()
 
-                    # Some items are out-of-stock or off-shelf,
-                    # abort operation and redirect user back to cart view.
-                    messages.add_message(request, messages.WARNING,
-                                         "Some products are out-of-stock or off-shelf, "
-                                         "please delete them and checkout again.")
-                    transaction.abort()
-                    return HttpResponseRedirect(reverse('cart:index'))
-
-                cart.item_set.all().delete()
+            except CannotCheckoutItemException:
+                # Some items are out-of-stock or off-shelf,
+                # cart.checkout() will throw this exception in the case.
+                # Redirect user back to cart view.
+                messages.add_message(request, messages.WARNING,
+                                     "Some products are out-of-stock or off-shelf, "
+                                     "please delete them and checkout again.")
+                transaction.abort()
+                return HttpResponseRedirect(reverse('cart:index'))
 
             # Remove the hash since its mission is completed.
             request.session.delete('cart-hash')
@@ -119,7 +119,6 @@ def detail(request, order_id):
     if order.owner != request.user:
         return HttpResponseForbidden('You cannot view this order.')
 
-    # TODO: Reverse chronological order (D4)
     order_messages = order.message_set.all()
 
     if request.method == 'POST':

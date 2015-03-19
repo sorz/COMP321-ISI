@@ -42,6 +42,7 @@ def create(request):
 
         if product_form.is_valid():
 
+            photo_formset = None
             # Product form have to be saved, then we can validate photo form.
             # Disable autocommit, so we can rollback if photo form is invalid.
             try:
@@ -61,7 +62,8 @@ def create(request):
                         raise PhotoFormNotValidException
 
             except PhotoFormNotValidException:
-                pass
+                if photo_formset is None:
+                    photo_formset = PhotoFormSet(request.POST, request.FILES)
         else:
             photo_formset = PhotoFormSet(request.POST, request.FILES)
 
