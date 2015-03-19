@@ -2,12 +2,22 @@
 {% block title %}Purchase tracking{% endblock %}
 
 {% block main %}
-  <h1>Purchase tracking</h1>
+  <h1 class="page-header">Purchase Orders</h1>
+  <div class="row">
+    <div class="col-md-6">
 
-  <ul>
-    <li><a href="{% url 'order:current' %}">Current purchase</a></li>
-    <li><a href="{% url 'order:past' %}">Past purchase</a></li>
-  </ul>
-
+      <div class="list-group">
+        <a href="{% url 'order:current' %}" class="list-group-item">
+          <h4 class="list-group-item-heading">Current purchases</h4>
+          <p class="list-group-item-text">Show all the purchase orders that you has placed,
+          but has not received or cancelled.</p>
+        </a>
+        <a href="{% url 'order:past' %}" class="list-group-item">
+          <h4 class="list-group-item-heading">Past purchases</h4>
+          <p class="list-group-item-text">Show all the fulfilled or cancelled purchase orders.</p>
+        </a>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}

@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.core.validators import MinValueValidator
 
 
-from product.models import Product
+from product.models import Product, Photo
 from cart.models import ProductItemInfo
 
 
@@ -125,6 +125,15 @@ class Order(models.Model):
 
         # Update status of self.
         self.status = to_status
+
+    def get_image(self):
+        """Find the first product which has a photo in this order.
+        And return it's first photo.
+        """
+        for item in self.orderitem_set.all():
+            photos = Photo.objects.filter(product__id=item.product_id)
+            if photos.exists():
+                return photos[0].image
 
     def __str__(self):
         return "%s: %s" % (self.owner, self.get_status_display())

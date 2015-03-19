@@ -15,18 +15,23 @@ footer hr { margin: 1em 2em; }
 #category-list .thumbnail { width: 300px; margin: 1em auto; }
 #category-list .placeholder { width: 290px; height: 193px; padding-top: 85px; font-size: 2em; }
 
+/* Common list (for product and order) */
+.common-list { list-style: none; padding-left: 0; margin-top: 2em; }
+.common-list hr { clear: left; }
+.common-list li:last-child hr { visibility: hidden; }
+.common-list .col-thumbnail { text-align: center; }
+.common-list .thumbnail { display: inline-block; }
+.common-list .placeholder { width: 96px; height: 96px; padding-top: 40px; }
+
 /* Product list */
-#product-list { list-style: none; padding-left: 0; margin-top: 2em; }
-#product-list hr { clear: left; }
-#product-list li:last-child hr { visibility: hidden; }
-
-#product-list .col-thumbnail { text-align: center; }
-#product-list .thumbnail { display: inline-block; }
-#product-list .placeholder { width: 96px; height: 96px; padding-top: 40px; }
-
 #product-list h3 { display: inline-block; margin: 0 0 5px; padding-left: 15px; }
 #product-list .price { font-size: 1.25em; color: #b11904; }
 #product-list .rating { font-size: 1.1em; cursor: help; color: #555; }
+
+/* Purchase order list */
+#order-list .item-name { display: inline-block; width: 8em; color: gray; }
+#order-list .items > p > span:last-child { font-size: 1.2em;  }
+
 
 /* Product detail */
 .category-link { font-size: 0.5em; color: lightgray; vertical-align: middle; }
