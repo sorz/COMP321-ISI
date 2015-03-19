@@ -32,7 +32,6 @@ footer hr { margin: 1em 2em; }
 #order-list .item-name { display: inline-block; width: 8em; color: gray; }
 #order-list .items > p > span:last-child { font-size: 1.2em;  }
 
-
 /* Product detail */
 .category-link { font-size: 0.5em; color: lightgray; vertical-align: middle; }
 #carousel-thumbnail .item img { width: 100%; }
@@ -56,6 +55,22 @@ footer hr { margin: 1em 2em; }
 
 form#rating ul { list-style-type: none; }
 form#rating .stars { color: gray; margin-left: 2em;}
+
+/* Order detail */
+#order-status-box, #order-recipient-box { font-size: 1.2em; }
+#order-status-box .item-name,
+#order-recipient-box .item-name { display: inline-block; width: 7em; color: gray; }
+#order-status-box button { margin-top: 1em; }
+#order-status-box button { margin: 1em 0; }
+
+#order-items p { font-size: 1.2em; color: gray; }
+#order-items .price { font-size: 1.2em; color: darkred; }
+
+ul#order-messages { margin-top: 1.5em; }
+#order-messages .role { display: inline-block; width: 5em; }
+#order-messages .content { border-left: solid lightgray 1px; padding-left: 1em;
+    margin: 0 0 2em 1em; }
+.row.standalone-title { margin-bottom: 0; }
 
 /* Shopping cart */
 #cart input[type="number"] { width: 4em;   }

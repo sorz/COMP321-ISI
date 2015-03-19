@@ -30,7 +30,7 @@
             <p><span class="item-name">Status:</span>
               <span class="status">{{ order.get_status_display }}</span></p>
             <p><span class="item-name">Total amount:</span>
-              <span class="price">${{ order.total_price }}</span></p>
+              <span class="price">${{ order.total_price|floatformat:2 }}</span></p>
           </div>
 
           <div class="col-md-2">
