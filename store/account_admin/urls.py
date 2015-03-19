@@ -7,7 +7,7 @@ from .forms import VendorLoginForm
 urlpatterns = patterns(
     '',
     url(r'^login/$', auth_views.login, name='login',
-        kwargs={'template_name': 'account_dash/login.html',
+        kwargs={'template_name': 'account_admin/login.html',
                 'authentication_form': VendorLoginForm}),
 
 )

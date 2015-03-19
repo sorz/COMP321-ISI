@@ -1,8 +1,8 @@
 {# Used by both creation and modifation. #}
 {# If {{ product }} exists, it's a modifation, otherwise it's creation. #}
-{% extends "dashboard/board-base.html" %}
+{% extends "admin/admin-base.html" %}
 {% load bootstrap3 %}
-{% block title %}{% firstof product "Add product" %} - Dashboard{% endblock %}
+{% block title %}{% firstof product "Add product" %} - Admin{% endblock %}
 
 {% block main %}
 

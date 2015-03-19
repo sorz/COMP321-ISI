@@ -11,7 +11,7 @@
         {% csrf_token %}
         {% bootstrap_form form %}
 
-        {% url 'dashboard:overview' as overview %}
+        {% url 'admin:overview' as overview %}
         <input type="hidden" name="next" value="{% firstof next overview %}" />
 
         {% buttons %}

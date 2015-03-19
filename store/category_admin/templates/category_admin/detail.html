@@ -1,0 +1,11 @@
+{% extends "admin/admin-base.html" %}
+{% block title %}{{ category }} - Admin{% endblock %}
+
+{% block main %}
+
+  <h1>{{ category }}</h1>
+  <p>{{ category.description }}</p>
+
+  {% include 'category/product_list.html' with list_item='category_admin/product_list_item.html' %}
+
+{% endblock %}

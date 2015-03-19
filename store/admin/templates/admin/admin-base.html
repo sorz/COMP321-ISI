@@ -4,7 +4,7 @@
 
 {# The template of all pages which are presented to the vendor.  #}
 {% block head %}
-  <link href="{% static 'dashboard.css' %}" rel="stylesheet">
+  <link href="{% static 'admin.css' %}" rel="stylesheet">
 {% endblock %}
 
 
@@ -22,7 +22,7 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="{% url 'dashboard:overview' %}">Dashboard</a></li>
+        <li><a href="{% url 'admin:overview' %}">Dashboard</a></li>
         <li><a href="#">Settings</a></li>
         <li><a href="#">Profile</a></li>
         <li><a href="#">Help</a></li>
@@ -38,15 +38,15 @@
 
     <div class="col-sm-3 col-md-2 sidebar">
       <ul class="nav nav-sidebar">
-        <li class="nav-overview"><a href="{% url 'dashboard:overview' %}">Overview</a></li>
+        <li class="nav-overview"><a href="{% url 'admin:overview' %}">Overview</a></li>
         <li><a href="#">Products</a></li>
         <li><a href="#">Orders</a></li>
         <li><a href="#">Report</a></li>
       </ul>
       <ul class="nav nav-sidebar">
-        <li class="nav-management"><a href="{% url 'dashboard:category:index' %}">Product management</a></li>
-        <li class="nav-category-new"><a href="{% url 'dashboard:category:create' %}">Add new category</a></li>
-        <li class="nav-product-new"><a href="{% url 'dashboard:product:create' %}">Add new product</a></li>
+        <li class="nav-management"><a href="{% url 'admin:category:index' %}">Product management</a></li>
+        <li class="nav-category-new"><a href="{% url 'admin:category:create' %}">Add new category</a></li>
+        <li class="nav-product-new"><a href="{% url 'admin:product:create' %}">Add new product</a></li>
       </ul>
       <ul class="nav nav-sidebar">
         <li><a href="">Pending orders</a></li>
@@ -69,5 +69,5 @@
   </div>
 </div>
 
-<script src="{% static 'dashboard.js' %}"></script>
+<script src="{% static 'admin.js' %}"></script>
 {% endblock %}

@@ -1,7 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.conf import settings
-from django.contrib import admin
 
 urlpatterns = patterns(
     '',
@@ -16,13 +15,13 @@ urlpatterns = patterns(
     url(r'^cart/', include('cart.urls', namespace='cart')),
     url(r'^order/', include('order.urls', namespace='order')),
     url(r'^account/', include('account.urls', namespace='account')),
-    url(r'^dashboard/', include('dashboard.urls', namespace='dashboard')),
+    url(r'^admin/', include('admin.urls', namespace='admin')),
 
     # RESTful APIs.
     url(r'^api/cart/', include('cart.urls_api', namespace='cart_api')),
     url(r'^api/order/', include('order.urls_api', namespace='order_api')),
 
-    url(r'^admin/', include(admin.site.urls)),
+    # url(r'^admin/', include(admin.site.urls)),
 
 )
 

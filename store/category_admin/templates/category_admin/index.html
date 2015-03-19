@@ -1,0 +1,11 @@
+{% extends "admin/admin-base.html" %}
+{% block title %}Categories - Admin{% endblock %}
+
+{% block main %}
+
+  <h1 class="page-header">Categories</h1>
+  <div class="row" id="category-list">
+    {% include 'category/category_list.html' with buttons='category_admin/category_list_buttons.html' %}
+  </div>
+
+{% endblock %}

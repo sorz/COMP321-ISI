@@ -11,6 +11,6 @@ def vendor_required(view_func):
     """
     return user_passes_test(
         lambda u: u.is_active and u.is_staff,
-        login_url='dashboard:account:login',
+        login_url='admin:account:login',
         redirect_field_name=REDIRECT_FIELD_NAME
     )(view_func)

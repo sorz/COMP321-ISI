@@ -1,6 +1,6 @@
-{% extends "dashboard/board-base.html" %}
+{% extends "admin/admin-base.html" %}
 {% load bootstrap3 %}
-{% block title %}Add Category - Dashboard{% endblock %}
+{% block title %}Add Category - Admin{% endblock %}
 
 {% block main %}
 
@@ -13,7 +13,7 @@
       {% buttons %}
         <button type="submit" class="btn btn-primary">Add</button>
         <a role="button" class="btn btn-default"
-           href="{% url 'dashboard:category:index' %}">Cancel</a>
+           href="{% url 'admin:category:index' %}">Cancel</a>
       {% endbuttons  %}
 
     </form>

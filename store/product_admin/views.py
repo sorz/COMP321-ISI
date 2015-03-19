@@ -5,7 +5,7 @@ from django.db import transaction
 
 from .forms import ProductForm, PhotoFormSet
 from product.models import Product
-from dashboard.decorators import vendor_required
+from admin.decorators import vendor_required
 
 
 @vendor_required
@@ -20,7 +20,7 @@ def detail(request, product_id):
             product_form.save()
             photo_formset.save()
             messages.add_message(request, messages.SUCCESS, "Product saved.")
-            return redirect('dashboard:category:detail', product.category_id)
+            return redirect('admin:category:detail', product.category_id)
 
     else:
         product_form = ProductForm(instance=product)
@@ -28,7 +28,7 @@ def detail(request, product_id):
 
     dictionary = {'product': product, 'product_form': product_form,
                   'photo_formset': photo_formset}
-    return render(request, 'product_dash/detail.html', dictionary)
+    return render(request, 'product_admin/detail.html', dictionary)
 
 
 class PhotoFormNotValidException(Exception):
@@ -53,7 +53,7 @@ def create(request):
                         photo_formset.save()
                         messages.add_message(request, messages.SUCCESS,
                                              "Product %s added." % product.name)
-                        return redirect('dashboard:product:create')
+                        return redirect('admin:product:create')
 
                     else:
                         # Photo form validate failed,
@@ -70,4 +70,4 @@ def create(request):
         photo_formset = PhotoFormSet()
 
     dictionary = {'product_form': product_form, 'photo_formset': photo_formset}
-    return render(request, 'product_dash/detail.html', dictionary)
+    return render(request, 'product_admin/detail.html', dictionary)

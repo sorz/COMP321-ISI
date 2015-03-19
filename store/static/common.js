@@ -28,11 +28,11 @@ function initialize_navbar() {
     '^/order/': 'purchase',
     '^/cart/': 'cart',
     '^/$': 'home',
-    '^/dashboard/category/new/': 'category-new',
-    '^/dashboard/category/': 'management',
-    '^/dashboard/product/new/': 'product-new',
-    '^/dashboard/product/': 'management',
-    '^/dashboard/': 'overview'
+    '^/admin/category/new/': 'category-new',
+    '^/admin/category/': 'management',
+    '^/admin/product/new/': 'product-new',
+    '^/admin/product/': 'management',
+    '^/admin/': 'overview'
   };
 
   var path = window.location.pathname;

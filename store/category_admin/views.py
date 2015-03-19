@@ -5,7 +5,7 @@ from django.contrib import messages
 from .forms import CategoryForm
 from category.models import Category
 from category.views import IndexView, DetailView
-from dashboard.decorators import vendor_required
+from admin.decorators import vendor_required
 
 
 class VendorIndexView(IndexView):
@@ -29,13 +29,13 @@ def create(request):
             category = form.save()
             messages.add_message(request, messages.SUCCESS,
                                  'Category %s added.' % category.name)
-            return redirect('dashboard:category:index')
+            return redirect('admin:category:index')
 
     else:
         form = CategoryForm()
 
     dictionary = {'form': form}
-    return render(request, 'category_dash/create.html', dictionary)
+    return render(request, 'category_admin/create.html', dictionary)
 
 
 @vendor_required
@@ -48,13 +48,13 @@ def modify(request, category_id):
             form.save()
             messages.add_message(request, messages.SUCCESS,
                                  'Category %s is updated.' % category.name)
-            return redirect('dashboard:category:index')
+            return redirect('admin:category:index')
 
     else:
         form = CategoryForm(instance=category)
 
     dictionary = {'form': form}
-    return render(request, 'category_dash/modify.html', dictionary)
+    return render(request, 'category_admin/modify.html', dictionary)
 
 
 def delete(request, category_id):
