@@ -13,7 +13,8 @@
   </div>
 </div>
 
-<div class="col-md-10">
+<div class="col-md-10 product{% if product.off_shelf %} off-shelf{% endif %}
+    {% if not product.in_stock %}out-of-stock{% endif %}">
   <a href="{% url 'admin:product:detail' product.id %}"><h3>{{ product.name }}</h3></a>
 
   <div class="product-detail row-fluid">

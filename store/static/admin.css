@@ -8,7 +8,9 @@
 #product-list .sale-info { font-size: 1.1em; }
 #product-list .sale-info .item-name { color: gray; display: inline-block; width: 6.5em; }
 #product-list .sale-info > p > span:last-child { font-size: 1.2em; }
-
+#product-list .product.out-of-stock .price,
+#product-list .product.off-shelf .price { color: gray; }
+#product-list .product.off-shelf h3 { text-decoration: line-through; color: gray; }
 
 /*
  * Base structure
