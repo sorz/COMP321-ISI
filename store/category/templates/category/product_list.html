@@ -40,6 +40,14 @@
       <a role="button" class="btn btn-default {% if sort == '-rating' %}active{% endif %}"
           href="?filter={{ filter }}&sort=-rating&page={{ products.number }}"><span class="glyphicon
           glyphicon-sort-by-attributes-alt"></span> Rating</a>
+      {% if vendor %}
+      <a role="button" class="btn btn-default {% if sort == '-sale_quantity' %}active{% endif %}"
+          href="?filter={{ filter }}&sort=-sale_quantity&page={{ products.number }}"><span class="glyphicon
+          glyphicon-sort-by-attributes-alt"></span> Sales quantity</a>
+      <a role="button" class="btn btn-default {% if sort == '-sale_amount' %}active{% endif %}"
+          href="?filter={{ filter }}&sort=-sale_amount&page={{ products.number }}"><span class="glyphicon
+          glyphicon-sort-by-attributes-alt"></span> Sales amount</a>
+      {% endif %}
     </div>
   </div>
 </div>

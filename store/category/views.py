@@ -25,21 +25,14 @@ class IndexView(TemplateView):
 
 class DetailView(TemplateView):
     template_name = 'category/detail.html'
+    order_fields = ('price', '-price', 'rating', '-rating')
 
     def render_to_response(self, context, **response_kwargs):
         response_kwargs['current_app'] = self.request.resolver_match.namespace
         return super().render_to_response(context, **response_kwargs)
 
-    def get_queryset(self, category, name_filter, sort):
-        products = category.product_set.filter(off_shelf=False)
-
-        if name_filter:
-            products = products.filter(name__contains=name_filter)
-
-        if sort in ('price', '-price', 'rating', '-rating'):
-            products = products.order_by(sort)
-
-        return products
+    def get_queryset(self, category):
+        return category.product_set.filter(off_shelf=False)
 
     def get_context_data(self, category_id, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -48,7 +41,13 @@ class DetailView(TemplateView):
         name_filter = self.request.GET.get('filter', '')
         sort = self.request.GET.get('sort')
 
-        products = self.get_queryset(category, name_filter, sort)
+        products = self.get_queryset(category)
+        if name_filter:
+            products = products.filter(name__contains=name_filter)
+        if sort in self.order_fields:
+            products = products.order_by(sort)
+        else:
+            sort = ''
 
         context['category'] = category
         context['filter'] = name_filter

@@ -6,6 +6,6 @@
   <h1 class="page-header">{{ category }}</h1>
   <p>{{ category.description }}</p>
 
-  {% include 'category/product_list.html' with list_item='category_admin/product_list_item.html' %}
+  {% include 'category/product_list.html' with vendor=True list_item='category_admin/product_list_item.html' %}
 
 {% endblock %}

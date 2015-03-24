@@ -35,10 +35,10 @@
 
     <div class="col-md-3 sale-info">
       <p><span class="item-name">Sale quantity:</span>
-        <span>xxx</span>
+        <span>{{ product.sale_quantity }}</span>
       </p>
       <p><span class="item-name">Sale amount:</span>
-        <span>$xx.xx</span>
+        <span>${{ product.sale_amount|floatformat:2 }}</span>
       </p>
     </div>
     <div class="col-md-3 col-md-offset-4 col-lg-2 col-lg-offset-5">

@@ -15,17 +15,11 @@ class VendorIndexView(IndexView):
 
 
 class VendorDetailView(DetailView):
+    order_fields = ('price', '-price', 'rating', '-rating',
+                    'sale_quantity', '-sale_quantity', 'sale_amount', '-sale_amount')
 
-    def get_queryset(self, category, name_filter, sort):
-        products = category.product_set.filter()
-
-        if name_filter:
-            products = products.filter(name__contains=name_filter)
-
-        if sort in ('price', '-price', 'rating', '-rating'):
-            products = products.order_by(sort)
-
-        return products
+    def get_queryset(self, category):
+        return category.product_set.filter()
 
     @method_decorator(vendor_required)
     def dispatch(self, *args, **kwargs):
