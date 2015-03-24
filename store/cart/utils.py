@@ -47,7 +47,7 @@ class Cart():
 
         Should be called in transaction to improve performance and keep integrity."""
         for item in self.item_set.all():
-            if item.quantity <= 0 or not item.in_stock or item.off_shelf:
+            if item.quantity <= 0 or item.off_shelf:
                 raise CannotCheckoutItemException(item)
             OrderItem(
                 order=order,

@@ -49,11 +49,11 @@ def create(request):
                     cart.item_set.all().delete()
 
             except CannotCheckoutItemException:
-                # Some items are out-of-stock or off-shelf,
+                # Some items are off-shelf,
                 # cart.checkout() will throw this exception in the case.
                 # Redirect user back to cart view.
                 messages.add_message(request, messages.WARNING,
-                                     "Some products are out-of-stock or off-shelf, "
+                                     "Some products are off-shelf, "
                                      "please delete them and checkout again.")
                 transaction.abort()
                 return HttpResponseRedirect(reverse('cart:index'))
