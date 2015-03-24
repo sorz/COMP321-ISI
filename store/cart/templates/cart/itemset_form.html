@@ -1,6 +1,6 @@
 <form id="cart" method="GET" action="{% url 'order:create' %}">
   <input type="hidden" name="hash" id="cart-hash" value="{{ cart_hash }}">
-  <table class="table">
+  <table class="table table-hover">
     <thead>
       <tr>
         <th>Name</th>
@@ -32,13 +32,20 @@
           <a class="action-restore" href="#"><span class="glyphicon glyphicon-repeat"></span>
             Restore
           </a>
+          {% if item.off_shelf %}
+            <span class="label label-warning" rel="tooltip" data-toggle="tooltip"
+                data-placement="right" data-original-title="Please delete it before checkout">Off shelf</span>
+          {% elif not item.in_stock %}
+            <span class="label label-warning" rel="tooltip" data-toggle="tooltip"
+                data-placement="right" data-original-title="Please delete it before checkout">Out of stock</span>
+          {% endif %}
         </td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
 </form>
-<p>Total: $<span class="total-price">{{ cart.total_price }}</span></p>
+<p class="cart-total">Total amount: <span class="total-price">${{ cart.total_price }}</span></p>
 
 <script>
   // TODO: considering move scripts to a standalone file.
@@ -51,7 +58,7 @@
         .find('.item-total-price').children('.value').each(function () {
           totalPrice += parseFloat($(this).text());
     });
-    $('span.total-price').text(totalPrice.toFixed(2));
+    $('span.total-price').text('$'+ totalPrice.toFixed(2));
   }
 
   // Changing quantity.
@@ -125,6 +132,24 @@
     }).done(function (data) {
       $('#cart-hash').val(data.cartHash);
     });
+  });
+
+  // Check before submit form (checkout).
+  $('form#cart').submit(function () {
+    if ($('.cart-item.out-of-stock:not(.deleted)').length > 0
+        || $('.cart-item.off-shelf:not(.deleted)').length > 0) {
+      alert("Cannot checkout. Please remove all out-off-stock and off-shelf items " +
+          "in your shopping cart, and try again.");
+      // TODO: use user friendly message box.
+      return false;
+    }
+  });
+
+  // Active tooltips.
+  // Reference:
+  // http://stackoverflow.com/questions/9446318/bootstrap-tooltips-not-working
+  $(function () {
+    $("[rel='tooltip']").tooltip();
   });
 
   // TODO: Fix quantity inconsistent after page back by user.

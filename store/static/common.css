@@ -1,6 +1,6 @@
 body { margin-top: 2em; }
 
-footer { color: darkgray; text-align: center; margin-top: 3em; }
+footer { color: darkgray; text-align: center; margin-top: 3em; clear: both; }
 footer hr { margin: 1em 2em; }
 
 .row { margin-bottom: 20px; }
@@ -65,7 +65,8 @@ form#rating .stars { color: gray; margin-left: 2em;}
 #order-status-box button { margin: 1em 0; }
 
 #order-items p { font-size: 1.2em; color: gray; }
-#order-items .price { font-size: 1.2em; color: darkred; }
+#order-items .price,
+.total-price { font-size: 1.2em; color: darkred; } /* shopping cart */
 
 ul#order-messages { margin-top: 1.5em; }
 #order-messages .role { display: inline-block; width: 5em; }
@@ -84,3 +85,6 @@ ul#order-messages { margin-top: 1.5em; }
 #cart .cart-item.deleted { opacity: 0.2; }
 #cart .cart-item.deleted .action-delete { display: none; }
 #cart .cart-item.deleted .action-restore { display: inline-block; }
+
+.cart-total { font-size: 1.2em; }
+button[form="cart"] { margin-bottom: 2em; }
