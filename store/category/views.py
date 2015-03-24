@@ -30,23 +30,28 @@ class DetailView(TemplateView):
         response_kwargs['current_app'] = self.request.resolver_match.namespace
         return super().render_to_response(context, **response_kwargs)
 
+    def get_queryset(self, category, name_filter, sort):
+        products = category.product_set.filter(off_shelf=False)
+
+        if name_filter:
+            products = products.filter(name__contains=name_filter)
+
+        if sort in ('price', '-price', 'rating', '-rating'):
+            products = products.order_by(sort)
+
+        return products
+
     def get_context_data(self, category_id, **kwargs):
         context = super().get_context_data(**kwargs)
 
         category = get_object_or_404(Category, pk=category_id)
-        products = category.product_set.filter(off_shelf=False)
-        context['category'] = category
-
         name_filter = self.request.GET.get('filter', '')
-        if name_filter:
-            products = products.filter(name__contains=name_filter)
-        context['filter'] = name_filter
-
         sort = self.request.GET.get('sort')
-        if sort in ('price', '-price', 'rating', '-rating'):
-            products = products.order_by(sort)
-        else:
-            sort = ''
+
+        products = self.get_queryset(category, name_filter, sort)
+
+        context['category'] = category
+        context['filter'] = name_filter
         context['sort'] = sort
 
         products = make_page(products, self.request.GET.get('page'),
