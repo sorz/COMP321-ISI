@@ -89,6 +89,12 @@ class Order(models.Model):
         self.close_date = timezone.now()
         self.save()
 
+        # Update sale quantity and amount of products.
+        for orderitem in self.orderitem_set.all():
+            orderitem.product.sale_quantity += orderitem.quantity
+            orderitem.product.sale_amount += orderitem.total_price
+            orderitem.product.save()
+
     def _change_status_atomically(self, from_status, to_status):
         """Change status and commit it atomically.
 

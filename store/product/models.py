@@ -18,6 +18,14 @@ class Product(models.Model):
     off_shelf = models.BooleanField(default=False)
     description = models.TextField(blank=True)
 
+    # Cache the total sale quantity and amount, re-calculate
+    # once any order include this product is confirmed.
+    sale_quantity = models.IntegerField(default=0)
+    sale_amount = models.DecimalField(default=0, max_digits=12, decimal_places=2)
+
+    # Cache the average rating, re-calculate once any user change the rating.
+    average_rating = models.FloatField("Average rating", default=0, editable=False)
+
     # Router specified properties:
 
     eth_chip = models.CharField('Ethernet chip', max_length=127, blank=True)
@@ -39,9 +47,6 @@ class Product(models.Model):
     # e.g. 12 VDC, 2 A. Blank value stands for unknown.
 
     has_usb = models.BooleanField('Has USB ports', default=False)
-
-    # Cache the average rating, re-calculate once any user change the rating.
-    average_rating = models.FloatField("Average rating", default=0, editable=False)
 
     def update_rating(self):
         """Re-calculate the average rating and update the rating field."""
