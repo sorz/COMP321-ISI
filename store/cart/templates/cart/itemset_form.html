@@ -33,12 +33,9 @@
             Restore
           </a>
           {% if item.off_shelf %}
-            <span class="label label-warning" rel="tooltip" data-toggle="tooltip"
+            <span class="label label-danger" rel="tooltip" data-toggle="tooltip"
                 data-placement="right" data-original-title="Please delete it before checkout">Off shelf</span>
-          {% elif not item.in_stock %}
-            <span class="label label-warning" rel="tooltip" data-toggle="tooltip"
-                data-placement="right" data-original-title="Please delete it before checkout">Out of stock</span>
-          {% endif %}
+          {% elif not item.in_stock %}<span class="label label-warning">Out of stock</span>{% endif %}
         </td>
       </tr>
     {% endfor %}
@@ -136,10 +133,9 @@
 
   // Check before submit form (checkout).
   $('form#cart').submit(function () {
-    if ($('.cart-item.out-of-stock:not(.deleted)').length > 0
-        || $('.cart-item.off-shelf:not(.deleted)').length > 0) {
-      alert("Cannot checkout. Please remove all out-off-stock and off-shelf items " +
-          "in your shopping cart, and try again.");
+    if ($('.cart-item.off-shelf:not(.deleted)').length > 0) {
+      alert("Cannot checkout. Some of items are off-shelf in your shopping cart. " +
+          "Please remove them, and try again.");
       // TODO: use user friendly message box.
       return false;
     }
