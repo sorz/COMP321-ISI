@@ -32,7 +32,7 @@ class DetailView(TemplateView):
         return super().render_to_response(context, **response_kwargs)
 
     def get_queryset(self, category):
-        return category.product_set.filter(off_shelf=False)
+        return category.product_set.exclude(status='F')  # exclude off-shelf
 
     def get_context_data(self, category_id, **kwargs):
         context = super().get_context_data(**kwargs)

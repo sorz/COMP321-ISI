@@ -10,12 +10,18 @@ RATING_DISPLAY = ('Horrible', 'Bad', 'Fair', 'Good', 'Fantastic')
 
 
 class Product(models.Model):
+
+    STATUS_CHOICES = (
+        ('N', 'In stock'),
+        ('O', 'Out of stock'),
+        ('F', 'Off shelf')
+    )
+
     name = models.CharField('Product name', max_length=255)
     price = models.DecimalField('Price ($)', max_digits=9, decimal_places=2,
                                 validators=[MinValueValidator(0)])
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='N')
     category = models.ForeignKey(Category)
-    in_stock = models.BooleanField(default=True)
-    off_shelf = models.BooleanField(default=False)
     description = models.TextField(blank=True)
 
     # Cache the total sale quantity and amount, re-calculate
@@ -47,6 +53,14 @@ class Product(models.Model):
     # e.g. 12 VDC, 2 A. Blank value stands for unknown.
 
     has_usb = models.BooleanField('Has USB ports', default=False)
+
+    @property
+    def in_stock(self):
+        return self.status == 'N'
+
+    @property
+    def off_shelf(self):
+        return self.status == 'F'
 
     def update_rating(self):
         """Re-calculate the average rating and update the rating field."""
