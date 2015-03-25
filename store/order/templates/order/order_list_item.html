@@ -1,0 +1,13 @@
+<div class="col-md-8 items">
+  <p><span class="item-name">Purchase date:</span>
+    <span class="date">{{ order.purchase_date }}</span></p>
+  <p><span class="item-name">Status:</span>
+    <span class="status">{{ order.get_status_display }}</span></p>
+  <p><span class="item-name">Total amount:</span>
+    <span class="price">${{ order.total_price|floatformat:2 }}</span></p>
+</div>
+
+<div class="col-md-2">
+  <a class="btn btn-default btn-block" role="button"
+     href="{% url 'order:detail' order.pk %}">View detail</a>
+</div>

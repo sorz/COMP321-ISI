@@ -1,0 +1,23 @@
+{% load thumbnail %}
+
+<ul id="order-list" class="common-list">
+{% for order in orders %}
+  <li class="row">
+
+    <div class="col-thumbnail col-md-2">
+      <div class="thumbnail">
+      {% thumbnail order.get_image "96x96" crop="center" as im %}
+        <img src="{{ im.url }}"
+           width="{{ im.width }}" height="{{ im.height }}">
+      {% empty %}
+        <div class="placeholder">
+          <span>No Image</span>
+        </div>
+      {% endthumbnail %}
+      </div>
+    </div>
+      {% include list_item %}
+    <hr>
+  </li>
+{% endfor %}
+</ul>
