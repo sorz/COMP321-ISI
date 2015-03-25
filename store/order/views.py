@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, \
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.db import transaction
+from django.views.generic import TemplateView
 from rest_framework.views import APIView
 
 from .forms import OrderForm, MessageForm
@@ -85,29 +86,49 @@ def index(request):
     return render(request, 'order/index.html', dictionary)
 
 
-def _orders(request, statuses, title):
-    """Return a list page including orders with specified statuses.
+class OrderListView(TemplateView):
+    template_name = 'order/list.html'
+    title = 'All Purchase Orders'
 
-    Used for current purchase page and past purchase page.
-    """
-    orders = Order.objects.filter(owner=request.user,
-                                  status__in=statuses)
+    def render_to_response(self, context, **response_kwargs):
+        response_kwargs['current_app'] = self.request.resolver_match.namespace
+        return super().render_to_response(context, **response_kwargs)
 
-    orders = make_page(orders, request.GET.get('page'),
-                       per_page=3)  # 3 orders per page for testing.
+    def get_queryset(self):
+        """Return the queryset of orders. Need to be override."""
+        return Order.objects.all()
 
-    dictionary = {'orders': orders, 'title': title}
-    return render(request, 'order/list.html', dictionary)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['orders'] = make_page(self.get_queryset(),
+                                      self.request.GET.get('page'),
+                                      per_page=3)  # 3 orders per page for testing.
+        context['title'] = self.title
+        return context
 
 
-@login_required
-def current(request):
-    return _orders(request, ['P', 'S', 'H'], 'Current Purchase')
+class CurrentView(OrderListView):
+    title = 'Current Purchase'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(owner=self.request.user,
+                                             status__in=['P', 'S', 'H'])
+
+    @method_decorator(login_required())
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
-@login_required
-def past(request):
-    return _orders(request, ['R', 'C'], 'Past Purchase')
+class PastView(OrderListView):
+    title = 'Past Purchase'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(owner=self.request.user,
+                                             status__in=['R', 'C'])
+
+    @method_decorator(login_required())
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 @login_required

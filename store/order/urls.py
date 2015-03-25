@@ -6,8 +6,8 @@ urlpatterns = patterns(
     '',
     url(r'^$', views.index, name='index'),
     url(r'^new/$', views.create, name='create'),
-    url(r'^current/$', views.current, name='current'),
-    url(r'^past/$', views.past, name='past'),
+    url(r'^current/$', views.CurrentView.as_view(), name='current'),
+    url(r'^past/$', views.PastView.as_view(), name='past'),
     url(r'^(?P<order_id>\d+)/$', views.detail, name='detail'),
     url(r'^(?P<order_id>\d+)/done/', views.done, name='done'),
 )
