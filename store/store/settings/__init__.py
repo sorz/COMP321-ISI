@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'category_admin',
     'product_admin',
     'account_admin',
+    'order_admin'
 )
 
 MIDDLEWARE_CLASSES = (

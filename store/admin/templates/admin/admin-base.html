@@ -49,9 +49,8 @@
         <li class="nav-product-new"><a href="{% url 'admin:product:create' %}">Add new product</a></li>
       </ul>
       <ul class="nav nav-sidebar">
-        <li><a href="">Pending orders</a></li>
-        <li><a href="">On-delivery orders</a></li>
-        <li><a href="">Past orders</a></li>
+        <li><a class="nav-order-pending" href="{% url 'admin:order:pending' %}">Pending orders</a></li>
+        <li><a class="nav-order-on-delivery" href="{% url 'admin:order:on-delivery' %}">On-delivery orders</a></li>
       </ul>
       <ul class="nav nav-sidebar">
         <li><a href="">Fulfill report</a></li>

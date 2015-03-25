@@ -28,6 +28,8 @@ function initialize_navbar() {
     '^/order/': 'purchase',
     '^/cart/': 'cart',
     '^/$': 'home',
+    '^/admin/order/pending': 'order-pending',
+    '^/admin/order/on-delivery': 'order-on-delivery',
     '^/admin/category/new/': 'category-new',
     '^/admin/category/': 'management',
     '^/admin/product/new/': 'product-new',

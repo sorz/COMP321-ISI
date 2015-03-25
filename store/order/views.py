@@ -107,28 +107,26 @@ class OrderListView(TemplateView):
         return context
 
 
-class CurrentView(OrderListView):
+class _LoginRequiredOrderListView(OrderListView):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+class CurrentView(_LoginRequiredOrderListView):
     title = 'Current Purchase'
 
     def get_queryset(self):
         return super().get_queryset().filter(owner=self.request.user,
                                              status__in=['P', 'S', 'H'])
 
-    @method_decorator(login_required())
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
 
-
-class PastView(OrderListView):
+class PastView(_LoginRequiredOrderListView):
     title = 'Past Purchase'
 
     def get_queryset(self):
         return super().get_queryset().filter(owner=self.request.user,
                                              status__in=['R', 'C'])
-
-    @method_decorator(login_required())
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
 
 
 @login_required
