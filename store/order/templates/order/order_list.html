@@ -19,5 +19,11 @@
       {% include list_item %}
     <hr>
   </li>
+{% empty %}
+  No purchase orders.
 {% endfor %}
 </ul>
+
+{% if orders %}
+{% include 'store/common-pagination.html' with list=orders %}
+{% endif %}

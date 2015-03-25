@@ -31,7 +31,7 @@ footer hr { margin: 1em 2em; }
 
 /* Purchase order list */
 #order-list .item-name { display: inline-block; width: 8em; color: gray; }
-#order-list .items > p > span:last-child { font-size: 1.2em;  }
+#order-list .items > p > span:nth-child(2) { font-size: 1.2em;  }
 
 /* Product detail */
 .category-link { font-size: 0.5em; color: lightgray; vertical-align: middle; }
