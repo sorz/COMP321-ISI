@@ -1,7 +1,7 @@
 from django.utils.decorators import method_decorator
 from admin.decorators import vendor_required
 
-from order.views import BaseOrderListView
+from order.views import BaseOrderListView, BaseOrderDetailView
 
 
 class _VendorOrderListView(BaseOrderListView):
@@ -26,3 +26,11 @@ class OnDeliveryView(_VendorOrderListView):
     def get_queryset(self):
         return super().get_queryset().filter(owner=self.request.user,
                                              status='S')
+
+
+class DetailView(BaseOrderDetailView):
+    vendor = True
+
+    @method_decorator(vendor_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
