@@ -29,6 +29,7 @@ class OnDeliveryView(_VendorOrderListView):
 
 
 class DetailView(BaseOrderDetailView):
+    template_name = 'order_admin/detail.html'
     vendor = True
 
     @method_decorator(vendor_required)

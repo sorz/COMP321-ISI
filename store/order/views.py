@@ -132,6 +132,7 @@ class PastView(_LoginRequiredOrderListView):
 class BaseOrderDetailView(FormView):
     form_class = MessageForm
     template_name = 'order/detail.html'
+    title = 'Purchase detail'
     success_url = '.'
     vendor = False
     order = None
@@ -159,6 +160,8 @@ class BaseOrderDetailView(FormView):
         context = super().get_context_data(**kwargs)
         context['order'] = self.order
         context['order_messages'] = self.order.message_set.all()
+        context['vendor'] = self.vendor
+        context['title'] = self.title
         return context
 
 

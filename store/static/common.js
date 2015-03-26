@@ -34,7 +34,7 @@ function initialize_navbar() {
     '^/admin/category/': 'management',
     '^/admin/product/new/': 'product-new',
     '^/admin/product/': 'management',
-    '^/admin/': 'overview'
+    '^/admin/$': 'overview'
   };
 
   var path = window.location.pathname;
