@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, \
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.db import transaction
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, FormView
 from rest_framework.views import APIView
 
 from .forms import OrderForm, MessageForm
@@ -86,7 +86,7 @@ def index(request):
     return render(request, 'order/index.html', dictionary)
 
 
-class OrderListView(TemplateView):
+class BaseOrderListView(TemplateView):
     template_name = 'order/list.html'
     title = 'All Purchase Orders'
 
@@ -107,7 +107,7 @@ class OrderListView(TemplateView):
         return context
 
 
-class _LoginRequiredOrderListView(OrderListView):
+class _LoginRequiredOrderListView(BaseOrderListView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
@@ -129,38 +129,44 @@ class PastView(_LoginRequiredOrderListView):
                                              status__in=['R', 'C'])
 
 
-@login_required
-def detail(request, order_id):
-    """Order detail page. Also handle message posting."""
-    order = get_object_or_404(Order, pk=order_id)
+class BaseOrderDetailView(FormView):
+    form_class = MessageForm
+    template_name = 'order/detail.html'
+    success_url = '.'
+    vendor = False
+    order = None
 
-    # Only owner of this order can view or add message.
-    if order.owner != request.user:
-        return HttpResponseForbidden('You cannot view this order.')
+    def dispatch(self, request, *args, **kwargs):
+        self.order = get_object_or_404(Order, pk=kwargs['order_id'])
 
-    order_messages = order.message_set.all()
+        # Only vendor or owner of this order can view or add message.
+        if not self.vendor and self.order.owner != request.user:
+            # TODO: user-friendly message.
+            return HttpResponseForbidden('You cannot view this order.')
+        return super().dispatch(request, *args, **kwargs)
 
-    if request.method == 'POST':
-        message_form = MessageForm(request.POST)
+    def form_valid(self, form):
+        message = form.save(commit=False)
+        message.order = self.order
+        message.by_vendor = self.vendor
+        message.save()
 
-        if message_form.is_valid():
-            message = message_form.save(commit=False)
-            message.order = order
-            message.by_vendor = False
-            message.save()
+        messages.add_message(self.request, messages.SUCCESS,
+                             "Message has been added.")
+        return super().form_valid(form)
 
-            messages.add_message(request, messages.SUCCESS,
-                                 "Message has been added.")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['order'] = self.order
+        context['order_messages'] = self.order.message_set.all()
+        return context
 
-            # Refresh page to prevent duplicate submission
-            return HttpResponseRedirect('.')
 
-    else:
-        message_form = MessageForm()
+class DetailView(BaseOrderDetailView):
 
-    dictionary = {'order': order, 'order_messages': order_messages,
-                  'message_form': message_form}
-    return render(request, 'order/detail.html', dictionary)
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 @login_required
