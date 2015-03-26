@@ -8,12 +8,27 @@
     <p><span class="item-name">Shipment on</span>{{ order.shipment_date }}</p>
     {% endif %}
 
-    {% if order.status in 'HP' %}
+
+    {% if vendor %}
+      {% if order.status == 'P' %}{# Pending #}
       <button data-url="{% url 'order_api:order' order.pk %}"
-              class="cancel-order btn btn-block btn-warning">Cancel</button>
-    {% elif order.status == 'S' %}
+              class="ship-order btn btn-block btn-primary">Ship</button>
       <button data-url="{% url 'order_api:order' order.pk %}"
-              class="confirm-order btn btn-block btn-primary">Received Confirm</button>
+              class="hold-order btn btn-block btn-warning">Hold</button>
+      {% elif order.status == 'H' %}{# Holding #}
+      <button data-url="{% url 'order_api:order' order.pk %}"
+              class="ship-order btn btn-block btn-primary">Ship</button>
+      {% endif %}
+    {% else %}
+      {% if order.status == 'S' and not vendor %} {# Shiping #}
+        <button data-url="{% url 'order_api:order' order.pk %}"
+                class="confirm-order btn btn-block btn-primary">Received Confirm</button>
+      {% endif %}
+    {% endif %}
+
+    {% if order.status in 'PH' %}
+      <button data-url="{% url 'order_api:order' order.pk %}"
+          class="cancel-order btn btn-block btn-danger">Cancel</button>
     {% endif %}
   </div>
 
@@ -84,18 +99,25 @@
 <script>
 // TODO: put into separated js file.
 
+function set_status(url, status, callback) {
+  $.ajax({
+    url: url,
+    type: 'PUT',
+    data: {'status': status}
+  }).done(function () {
+    if (callback == undefined) {
+      location.reload();
+    } else {
+      callback();
+    }
+  });
+}
+
 $('button.cancel-order').click(function () {
   if (!confirm('This order will be canceled permanently.')) {
     return;
   }
-  var url = $(this).data('url');
-  $.ajax({
-    url: url,
-    type: 'PUT',
-    data: {'status': 'C'}
-  }).done(function () {
-    location.reload();
-  });
+  set_status($(this).data('url'), 'C');
 });
 
 $('button.confirm-order').click(function () {
@@ -103,13 +125,17 @@ $('button.confirm-order').click(function () {
       "If you haven't received all items, please click cancel.")) {
     return;
   }
-  var url = $(this).data('url');
-  $.ajax({
-    url: url,
-    type: 'PUT',
-    data: {'status': 'R'}
-  }).done(function () {
+  set_status($(this).data('url'), 'R', function () {
     window.location.href = 'done/';
   });
 });
+
+$('button.hold-order').click(function () {
+  set_status($(this).data('url'), 'H');
+});
+
+$('button.ship-order').click(function () {
+  set_status($(this).data('url'), 'S');
+});
+
 </script>

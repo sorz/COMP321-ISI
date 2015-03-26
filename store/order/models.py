@@ -66,6 +66,7 @@ class Order(models.Model):
     def hold(self):
         """Hold a pending order. Used by vendor."""
         self._change_status_atomically('P', 'H')
+        self.save()
 
     def cancel(self, operator):
         """Cancel a pending/hold order. Used by vendor/customer."""

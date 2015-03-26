@@ -185,12 +185,15 @@ def done(request, order_id):
 
 
 class OrderView(APIView):
-    @method_decorator(login_required)
     def put(self, request, order_id):
         order = get_object_or_404(Order, pk=order_id)
 
-        if order.owner != request.user:
-            return HttpResponseForbidden('You cannot access this order.')
+        if not request.user.is_authenticated():
+            return HttpResponseForbidden('No login.')
+
+        vendor = request.user.is_staff
+        if request.user != order.owner and not vendor:
+            return HttpResponseForbidden('No permission to access this order.')
 
         new_status = request.data.get('status')
         if new_status is None:
@@ -200,19 +203,30 @@ class OrderView(APIView):
         if order.status == new_status:
             return HttpResponse(status=204)
 
-        # Cancel this order.
-        if new_status == 'C':
-            try:
-                print('cancel')
+        try:
+            # Cancel this order.
+            if new_status == 'C':
                 order.cancel(operator=request.user)
-            except InvalidOrderStatusChangeException:
-                return HttpResponseForbidden('Cannot cancel this order.')
 
-        # Confirm Received.
-        elif new_status == 'R':
-            try:
+            # Confirm Received, only customer.
+            elif new_status == 'R':
+                if vendor and request.user != order.owner:
+                    return HttpResponseForbidden('Only customer can do it.')
                 order.confirm()
-            except InvalidOrderStatusChangeException:
-                return HttpResponseForbidden('Cannot confirm this order.')
+
+            # Hold this order, only vendor.
+            elif new_status == 'H':
+                if not vendor:
+                    return HttpResponseForbidden('Only vendor can do it.')
+                order.hold()
+
+            # Ship this order, only vendor.
+            elif new_status == 'S':
+                if not vendor:
+                    return HttpResponseForbidden('Only vendor can do it.')
+                order.ship()
+
+        except InvalidOrderStatusChangeException:
+            return HttpResponseForbidden('Wrong status.')
 
         return HttpResponse(status=204)
