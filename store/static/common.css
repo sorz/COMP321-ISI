@@ -62,7 +62,7 @@ form#rating .stars { color: gray; margin-left: 2em;}
 #order-status-box .item-name,
 #order-recipient-box .item-name { display: inline-block; width: 7em; color: gray; }
 #order-status-box button { margin-top: 1em; }
-#order-status-box button { margin: 1em 0; }
+#order-status-box button { margin: 1em 0; width: 80%; }
 
 #order-items p { font-size: 1.2em; color: gray; }
 #order-items .price,

@@ -1,14 +1,19 @@
-<div class="col-md-6 col-lg-4 items">
+<div class="col-md-5 col-lg-4 items">
   <p><span class="item-name">Purchase date:</span>
     <span class="date">{{ order.purchase_date|date }}</span></p>
+  {% if order.status == 'S' %}
+  <p><span class="item-name">Shipment date:</span>
+    <span class="date">{{ order.shipment_date|date }}</span></p>
+  {% else %}
+  <p><span class="item-name">Status:</span>
+    <span class="status">{{ order.get_status_display }}</span></p>
+  {% endif %}
+</div>
+
+<div class="col-md-5 col-lg-4 items">
   <p><span class="item-name">Customer:</span>
     <span class="full-name" title="Full name">{{ order.owner.get_full_name }}</span>
     <span class="username" title="User name">({{ order.owner }})</span></p>
-</div>
-
-<div class="col-md-4 col-lg-3 items">
-  <p><span class="item-name">Status:</span>
-    <span class="status">{{ order.get_status_display }}</span></p>
   <p><span class="item-name">Total amount:</span>
     <span class="price">${{ order.total_price|floatformat:2 }}</span></p>
 </div>

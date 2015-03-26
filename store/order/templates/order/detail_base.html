@@ -1,7 +1,7 @@
 <h1 class="page-header">Purchase Detail</h1>
 
 <div class="row">
-  <div id="order-status-box" class="col-md-5 col-lg-4">
+  <div id="order-status-box" class="col-md-6 col-lg-5">
     <p><span class="item-name">Status</span>{{ order.get_status_display }}</p>
     <p><span class="item-name">Purchase on</span>{{ order.purchase_date }}</p>
     {% if order.shipment_date %}
@@ -32,7 +32,7 @@
     {% endif %}
   </div>
 
-  <div id="order-recipient-box" class="col-md-7 col-lg-7 col-lg-offset-1">
+  <div id="order-recipient-box" class="col-md-6 col-lg-7">
     <p><span class="item-name">Recipient</span>{{ order.recipient_name }}</p>
     <p><span class="item-name">Address</span>{{ order.recipient_address }}</p>
     {% if order.recipient_address_2 %}
