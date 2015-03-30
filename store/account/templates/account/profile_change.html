@@ -3,16 +3,16 @@
 {% block title %}Update Profile{% endblock %}
 
 {% block main %}
-  <h1>Update Profile</h1>
+  <h1 class="page-header">Update Profile</h1>
 
   <div class="row">
-    <form method="post" action="." class="col-md-8 col-lg-5 col-sm-12">
+    <form method="post" action="." class="col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 col-sm-12">
       {% csrf_token %}
       {% bootstrap_form user_form %}
       {% bootstrap_form profile_form %}
 
       {% buttons %}
-        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="submit" class="btn btn-primary pull-right">Update</button>
       {% endbuttons  %}
     </form>
   </div>

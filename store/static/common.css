@@ -5,11 +5,19 @@ footer hr { margin: 1em 2em; }
 
 .row { margin-bottom: 20px; }
 
+.text-center { text-align: center; }
+.btn-margin { margin: 1em; }
+
 .placeholder { margin: 0; background: whitesmoke; text-align: center; color: lightgray; }
 
 /* Alert messages */
 #alert-messages { position: absolute; top: 7em; z-index: 50; width: 100%; text-align: center;}
 #alert-messages > div { display: inline-block; }
+
+/* Tip box, used at right of form. */
+.tip-box { font-size: 1.15em; background: #f8f8f8; padding: 1em; border-radius: 10px;
+    overflow: auto; color: #666; clear: both; }
+.tip-box .strong { font-size: 1.1em; }
 
 /* Categories */
 #category-list .thumbnail { width: 300px; margin: 1em auto; }
@@ -88,3 +96,7 @@ ul#order-messages { margin-top: 1.5em; }
 
 .cart-total { font-size: 1.2em; }
 button[form="cart"] { margin-bottom: 2em; }
+
+/* User profile */
+#user-profile { font-size: 1.2em; }
+#user-profile .item-name { display: inline-block; width: 6em; color: gray; }

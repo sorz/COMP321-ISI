@@ -2,10 +2,13 @@
 {% block title %}Register{% endblock %}
 
 {% block main %}
-  <h1>Register</h1>
+  <h1 class="page-header">Register
+  <small>Done</small></h1>
 
-  <p>Done.</p>
-
-  <p><a href="{% url 'account:login' %}">Log in now</a></p>
+  <div class="text-center">
+    <h2>Thank you</h2>
+    <p><a role="button" class="btn btn-primary btn-lg btn-margin"
+          href="{% url 'account:login' %}">Log in now</a></p>
+  </div>
 
 {% endblock %}
