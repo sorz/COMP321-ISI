@@ -15,7 +15,7 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 # Set the time-zone based on the user's requirement
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
