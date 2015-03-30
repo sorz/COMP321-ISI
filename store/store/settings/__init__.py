@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'djangobower',
     'bootstrap3',
+    'store',
     'product',
     'category',
     'cart',
@@ -140,9 +141,6 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 )
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'store', 'templates'),
-)
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",

@@ -1,8 +1,9 @@
+{% load args_string %}
 <nav>
   <ul class="pagination">
   {% if list.has_previous %}
     <li class="previous">
-      <a aria-label="Previous" href="?filter={{ filter }}&sort={{ sort }}&page={{ list.previous_page_number }}">
+      <a aria-label="Previous" href="{% args_string %}">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
@@ -14,7 +15,7 @@
 
   {% for page, current in list.neighbor_pages %}
     {% if not current %}
-      <li><a href="?filter={{ filter }}&sort={{ sort }}&page={{ page }}">{{ page }}</a></li>
+      <li><a href="{% args_string %}">{{ page }}</a></li>
     {% else %}
       <li class="active"><a href="#"><span class="sr-only">(current)</span>{{ page }}</a></li>
     {% endif %}
@@ -22,7 +23,7 @@
 
   {% if list.has_next %}
     <li class="next">
-      <a aria-label="Next" href="?filter={{ filter }}&sort={{ sort }}&page={{ list.next_page_number }}">
+      <a aria-label="Next" href="{% args_string %}">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>
