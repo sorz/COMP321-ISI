@@ -3,10 +3,10 @@
 {% block title %}Login{% endblock %}
 
 {% block main %}
-  <h1>Login</h1>
+  <h1 class="page-header">Login</h1>
 
   <div class="row">
-    <form method="post" action="." class="col-md-8 col-lg-5 col-sm-12">
+    <form method="post" action="." class="col-md-6 col-lg-4 col-lg-offset-1">
       {% csrf_token %}
       {% bootstrap_form form %}
 
@@ -18,11 +18,23 @@
       {% endif %}
 
       {% buttons %}
-        <button type="submit" class="btn btn-primary">Log in</button>
+        <button type="submit" class="btn btn-primary pull-right btn-lg">Log in</button>
       {% endbuttons  %}
     </form>
-  </div>
 
-  <p>Need a account? <a href="{% url 'account:register' %}">Register now</a>.</p>
+    <div class="col-md-6 col-lg-6">
+      <div class="tip-box">
+        <p>Welcome back.</p>
+        <p>
+          After logged in, you are able to enjoy all excellent service offered by us.
+          Including shopping cart, orders tracking and management and so on.
+        </p>
+        <p class="strong">Need a account?
+          <a href="{% url 'account:register' %}">Register now!</a>
+        </p>
+      </div>
+    </div>
+
+  </div><!--/.row-->
 
 {% endblock %}

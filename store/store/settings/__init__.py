@@ -141,6 +141,10 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 )
 
+# Make IDE happy.
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'store', 'templates'),
+)
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",

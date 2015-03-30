@@ -2,31 +2,35 @@
 {% block title %}Profile{% endblock %}
 
 {% block main %}
-  <h1>Profile</h1>
+  <h1 class="page-header">My Profile
+    <small>Welcome, {{ user }}.</small>
+  </h1>
 
-  <p>Welcome, {{ user }}.</p>
+  <div class="row" id="user-profile">
+    <div class="col-md-6">
+      <p><span class="item-name">First name:</span>{{ user.first_name }}</p>
+      <p><span class="item-name">Last name:</span>{{ user.last_name }}</p>
+      <p><span class="item-name">Last Login:</span>{{ user.last_login }}</p>
+      <p><span class="item-name">Join Date:</span>{{ user.date_joined }}</p>
+    </div>
+    <div class="col-md-6">
+      <p><span class="item-name">Email:</span>{{ user.email }}</p>
+      <p><span class="item-name">Address:</span>{{ user.profile.address }}</p>
+      {% if user.profile.address_2 %}
+        <p><span class="item-name">Address 2:</span>{{ user.profile.address_2 }}</p>
+      {% endif %}
+      <p><span class="item-name">Postcode:</span>{% firstof user.profile.postcode "n/a" %}</p>
+    </div>
+  </div>
 
-  <h2>Some information</h2>
-  <p>First name: {{ user.first_name }}</p>
-  <p>Last name: {{ user.last_name }}</p>
-  <p>Address: {{ user.profile.address }} <br>
-    {{ user.profile.address_2 }}</p>
-  <p>Postcode: {{ user.profile.postcode }}</p>
-  <p>Email: {{ user.email }}</p>
-  <p>Last Login: {{ user.last_login }}</p>
-  <p>Join Date: {{ user.date_joined }}</p>
+  <div class="row">
+    <div class="col-md-12">
+      <a role="button" class="btn btn-default"
+         href="{% url 'account:profile_change' %}">Update profile</a>
+      <a role="button" class="btn btn-default btn-margin"
+         href="{% url 'account:password_change' %}">Change password</a>
+    </div>
 
-  <ul>
-    <li><a href="{% url 'account:profile_change' %}">Update profile</a></li>
-    <li><a href="{% url 'account:password_change' %}">Change password</a></li>
-  </ul>
-
-  <h2>Some links</h2>
-  <ul>
-    <li><a href="{% url 'cart:index' %}">Shopping Cart</a></li>
-    <li><a href="{% url 'order:index' %}">My Purchases</a></li>
-
-    <li><a href="/">Home page</a></li>
-  </ul>
+  </div>
 
 {% endblock %}

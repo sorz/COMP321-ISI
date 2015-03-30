@@ -2,13 +2,17 @@
 {% block title %}Logged out{% endblock %}
 
 {% block main %}
-  <h1>Logged out</h1>
+  <h1 class="page-header">Logged out
+    <small>You has logged out</small>
+  </h1>
 
-  Thank you.
+  <div class="text-center">
+    <h2>Thank you</h2>
 
-  <p><a href="/">Back to Home</a></p>
+    <p><a role="button" class="btn btn-primary btn-lg btn-margin" href="/">Back to Home</a></p>
 
-  <p><a href="{% url 'account:login' %}">Log in again</a></p>
-
+    <p><a role="button" class="btn btn-default btn-lg"
+          href="{% url 'account:login' %}">Log in again</a></p>
+  </div>
 
 {% endblock %}

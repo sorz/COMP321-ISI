@@ -3,20 +3,45 @@
 {% block title %}Register{% endblock %}
 
 {% block main %}
-  <h1>Register</h1>
+  <h1 class="page-header">Register</h1>
 
   <div class="row">
-    <form method="post" action="." class="col-md-8 col-lg-5 col-sm-12">
+    <form method="post" action="." class="col-md-6 col-lg-5 col-lg-offset-1">
       {% csrf_token %}
       {% bootstrap_form user_form %}
       {% bootstrap_form profile_form %}
 
       {% buttons %}
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary btn-lg pull-right">Register</button>
       {% endbuttons  %}
     </form>
-  </div>
 
-  <p>Already has a account? <a href="{% url 'account:login' %}">Log in now</a>.</p>
+    <div class="col-md-6 col-lg-5">
+      <div class="tip-box">
+        <p>Welcome to join us.</p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Etiam metus mauris, porttitor id lectus a, auctor tempor dolor.
+          Suspendisse sit amet posuere justo, ut feugiat ante.
+          Fusce metus nulla, cursus id sodales lacinia, pharetra non mauris.
+        </p><p>
+          In consectetur blandit velit, ut hendrerit magna ultricies id.
+          Nullam lectus nunc, ornare vitae eros id, tincidunt feugiat eros.
+        </p><p>
+          Integer ac rutrum urna, luctus egestas turpis.
+          Mauris vitae arcu quis neque bibendum molestie eu ac orci.
+          Nam a luctus lacus. Nulla efficitur id sem ut finibus.
+          Phasellus ac leo id lacus gravida venenatis vel at lacus.
+        </p><p>
+          Integer ut diam non mauris ultrices volutpat.
+          Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+        </p>
+        <p class="strong">Already has a account?
+          <a href="{% url 'account:login' %}">Log in now</a>.
+        </p>
+      </div>
+    </div>
+
+  </div><!--/.row-->
 
 {% endblock %}
