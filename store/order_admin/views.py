@@ -52,7 +52,7 @@ class OnDeliveryView(_VendorOrderListView):
 
 
 class FulfilledView(_ReportListView):
-    template_name = 'order_admin/list.html'
+    template_name = 'order_admin/report_fulfilled.html'
 
     def get_queryset(self):
         return super().get_queryset().filter(status='C')

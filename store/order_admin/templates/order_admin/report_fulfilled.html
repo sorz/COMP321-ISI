@@ -1,0 +1,28 @@
+{% extends "order_admin/base_report.html" %}
+
+
+{% block thead %}
+  <th>#</th>
+  <th>Purchase date</th>
+  <th>Customer name</th>
+  <th>Total amount</th>
+  <th>Shipment date</th>
+  <th>Receipt date</th>
+  <th>Elapsed days</th>
+{% endblock %}
+
+
+{% block tbody %}
+  {% for order in orders %}
+    <tr>
+      <th>{{ order.pk }}</th>
+      <td>{{ order.purchase_date }}</td>
+      <td>{{ order.owner.get_full_name }}
+      ({{ order.owner }})</td>
+      <td>{{ order.total_price }}</td>
+      <td>{{ order.shipment_date }}</td>
+      <td>{{ order.close_date }}</td>
+      <td>TODO {# TODO: elapsed days #}</td>
+    </tr>
+  {% endfor %}
+{% endblock %}
