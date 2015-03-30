@@ -15,7 +15,7 @@
 {% block tbody %}
   {% for order in orders %}
     <tr>
-      <th>{{ order.pk }}</th>
+      <th><a href="{% url 'admin:order:detail' order.pk %}">{{ order.pk }}</a></th>
       <td>{{ order.purchase_date }}</td>
       <td>{{ order.owner.get_full_name }}
       ({{ order.owner }})</td>

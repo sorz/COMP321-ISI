@@ -25,15 +25,16 @@ class _ReportListView(_VendorOrderListView):
             if start:
                 orders = orders.filter(purchase_date__gt=start)
             if end:
-                orders = orders.filter(purchase_date__lt=end)
+                orders = orders.filter(purchase_date__lt="%s 23:59:59.99" % end)
         except ValidationError:
             pass  # TODO: show a error message to user.
         return orders
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['start'] = self.request.GET.get('start')
-        context['end'] = self.request.GET.get('end')
+        # TODO: validate date format.
+        context['start'] = self.request.GET.get('start', '')
+        context['end'] = self.request.GET.get('end', '')
         return context
 
 
