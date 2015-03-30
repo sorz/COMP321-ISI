@@ -87,6 +87,10 @@ def index(request):
 
 
 class BaseOrderListView(TemplateView):
+    """Show a list of certain orders.
+
+    Used by order list for both customer and vendor, report for vendor.
+    """
     template_name = 'order/list.html'
     title = 'All Purchase Orders'
 
