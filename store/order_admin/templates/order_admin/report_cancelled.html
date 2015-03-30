@@ -6,8 +6,8 @@
   <th>Purchase date</th>
   <th>Customer name</th>
   <th>Total amount</th>
-  <th>Shipment date</th>
-  <th>Receipt date</th>
+  <th>Cancel date</th>
+  <th>Cancelled by</th>
   <th>Elapsed days</th>
 {% endblock %}
 
@@ -20,8 +20,8 @@
       <td>{{ order.owner.get_full_name }}
       ({{ order.owner }})</td>
       <td>${{ order.total_price|floatformat:2 }}</td>
-      <td>{{ order.shipment_date }}</td>
       <td>{{ order.close_date }}</td>
+      <td>TODO{# TODO: cancelled by #}</td>
       <td>{{ order.elapsed_days }}</td>
     </tr>
   {% endfor %}
