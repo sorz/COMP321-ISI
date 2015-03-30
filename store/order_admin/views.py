@@ -55,14 +55,14 @@ class FulfilledView(_ReportListView):
     template_name = 'order_admin/report_fulfilled.html'
 
     def get_queryset(self):
-        return super().get_queryset().filter(status='C')
+        return super().get_queryset().filter(status='R')
 
 
 class CancelledView(_ReportListView):
     template_name = 'order_admin/list.html'
 
     def get_queryset(self):
-        return super().get_queryset().filter(status='R')
+        return super().get_queryset().filter(status='C')
 
 
 class DetailView(BaseOrderDetailView):

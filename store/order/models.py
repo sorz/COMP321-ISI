@@ -55,6 +55,17 @@ class Order(models.Model):
             price += item.total_price
         return price
 
+    @property
+    def elapsed_days(self):
+        """Return the number of days elapsed between purchase date and close date.
+
+        None if it's not received either canceled.
+        """
+        if not self.close_date:
+            return
+        elapsed = self.close_date - self.purchase_date
+        return elapsed.days
+
     def ship(self):
         """Ship a pending/hold order. Used by vendor."""
         assert self.shipment_date is None
