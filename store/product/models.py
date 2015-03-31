@@ -98,15 +98,22 @@ class Product(models.Model):
 class Photo(models.Model):
     """Photos of product.
 
-    Each product may has or not one or more photos.
-    Each photo has a image file and optional description.
+    Each product may have one or more photos.
+    Each photo has an image file and an optional description.
     """
     product = models.ForeignKey(Product, null=True)
     image = ImageField(upload_to='photos/%Y/%m')
     description = models.CharField(max_length=255, null=True)
     # TODO: Maintain the display order of photos (#E7)
-    # TODO: Delete image file when photo is removed.
 
+    # Delete image file when photo is removed. Not useful, having been implemented by inlineformset
+    # Can be better implemented by pre_delete signal
+    def delete(self, *args, **kwargs):
+        storage, path = self.image.storage, self.image.path
+        # Delete the model before the file
+        super(Photo, self).delete(*args, **kwargs)
+        # Delete the file after the model
+        storage.delete(path)
 
 class Rating(models.Model):
     """User's rating for a product.
