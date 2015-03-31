@@ -2,7 +2,6 @@ from django.db import models, transaction
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.validators import MinValueValidator
-from store.settings import __init__
 
 from product.models import Product, Photo
 from cart.models import ProductItemInfo
@@ -189,4 +188,4 @@ class Message(models.Model):
 
     @property
     def create_datetime_zone_aware(self):
-        return self.create_date.replace(tzinfo=__init__.TIME_ZONE).strftime("%B %d, %Y, %H:%M:%S %Z")
+        return self.create_date.strftime("%B %d, %Y, %H:%M:%S %Z")
