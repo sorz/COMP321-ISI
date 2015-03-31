@@ -188,4 +188,4 @@ class Message(models.Model):
 
     @property
     def create_datetime_zone_aware(self):
-        return self.create_date.strftime('%B %d, %Y, %H:%M:%S %Z')
+        return self.create_date.strftime("%B %d, %Y, %H:%M:%S %Z")
