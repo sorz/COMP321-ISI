@@ -146,8 +146,7 @@ class BaseOrderDetailView(FormView):
 
         # Only vendor or owner of this order can view or add message.
         if not self.vendor and self.order.owner != request.user:
-            # TODO: user-friendly message.
-            return HttpResponseForbidden('You cannot view this order.')
+            return HttpResponseForbidden('This order can only be viewed by the vendor or owner.')
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
