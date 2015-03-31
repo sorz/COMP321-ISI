@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.validators import MinValueValidator
 
-
 from product.models import Product, Photo
 from cart.models import ProductItemInfo
 
@@ -165,7 +164,7 @@ class OrderItem(ProductItemInfo):
 
 
 class Message(models.Model):
-    """Order message, wrote by customer and vendor."""
+    """Order message, written by customer and vendor."""
     class Meta:
         ordering = ['-create_date']
 
@@ -186,3 +185,7 @@ class Message(models.Model):
             return 'Vendor'
         else:
             return 'Customer'
+
+    @property
+    def create_datetime_zone_aware(self):
+        return Message.create_date.strftime('%B %d, %Y, %H:%M:%S %Z')
