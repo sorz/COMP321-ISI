@@ -125,6 +125,7 @@ BOWER_INSTALLED_APPS = (
     'jquery#1.11',
     'jquery.cookie',
     'bootstrap',
+    'bootstrap-datepicker',
 )
 
 
