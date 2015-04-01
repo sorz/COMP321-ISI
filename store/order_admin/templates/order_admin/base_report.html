@@ -1,5 +1,8 @@
 {% extends "admin/admin-base.html" %}
-{% block title %}{{ title }} - Admin{% endblock %}
+{% load staticfiles %}
+{% block title %}{{ title }} - Admin
+
+{% endblock %}
 
 {% block main %}
   <h1 class="page-header">{{ title }}</h1>
@@ -8,11 +11,9 @@
     <div class="col-md-12">
       <form class="form-inline" name="filter" method="GET" action=".">
         <label for="filter-start">From</label>
-        <input class="form-control" id="filter-start" name="start"
-               placeholder="YYYY-mm-dd" type="date" value="{{ start }}"  autocomplete="on">
+        <input type="text" name="date-start" id="date-start" placeholder="YYYY-mm-dd"/>
         <label for="filter-end">to</label>
-        <input class="form-control" id="filter-end" name="end"
-               placeholder="YYYY-mm-dd" type="date" value="{{ end }}"  autocomplete="on">
+        <input type="text" name="date-end" id="date-end" placeholder="YYYY-mm-dd"/>
         <input type="hidden" value="{{ page }}" name="page">
 
         <button class="btn btn-default" type="submit">Filter</button>
@@ -48,5 +49,19 @@
       {% include 'store/common-pagination.html' with list=orders %}
     </div>
   </div>
-
+    <script type="text/javascript" src="http://dl.zhzxxyb.tk/calendarview/javascripts/prototype.js"></script>
+    <script type="text/javascript" src="http://dl.zhzxxyb.tk/calendarview/javascripts/calendarview.js"></script>
+    <script type="text/javascript">
+      window.onload = function() {
+        Calendar.setup({
+          dateField      : 'date-start',
+          triggerElement : 'date-start'
+        })
+        Calendar.setup({
+          dateField      : 'date-end',
+          triggerElement : 'date-end'
+        })
+      }
+    </script>
+    <link rel="stylesheet" href="http://dl.zhzxxyb.tk/calendarview/stylesheets/calendarview.css">
 {% endblock %}
