@@ -9,9 +9,9 @@
     <div class="col-md-12">
       <form class="form-inline" name="filter" method="GET" action=".">
         <label for="filter-start">From</label>
-        <input type="text" class="date-start" placeholder="YYYY/mm/dd">
+        <input type="text" name="start" class="date-start" placeholder="YYYY/mm/dd" value="{{ start }}">
         <label for="filter-end">to</label>
-        <input type="text" class="date-end" placeholder="YYYY/mm/dd">
+        <input type="text" name="end" class="date-end" placeholder="YYYY/mm/dd" value="{{ end }}">
         <input type="hidden" value="{{ page }}" name="page">
 
         <button class="btn btn-default" type="submit">Filter</button>
@@ -22,8 +22,8 @@
       <script>
         $(document).ready(function () {
           $('#filter-reset').click(function () {
-            $('#filter-start').val('');
-            $('#filter-end').val('');
+            $('.date-start').val('');
+            $('.date-end').val('');
             $('form[name="filter]').submit();
           });
         });
@@ -51,7 +51,7 @@
     <script src="{% static 'bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
     <script>
     $('.form-inline input').datepicker({
-        format: 'yyyy/mm/dd',
+        format: 'yyyy-mm-dd',
         autoclose: 'true',
         place: 'bottom-left'
     })
