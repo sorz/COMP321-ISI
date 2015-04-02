@@ -25,8 +25,16 @@
   {% endblock %}
 </head>
 <body>
-  <div id="alert-messages">
-    {% bootstrap_messages %}
+  <div id="top-messages">
+    <div id="remote-messages">
+      {% bootstrap_messages %}
+    </div>
+    <div></div>
+    <div id="local-messages">
+      <div class="alert alert-dismissable template">
+        <button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>
+      </div>
+    </div>
   </div>
 
   {% block body %}

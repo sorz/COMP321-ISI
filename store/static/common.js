@@ -16,7 +16,7 @@ $.ajaxSetup({
 });
 
 
-function initialize_navbar() {
+function initializeNavbar() {
 
   // Active current (selected) item.
 
@@ -50,12 +50,31 @@ function initialize_navbar() {
 }
 
 
+function addMessage(level, message) {
+  // A JavaScript version of django.contrib.messages.add_messages().
+  // Show a message on the top of web page,
+  // and auto hide in several seconds.
+  var $local = $('#local-messages');
+  var $msg = $local.children('div').first().clone();
+  $msg.addClass('alert-' + level)
+    .removeClass('template')
+    .append(document.createTextNode(message))
+    .appendTo($local);
+
+  setTimeout(function () {
+    $msg.slideUp(function () {
+      $msg.remove();
+    });
+  }, 2000);
+}
+
+
 $(document).ready(function () {
-  initialize_navbar();
+  initializeNavbar();
 
   // Auto hide messages.
   setTimeout(function () {
-    $('#alert-messages').slideUp(function () {
+    $('#remote-messages').slideUp(function () {
       $(this).empty();
     });
   }, 5000);
@@ -63,7 +82,7 @@ $(document).ready(function () {
   // Add-to-shopping-cart button.
   $('button.buy').click(function () {
     $.post($(this).data('link'), function () {
-      alert('Added.');
+      addMessage('success', 'Product added into shopping card.')
     });
   });
 
