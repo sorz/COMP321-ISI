@@ -56,7 +56,6 @@ def create(request):
                 messages.add_message(request, messages.WARNING,
                                      "Some products are off-shelf, "
                                      "please delete them and checkout again.")
-                transaction.abort()
                 return HttpResponseRedirect(reverse('cart:index'))
 
             # Remove the hash since its mission is completed.
