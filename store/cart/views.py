@@ -17,31 +17,6 @@ def index(request):
     return render(request, 'cart/index.html', dictionary)
 
 
-# TODO: Refactor it by using REST framework, or delete it.
-@login_required
-def rest_cart(request):
-    cart = Cart(request.user)
-
-    # Return all items.
-    if request.method == 'GET':
-        response = {'items': []}
-        for item in cart.item_set.all():
-            response['items'].append({
-                'name': item.name,
-                'price': item.price,
-                'quantity': item.quantity
-            })
-        return JsonResponse(response)
-
-    # Delete all items on cart.
-    elif request.method == 'DELETE':
-        cart.item_set.all.delete()
-        return HttpResponse(status=204)
-
-    else:
-        return HttpResponseNotAllowed(['GET', 'DELETE'])
-
-
 class ItemView(APIView):
     @method_decorator(login_required)
     def put(self, request, product_id):
