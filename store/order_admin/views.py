@@ -7,6 +7,7 @@ from order.views import BaseOrderListView, BaseOrderDetailView
 from time import strptime
 from django.contrib import messages
 
+
 class _VendorOrderListView(BaseOrderListView):
     """Common view used by pending and on-delivery order list."""
     template_name = 'order_admin/list.html'
@@ -19,57 +20,51 @@ class _VendorOrderListView(BaseOrderListView):
 class _ReportListView(_VendorOrderListView):
     """Common view used by fulfilled, cancelled and best-selling report."""
 
-    def is_valid_duration(self, date_start="", date_end=""):
-        """Determine if two given strings are valid date or duration"""
-        if len(date_start) != 0 and len(date_end) != 0:
-            try:
-                sdate = strptime(date_start, "%Y-%m-%d")
-                edate = strptime(date_end, "%Y-%m-%d")
-            except:
-                return 'ERRFMT'
-            if edate >= sdate:
-                return 'APTDATE'
-            else:
-                return 'ERRDUR'
-        elif len(date_start) == 0 and len(date_end) == 0:
-            return 'EMPDATE'
-        else:
-            return 'APTDATE'
-
     def get_queryset(self):
         orders = super().get_queryset()
         start = self.request.GET.get('start')
         end = self.request.GET.get('end')
-        try:
-            if start:
+
+        if start:
+            try:
                 orders = orders.filter(purchase_date__gt=start)
-            if end:
+            except ValidationError:
+                pass  # Error handling is in get_context_data().
+        if end:
+            try:
                 orders = orders.filter(purchase_date__lt="%s 23:59:59.99" % end)
-        except ValidationError:
-            messages.add_message(self.request, messages.ERROR,
-                             "Date validation errs. "
-                             "Please select appropriate dates.")
+            except ValidationError:
+                pass
         return orders
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['start'] = self.request.GET.get('start', '')
         context['end'] = self.request.GET.get('end', '')
-        #validate date format
-        if self.is_valid_duration(context['start'], context['end']) == 'EMPDATE':
-            messages.add_message(self.request, messages.WARNING,
-                             "Date field is empty. "
-                             "Please select appropriate dates.")
-        elif self.is_valid_duration(context['start'], context['end']) == 'ERRFMT':
-            messages.add_message(self.request, messages.ERROR,
-                             "Incorrect date format. "
-                             "Please select appropriate dates.")
-        elif self.is_valid_duration(context['start'], context['end']) == 'ERRDUR':
-            messages.add_message(self.request, messages.ERROR,
-                             "End date should be later than start date. "
-                             "Please select appropriate dates.")
-        return context
 
+        # Validate date format
+        start_date = end_date = None
+        if context['start']:
+            try:
+                start_date = strptime(context['start'], "%Y-%m-%d")
+            except ValueError:
+                context['start_has_error'] = 'has-error'
+        if context['end']:
+            try:
+                end_date = strptime(context['end'], "%Y-%m-%d")
+            except ValueError:
+                context['end_has_error'] = 'has-error'
+
+        if 'start_has_error' in context or 'end_has_error' in context:
+            messages.add_message(self.request, messages.WARNING,
+                                 "Incorrect date format. "
+                                 "Please select appropriate dates.")
+        if start_date and end_date and end_date < start_date:
+            context['start_has_error'] = context['end_has_error'] = 'has-error'
+            messages.add_message(self.request, messages.WARNING,
+                                 "End date should be later than start date. "
+                                 "Please select appropriate dates.")
+        return context
 
 
 class PendingView(_VendorOrderListView):
