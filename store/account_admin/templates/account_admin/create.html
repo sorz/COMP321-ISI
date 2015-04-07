@@ -1,0 +1,32 @@
+{% extends "store/base.html" %}
+{% load bootstrap3 %}
+
+{% block body %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 col-sm-12">
+      <h1>Vendor Register</h1>
+
+      {% if form %}
+      <form method="POST" action="." id="login-form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+
+        {% url 'admin:overview' as overview %}
+
+        {% buttons %}
+          <button type="submit" class="btn btn-primary">Register</button>
+        {% endbuttons  %}
+      </form>
+      {% else %}
+        <p>Sorry, the vendor account has already been registered.
+        You cannot register again.</p>
+
+        <p>Please <a href="{% url 'admin:account:login' %}">log in</a>.</p>
+
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
