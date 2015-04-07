@@ -1,12 +1,16 @@
 {% extends "store/base.html" %}
 {% load bootstrap3 %}
 
-{% block body %}
+{% block title %}Create Vendor Account{% endblock %}
 
+{% block body %}
 <div class="container">
   <div class="row">
-    <div class="col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 col-sm-12">
-      <h1>Vendor Register</h1>
+    <div class="col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+      <h1>Create Vendor Account</h1>
+
+      <p>You haven't create vendor account, please do it right now.<br>
+      Be carefully, once this account is created, you cannot change it or create another one.</p>
 
       {% if form %}
       <form method="POST" action="." id="login-form">
@@ -16,7 +20,7 @@
         {% url 'admin:overview' as overview %}
 
         {% buttons %}
-          <button type="submit" class="btn btn-primary">Register</button>
+          <button type="submit" class="btn btn-primary">Create</button>
         {% endbuttons  %}
       </form>
       {% else %}
