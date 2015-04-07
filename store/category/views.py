@@ -53,8 +53,7 @@ class DetailView(TemplateView):
         context['filter'] = name_filter
         context['sort'] = sort
 
-        products = make_page(products, self.request.GET.get('page'),
-                             per_page=3)  # 3 products per page for testing
+        products = make_page(products, self.request.GET.get('page'))
         context['products'] = products
 
         return context

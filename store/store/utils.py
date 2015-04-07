@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
-def make_page(object_list, page, per_page=5, neighbor_count=5):
+def make_page(object_list, page, per_page=10, neighbor_count=5):
     """Return a Django Page object with a list of neighbor pages.
 
     "neighbor pages" is some pages next to the current page.

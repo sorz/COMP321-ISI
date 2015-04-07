@@ -104,8 +104,7 @@ class BaseOrderListView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['orders'] = make_page(self.get_queryset(),
-                                      self.request.GET.get('page'),
-                                      per_page=3)  # 3 orders per page for testing.
+                                      self.request.GET.get('page'))
         context['title'] = self.title
         return context
 
