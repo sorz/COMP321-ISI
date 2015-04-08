@@ -37,8 +37,8 @@
       <a role="button" class="btn btn-default {% if sort == '-price' %}active{% endif %}"
           href="?filter={{ filter }}&sort=-price&page={{ products.number }}"><span class="glyphicon
           glyphicon-sort-by-order-alt"></span> Price</a>
-      <a role="button" class="btn btn-default {% if sort == '-rating' %}active{% endif %}"
-          href="?filter={{ filter }}&sort=-rating&page={{ products.number }}"><span class="glyphicon
+      <a role="button" class="btn btn-default {% if sort == '-average_rating' %}active{% endif %}"
+          href="?filter={{ filter }}&sort=-average_rating&page={{ products.number }}"><span class="glyphicon
           glyphicon-sort-by-attributes-alt"></span> Rating</a>
       {% if vendor %}
       <a role="button" class="btn btn-default {% if sort == '-sale_quantity' %}active{% endif %}"

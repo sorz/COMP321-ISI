@@ -25,7 +25,7 @@ class IndexView(TemplateView):
 
 class DetailView(TemplateView):
     template_name = 'category/detail.html'
-    order_fields = ('price', '-price', 'rating', '-rating')
+    order_fields = ('price', '-price', 'average_rating', '-average_rating')
 
     def render_to_response(self, context, **response_kwargs):
         response_kwargs['current_app'] = self.request.resolver_match.namespace
