@@ -26,8 +26,8 @@ def create(request):
     cart_hash = request.GET.get('hash')
     if cart_hash is None or cart_hash != str(hash(cart)):
         messages.add_message(request, messages.WARNING,
-                             "Some items has been changed, "
-                             "please inspect them and checkout again.")
+                             "Some items have been changed, "
+                             "please be prudential and checkout again.")
         return redirect('cart:index')
 
     # Empty cart, return.
@@ -61,7 +61,7 @@ def create(request):
             # Remove the hash since its mission is completed.
             request.session.delete('cart-hash')
             messages.add_message(request, messages.SUCCESS,
-                                 "Congratulation. We will handle your order soon.")
+                                 "Congratulation. Your order will be handled sooner if possible.")
             return redirect('order:detail', order.pk)
     else:
         initial = {'recipient_name': request.user.get_full_name()}
