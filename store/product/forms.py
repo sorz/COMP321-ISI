@@ -23,7 +23,7 @@ class RatingForm(forms.ModelForm):
     def clean_point(self):
         point = self.cleaned_data.get('point')
         if point not in (1, 2, 3, 4, 5):
-            raise forms.ValidationError('Point must be choose from 1 to 5.',
+            raise forms.ValidationError('Point must be chosen from 1 to 5.',
                                         code='invalid-point')
         return point
 
@@ -31,6 +31,6 @@ class RatingForm(forms.ModelForm):
         cleaned_data = super().clean()
 
         if not self.instance.product.has_bought_by_user(self.instance.user):
-            raise forms.ValidationError('Cannot rating before buy it.',
+            raise forms.ValidationError('Cannot rate before buying it.',
                                         code='no-purchase-yet')
         return cleaned_data

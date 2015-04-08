@@ -26,7 +26,7 @@ def create(request):
     cart_hash = request.GET.get('hash')
     if cart_hash is None or cart_hash != str(hash(cart)):
         messages.add_message(request, messages.WARNING,
-                             "Some items has been change, "
+                             "Some items has been changed, "
                              "please inspect them and checkout again.")
         return redirect('cart:index')
 
@@ -194,7 +194,7 @@ class OrderView(APIView):
 
         vendor = request.user.is_staff
         if request.user != order.owner and not vendor:
-            return HttpResponseForbidden('No permission to access this order.')
+            return HttpResponseForbidden('Permission denied to access this order.')
 
         new_status = request.data.get('status')
         if new_status is None:
