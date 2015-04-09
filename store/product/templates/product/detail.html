@@ -88,9 +88,16 @@
               Rating
             </button>
           {% endif %}
+          {% if user.is_authenticated %}
           <button class="btn btn-primary btn-lg buy"
             data-link="{% url 'cart_api:item' product.id %}"><span class="glyphicon glyphicon-shopping-cart"></span>
-          Add to Cart</button></p>
+          Add to Cart</button>
+          {% else %}
+          <a class="btn btn-primary btn-lg" role="button"
+            href="{% url 'account:login' %}?next={{ request.path }}"><span class="glyphicon glyphicon-shopping-cart"></span>
+          Add to Cart</a>
+          {% endif %}
+        </p>
       </div>
 
     </div>
