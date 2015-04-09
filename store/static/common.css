@@ -46,8 +46,11 @@ footer hr { margin: 1em 2em; }
 .category-link { font-size: 0.5em; color: lightgray; vertical-align: middle; }
 #carousel-thumbnail .item img { width: 100%; }
 #carousel-thumbnail .carousel-caption { font-size: 1.5em;  }
+#carousel-thumbnail .carousel-control.right {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0), white); }
+#carousel-thumbnail .carousel-control.left {
+  background-image: linear-gradient(to left, rgba(255, 255, 255, 0), white); }
 /* TODO: can't see caption clearly */
-/* TODO: white shadow */
 .showcase { font-size: 1.25em; background: #f8f8f8; padding: 1em; border-radius: 5px;
         overflow: auto; }
 .showcase .item-name { color: gray; display: inline-block; width: 4em; }
