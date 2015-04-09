@@ -20,6 +20,9 @@
   {# TODO: Consider move jQuery to the bottom of page. #}
   <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
 
+  <!--[if lt IE 12]>
+    <script src="{% static 'ie-patch.js' %}"></script>
+  <![endif]-->
   {% block head %}
     {# Some additional per-page styles. #}
   {% endblock %}
