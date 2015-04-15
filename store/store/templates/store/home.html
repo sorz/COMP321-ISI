@@ -19,7 +19,8 @@
     }
 
     footer { display: none; }
-    .cover-copyright, .cover-copyright a { color: rgba(255, 255, 255, 0.4); }
+    .footer, .footer a { color: rgba(255, 255, 255, 0.4); }
+    p.admin a { color: rgba(255, 255, 255, 0.6); }
 
   </style>
 {% endblock %}
@@ -60,10 +61,12 @@
   </div>
 </div>
 
-<div class="cover-copyright">
+<div class="footer">
   <p class="pull-right">Cover photo via
     <a href="https://unsplash.com/jonasnilssonlee">Jonas Nilsson Lee</a>
     / CC0
   </p>
+  <p class="pull-left admin">
+    <a href="{% url 'admin:overview' %}" title="Vendor Admin Console">Vendor Console</a></p>
 </div>
 {% endblock %}
