@@ -23,14 +23,10 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="{% url 'admin:overview' %}">Dashboard</a></li>
-        <li><a href="#">Settings</a></li>
-        <li><a href="#">Profile</a></li>
-        <li><a href="#">Help</a></li>
+        <li><a href="{% url 'admin:overview' %}">Overview</a></li>
+        <li><a href="{% url 'account:password_change' %}">Change Password</a></li>
+        <li><a href="{% url 'account:logout' %}">Logout</a></li>
       </ul>
-      <form class="navbar-form navbar-right">
-        <input type="text" class="form-control" placeholder="Search...">
-      </form>
     </div>
   </div>
 </nav>
@@ -40,9 +36,6 @@
     <div class="col-sm-3 col-md-2 sidebar">
       <ul class="nav nav-sidebar">
         <li class="nav-overview"><a href="{% url 'admin:overview' %}">Overview</a></li>
-        <li class="disabled"><a href="#">Products</a></li>
-        <li class="disabled"><a href="#">Orders</a></li>
-        <li class="disabled"><a href="#">Report</a></li>
       </ul>
       <ul class="nav nav-sidebar">
         <li class="nav-management"><a href="{% url 'admin:category:index' %}">Product management</a></li>
@@ -56,7 +49,6 @@
       <ul class="nav nav-sidebar">
         <li class="nav-order-fulfilled"><a href="{% url 'admin:order:fulfilled' %}">Fulfilled order report</a></li>
         <li class="nav-order-cancelled"><a href="{% url 'admin:order:cancelled' %}">Cancelled order report</a></li>
-        <li class="nav-order-best disabled"><a href="#">Best selling report</a></li>
       </ul>
     </div>
 
