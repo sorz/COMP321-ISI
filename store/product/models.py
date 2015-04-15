@@ -115,6 +115,7 @@ class Photo(models.Model):
         # Delete the file after the model
         storage.delete(path)
 
+
 class Rating(models.Model):
     """User's rating for a product.
 
