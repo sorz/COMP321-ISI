@@ -33,6 +33,7 @@
   </div>
 
   <div id="order-recipient-box" class="col-md-6 col-lg-7">
+    <p><span class="item-name">Order ID</span>#{{ order.pk }}</p>
     <p><span class="item-name">Recipient</span>{{ order.recipient_name }}</p>
     <p><span class="item-name">Address</span>{{ order.recipient_address }}</p>
     {% if order.recipient_address_2 %}
