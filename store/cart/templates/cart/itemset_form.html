@@ -53,7 +53,9 @@
     var totalPrice = 0;
     $('.cart-item').not('.deleted')
         .find('.item-total-price').children('.value').each(function () {
-          totalPrice += parseFloat($(this).text());
+          var price = parseFloat($(this).text());
+          if (price > 0)
+            totalPrice += price;
     });
     $('span.total-price').text('$'+ totalPrice.toFixed(2));
   }
@@ -68,7 +70,11 @@
 
       // Re-calculate sub-total price.
       var subTotalPrice = quantity * price;
-      $item.find('.item-total-price').children('.value').text(subTotalPrice.toFixed(2));
+      if (subTotalPrice >= 0) {
+        $item.find('.item-total-price').children('.value').text(subTotalPrice.toFixed(2));
+      } else {
+        $item.find('.item-total-price').children('.value').text(" --");
+      }
 
       updateTotalPrice();
 
