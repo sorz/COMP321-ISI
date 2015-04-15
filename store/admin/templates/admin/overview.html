@@ -3,19 +3,45 @@
 {% block title %}Overview{% endblock %}
 
 {% block main %}
-  <h1 class="page-header">Dashboard</h1>
+  <h1 class="page-header">Overview</h1>
   <div class="row">
-    <div class="col-md-12">
-      Lorem ipsum dolor sit amet.
+    <div class="col-md-6">
+      <p>Welcome to ISI Store admin console.</p>
+      <p>Please select an operation from left side menu.</p>
+      <ul>
+        <li><strong>Product management</strong>
+        <p>View all products by selecting a category.
+          Show and edit detail of each product.
+          You can also modify title and introduction of each category here.
+        </p>
+        </li>
+        <li><strong>Add new product</strong>
+        <p>Add a new product into ISI Store.</p>
+        </li>
+        <li><strong>Add new category</strong>
+        <p>Add a new category into ISI Store.</p>
+        </li>
+        <li><strong>Pending orders</strong>
+        <p>List all pending (or hold) purchase orders.
+        You can hold or ship a purchase order here.</p>
+        </li>
+        <li><strong>On-delivery orders</strong>
+        <p>List all purchase orders that are shipped,
+          but customers have not confirmed receipt yet.</p>
+        </li>
+        <li><strong>Fulfilled order report</strong>
+        <p>List the fulfilled purchase orders.
+          i.e.  purchase orders that are delivered to customers
+          and for which customers have confirmed the receipt.</p>
+        </li>
+        <li><strong>Cancelled order report</strong>
+        <p>List all cancelled orders.</p>
+        </li>
+        </li>
+      </ul>
     </div>
   </div>
 
-  <h2 class="sub-header">Section title</h2>
-  <div class="row">
-    <div class="col-md-12">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque iaculis.
-    </div>
-  </div>
 
 
 {% endblock %}
