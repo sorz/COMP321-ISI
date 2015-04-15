@@ -140,9 +140,8 @@
   // Check before submit form (checkout).
   $('form#cart').submit(function () {
     if ($('.cart-item.off-shelf:not(.deleted)').length > 0) {
-      alert("Cannot checkout. Some of items are off-shelf in your shopping cart. " +
+      addMessage('danger', "Cannot checkout. Some of items are off-shelf in your shopping cart. " +
           "Please remove them, and try again.");
-      // TODO: use user friendly message box.
       return false;
     }
   });
