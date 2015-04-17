@@ -25,40 +25,40 @@ A online demo is avaiable at [isi.sorz.org](https://isi.sorz.org/).
   apt-get install python3 python3-virtualenv
   ```
 
-2. (Optional) Create virtual environments
-   ```
-   virtualenv env
-   . env/bin/activate
-   ```
+2. (optional) Create virtual environment
+  ```
+  virtualenv env
+  . env/bin/activate
+  ```
 
-2. Install Python modules
+3. Install Python modules
   ```
   pip install -r requirements.txt
   ```
 
-3. Copy a config file and edit it
+4. Copy a config file and edit it
   ```
   cd store/store/settings
   cp config.sample.py config.py
   vim config.py
   ```
 
-4. Install JavaScript librarys
+5. Install JavaScript libraries
   ```
   python manage.py bower install
   ```
 
-5. Migrate database
+6. Migrate database
   ```
   python manage.py migrate
   ```
 
-6. (Optional) Load demo data
+7. (optional) Load demo data
   ```
   python manage.py loaddata /path/to/data.json
   ```
 
-7. Run
+8. Run
   ```
   python manage.py runserver
   ```
