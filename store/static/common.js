@@ -27,6 +27,7 @@ function initializeNavbar() {
     '^/category/': 'category',
     '^/order/': 'purchase',
     '^/cart/': 'cart',
+    '^/about/': 'about',
     '^/$': 'home',
     '^/admin/order/pending/': 'order-pending',
     '^/admin/order/on-delivery/': 'order-on-delivery',

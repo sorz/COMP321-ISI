@@ -23,7 +23,7 @@
         <ul class="nav navbar-nav">
           <li class="nav-home"><a href="/">Home</a></li>
           <li class="nav-category"><a href="{% url 'category:index' %}">Categories</a></li>
-          <li><a href="{% url 'about' %}">About</a></li>
+          <li class="nav-about"><a href="{% url 'about' %}">About</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           {% if user.is_authenticated %}
