@@ -51,7 +51,7 @@ A online demo is avaiable at [isi.sorz.org](https://isi.sorz.org/).
 
 6. Install JavaScript libraries
   ```
-  python manage.py bower install
+  python manage.py bower_install
   ```
 
 7. Migrate database
