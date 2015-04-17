@@ -24,41 +24,47 @@ A online demo is avaiable at [isi.sorz.org](https://isi.sorz.org/).
   ```
   apt-get install python3 python3-virtualenv
   ```
+  
+2. Install [Bower](http://bower.io/)
+   ```
+   apt-get isntall nodejs npm
+   npm install -g bower
+   ```
 
-2. (optional) Create virtual environment
+3. (optional) Create virtual environment
   ```
   virtualenv env
   . env/bin/activate
   ```
 
-3. Install Python modules
+4. Install Python modules
   ```
   pip install -r requirements.txt
   ```
 
-4. Copy a config file and edit it
+5. Copy a config file and edit it
   ```
   cd store/store/settings
   cp config.sample.py config.py
   vim config.py
   ```
 
-5. Install JavaScript libraries
+6. Install JavaScript libraries
   ```
   python manage.py bower install
   ```
 
-6. Migrate database
+7. Migrate database
   ```
   python manage.py migrate
   ```
 
-7. (optional) Load demo data
+8. (optional) Load demo data
   ```
   python manage.py loaddata /path/to/data.json
   ```
 
-8. Run
+9. Run
   ```
   python manage.py runserver
   ```
