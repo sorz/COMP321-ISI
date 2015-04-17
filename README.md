@@ -22,8 +22,14 @@ A online demo is avaiable at [isi.sorz.org](https://isi.sorz.org/).
 
 1. Install [Python](https://www.python.org/) 3.4 or above
   ```
-  apt-get install python3
+  apt-get install python3 python3-virtualenv
   ```
+
+2. (Optional) Create virtual environments
+   ```
+   virtualenv env
+   . env/bin/activate
+   ```
 
 2. Install Python modules
   ```
@@ -47,7 +53,13 @@ A online demo is avaiable at [isi.sorz.org](https://isi.sorz.org/).
   python manage.py migrate
   ```
 
-6. Run
+6. (Optional) Load demo data
+  ```
+  python manage.py loaddata /path/to/data.json
+  ```
+
+7. Run
   ```
   python manage.py runserver
   ```
+

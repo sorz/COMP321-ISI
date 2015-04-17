@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='product',
             name='category',
-            field=models.ForeignKey(default=0, to='category.Category'),
+            field=models.ForeignKey(default=1, to='category.Category'),
             preserve_default=False,
         ),
     ]
