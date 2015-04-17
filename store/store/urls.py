@@ -9,6 +9,7 @@ urlpatterns = patterns(
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', 'store.views.home', name='home'),
+    url('^about/$', 'store.views.about', name='about'),
 
     url(r'^category/', include('category.urls', namespace='category')),
     url(r'^product/', include('product.urls', namespace='product')),
