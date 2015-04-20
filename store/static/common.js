@@ -83,7 +83,7 @@ $(document).ready(function () {
   // Add-to-shopping-cart button.
   $('button.buy').click(function () {
     $.post($(this).data('link'), function () {
-      addMessage('success', 'Product added into shopping card.');
+      addMessage('success', 'Product added into shopping cart.');
     });
   });
 
